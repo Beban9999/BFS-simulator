@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>BFS</title>
+    <style>
+        .cell{
+            background: rgb(65, 64, 64);
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            float: left;
+            margin-top: 5px;
+            border-radius: 20%;
+
+        }
+        #maze{
+            width: 700px;
+        }
+        #control{
+            text-align: center;
+        }
+        
+        .obs{
+            background: pink;
+            border-radius: 20%;
+          
+            transition: 0.3s;
+        }
+       
+       
+
+    </style>
+</head>
+<body>
+    <div id="maze"></div>
+    <div id="control">
+        <br><br>
+        <span>START</span><br><input type="number" id="startI" min="0" max="19"><input type="number" id="startJ" min="0" max="19"><br><br>
+        <span>END</span> <br><input type="number" id="endI" min="0" max="19"><input type="number" id="endJ" min="0" max="19"><br>
+        <br><br>
+        <button id="start" class="btn btn-warning" onclick="startAlgo()">BEGIN</button>
+        <button id="reset" class="btn btn-warning" onclick="reset()">RESET</button>
+        <div id="alert">
+        </div>
+    
+    </div>
+    
+    <script>
+        bigList = [];
+        sPath = "";   
+        function reset(){
+            for(var i = 0; i < 20; i++){
+                for(var j = 0; j < 20; j++){
+                curr = i+" "+j;
+                document.getElementById(curr).removeAttribute("style");
+                
+                }
+            } 
+        }    
+        function resetColor(){
+            for(var i = 0; i < 20; i++){
+                for(var j = 0; j < 20; j++){
+                curr = i+" "+j;
+                if(!document.getElementById(curr).classList.contains("obs")){
+                   document.getElementById(curr).style.background = "rgb(65, 64, 64)";
+                }
+                
+                }
+            }
+        }
+        function Ops(a){
+            if(!a.classList.contains("obs")){
+                a.classList.add("obs");
+            }
+            else{
+                a.classList.remove("obs");
+            }
+            
+        }
+        function isValid(ii, jj, validMat){
+            if(ii < 0 || jj < 0 || ii > 19 || jj > 19){
+                return false;
+            }
+            if(validMat[ii][jj] == true){
+                return false;
+            }
+            isobs = document.getElementById(ii + " " + jj);
+            if(isobs.classList.contains("obs")){
+                return false;
+            }
+             return true;
+        }
+        function doBfs(begI, begJ, endI, endJ){
+            var ending = endI + " " + endJ;
+            var movX = [-1, 0, 1, 0]
+            var movY = [0, 1, 0, -1]
+            // var movStr = ["U", "R", "D", "L"]
+            var validMat = []
+            for(var i = 0; i < 20; i++){
+                validMat[i] = []
+                for(var j = 0; j < 20; j++){
+                    validMat[i].push(false);
+                }
+            }
+            console.log(validMat);
+            validMat[begI][begJ] = true;
+            var q = [[begI, begJ, ""]]
+            while(q.length){
+                var curr = q.pop();
+                bigList.push(curr[0]+ " "+ curr[1])
+                if(curr[0] == endI && curr[1] == endJ){
+                    sPath = curr[2]; break;
+                }
+                for(var i = 0; i < 4; i++){
+                    var ii = parseInt(curr[0])+parseInt(movX[i]);
+                    var jj = parseInt(curr[1])+parseInt(movY[i]);
+                    
+                    if(isValid(ii, jj, validMat)){
+
+                        q.unshift([ii, jj, curr[2]+ii+" "+jj+"|"]);
+                        
+                        validMat[ii][jj] = true;
+
+                    }
+                }
+            }
+            index = 1;
+            let interval = setInterval(function(){
+                if(document.getElementById(bigList[index]) == null){
+                    clearInterval(interval);
+                    bigList = [];
+                    return;
+                }
+                document.getElementById(bigList[index]).style.background = "yellow";
+                document.getElementById(bigList[index++]).style.transition = "0.2s";
+                if(bigList[index-1] == ending){
+                    clearInterval(interval);
+                    bigList = [];
+                    ssPath = sPath.split("|");
+                    let ind = 0;
+                    document.getElementById(ssPath[ssPath.length-2]).style.background = "red";
+                    let intPath = setInterval(function(){
+                        document.getElementById(ssPath[ind]).style.background = "lightblue";
+                        ind++;
+                        if(ind == ssPath.length-2){
+                            clearInterval(intPath);
+                        }
+                    },100)
+                    
+                }
+                
+            }, 10);
+            
+             
+        }
+        function startAlgo(){
+            resetColor();
+            document.getElementById("alert").innerHTML = "";
+            var begI = document.getElementById("startI").value;
+            var begJ = document.getElementById("startJ").value;
+            var endI = document.getElementById("endI").value;
+            var endJ = document.getElementById("endJ").value;
+            if (begI == "" || begJ == "" || endI == "" || endJ == ""){
+                document.getElementById("alert").innerHTML = "Enter all values!"
+                return;
+            }
+            var beg = begI + " " + begJ;
+            var end = endI + " " + endJ;
+
+            document.getElementById(beg).style.background = "green";
+            document.getElementById(end).style.background = "red";
+
+            doBfs(begI, begJ, endI, endJ);
+        }
+
+
+
+        for(var i = 0; i < 20; i++){
+            for(var j = 0; j < 20; j++){
+                document.getElementById("maze").innerHTML += "<div class='cell' onmousedown='Ops(this)' id='"+i+' '+j+"'></div>"
+            }
+        }
+
+    </script>
+</body>
+</html>
