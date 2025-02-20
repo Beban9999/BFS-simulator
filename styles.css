@@ -1,0 +1,35 @@
+.cell {
+    background: rgb(65, 64, 64);
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    float: left;
+    margin-top: 5px;
+    border-radius: 20%;
+}
+.cell-info {
+    background: rgb(65, 64, 64);
+    width: 30px;
+    height: 30px;
+    border-radius: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.bg-cell{
+    background: rgb(65, 64, 64);
+}
+.bg-body{
+    background: #7F7D7D;
+}
+#maze {
+    width: 700px;
+    margin: 0 auto;
+}
+.obs {
+    background: pink;
+    border-radius: 20%;
+    transition: 0.3s;
+}
+h1 {
+    margin-bottom: 20px;
+}
