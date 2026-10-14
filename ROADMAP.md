@@ -3,6 +3,7 @@
 Source of truth for what exists and what's next. The full original spec is
 [algo-visualizer-build-prompt.md](algo-visualizer-build-prompt.md) (section numbers below refer to it).
 How to build a page: [docs/ADDING_AN_ALGORITHM.md](docs/ADDING_AN_ALGORITHM.md).
+GitHub issues [#2–#18](https://github.com/Beban9999/BFS-simulator/issues) mirror the unchecked sections below (one per tab / feature); tick both when done.
 
 Legend: `[x]` done (tests pass + checked in the browser) · `[ ]` to do · *(id)* = planned folder name ·
 **needs:** = renderer/feature that must exist first.
