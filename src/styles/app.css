@@ -657,6 +657,22 @@ textarea {
   resize: vertical;
 }
 
+/* Custom chevron so the arrow sits inside the padding instead of hugging the edge. */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    right 16px center,
+    right 11px center;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
 select:focus,
 input:focus,
 textarea:focus {
