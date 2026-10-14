@@ -1,0 +1,26 @@
+def dfs(grid, start, end):
+    rows, cols = len(grid), len(grid[0])
+    stack = [start]                                         # @mark init
+    prev, done = {start: None}, set()
+    while stack:                                            # @mark loop
+        r, c = stack.pop()                                  # @mark pop
+        if (r, c) in done:                                  # @mark skip
+            continue
+        done.add((r, c))                                    # @mark visit
+        if (r, c) == end:                                   # @mark check-end
+            return build_path(prev, end)                    # @mark found
+        # push in reverse so "up" ends on top and is explored first
+        for dr, dc in ((0, -1), (1, 0), (0, 1), (-1, 0)):
+            nr, nc = r + dr, c + dc
+            if (0 <= nr < rows and 0 <= nc < cols
+                    and grid[nr][nc] != '#' and (nr, nc) not in done):
+                prev[(nr, nc)] = (r, c)                     # @mark discover
+                stack.append((nr, nc))                      # @mark push
+    return None                                             # @mark no-path
+
+def build_path(prev, end):
+    path, cell = [], end
+    while cell is not None:                                 # @mark trace
+        path.append(cell)
+        cell = prev[cell]
+    return path[::-1]

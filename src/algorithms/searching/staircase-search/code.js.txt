@@ -1,0 +1,13 @@
+function searchMatrix(matrix, target) {
+  let r = 0, c = matrix[0].length - 1;          // top-right corner   // @mark init
+  while (r < matrix.length && c >= 0) {         // @mark loop
+    const value = matrix[r][c];                 // @mark look
+    if (value === target) return true;          // @mark found
+    if (value > target) {
+      c--;                                      // whole column below is bigger too   // @mark left
+    } else {
+      r++;                                      // whole row to the left is smaller too   // @mark down
+    }
+  }
+  return false;                                 // @mark none
+}

@@ -1,0 +1,17 @@
+function maxSlidingWindow(nums, k) {
+  const dq = [], result = [];           // indexes, values decreasing   // @mark init
+  let head = 0;                         // dq[head..] is the live deque
+  for (let i = 0; i < nums.length; i++) {             // @mark loop
+    while (dq.length > head && nums[dq[dq.length - 1]] <= nums[i]) {  // smaller values can never win again   // @mark pop-back
+      dq.pop();
+    }
+    dq.push(i);                                       // @mark push
+    if (dq[head] <= i - k) {                          // front fell out of the window   // @mark pop-front
+      head++;
+    }
+    if (i >= k - 1) {
+      result.push(nums[dq[head]]);                    // @mark record
+    }
+  }
+  return result;                                      // @mark done
+}

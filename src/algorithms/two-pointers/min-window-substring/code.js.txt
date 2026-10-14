@@ -1,0 +1,28 @@
+function minWindow(s, t) {
+  const need = new Map();                               // @mark init
+  for (const ch of t) need.set(ch, (need.get(ch) ?? 0) + 1);
+  const have = new Map();
+  let formed = 0;                       // letters whose count is fully met
+  const required = need.size;
+  let best = [Infinity, 0, 0];
+  let left = 0;
+  for (let right = 0; right < s.length; right++) {      // @mark loop
+    const ch = s[right];
+    have.set(ch, (have.get(ch) ?? 0) + 1);              // @mark expand
+    if (need.has(ch) && have.get(ch) === need.get(ch)) {
+      formed++;                                         // @mark formed
+    }
+    while (formed === required) {                       // window covers t   // @mark covered
+      if (right - left + 1 < best[0]) {
+        best = [right - left + 1, left, right];         // @mark update
+      }
+      const out = s[left];
+      have.set(out, have.get(out) - 1);                 // @mark shrink
+      if (need.has(out) && have.get(out) < need.get(out)) {
+        formed--;                                       // @mark lost
+      }
+      left++;
+    }
+  }
+  return best[0] === Infinity ? "" : s.slice(best[1], best[2] + 1);  // @mark done
+}

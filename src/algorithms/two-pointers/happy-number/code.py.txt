@@ -1,0 +1,13 @@
+def next_number(n):
+    total = 0
+    while n:
+        n, digit = divmod(n, 10)
+        total += digit * digit
+    return total
+
+def is_happy(n):
+    slow, fast = n, next_number(n)                      # @mark init
+    while fast != 1 and slow != fast:                   # @mark loop
+        slow = next_number(slow)                        # @mark slow-step
+        fast = next_number(next_number(fast))           # @mark fast-step
+    return fast == 1                                    # @mark done

@@ -1,37 +1,52 @@
-# BFS / DFS Simulator
+# Steplore
 
-An interactive visualizer for Breadth-First Search (BFS) and Depth-First Search (DFS) on a 20×20 grid. Set a start and end cell, draw walls, and watch how each algorithm explores the grid and the path it finds.
+**Watch every interview algorithm run, one step at a time.**
 
-**Live demo:** https://sweet-sopapillas-d5fe17.netlify.app/
+Steplore is an interactive visualizer for the algorithms, data structures and patterns used in coding interviews.
+Every page combines three things:
+
+1. **The simulation** — an animated, step-by-step run on an input you can edit, randomise or pick from presets.
+2. **The code, running live** — Python or JavaScript with the current line highlighted, a watch panel for variables,
+   the call stack and auxiliary structures (queues, stacks, hash maps). The code can pop out into a floating window.
+3. **A short explanation** — intuition, invariant, complexity, when to use it, pitfalls, a template and practice problems.
+
+**Live site:** https://sweet-sopapillas-d5fe17.netlify.app/
+
+It grew out of a small BFS/DFS grid simulator (kept in [`legacy/`](legacy/)).
 
 ## Features
+- Player: play / pause / step / scrub / speed, keyboard shortcuts (`Space`, `←` `→`, `Home` `End`, `+` `-`).
+- Deep links: every page, input and step is shareable (`#/searching/bounds?input=…&step=9`).
+- `Ctrl/Cmd + K` search across algorithms and LeetCode problem names.
+- Progress tracking (learned / review later) stored in your browser.
+- Dark and light themes, colour + shape legend for colour-blind users, works on mobile, respects reduced motion.
 
-- **Draw walls** by clicking or dragging across cells (tap on touch screens).
-- **Start and end** cells set by row and column, with validation for out-of-range values.
-- **BFS or DFS.** BFS always finds the shortest path; DFS finds *a* path, usually a long one.
-- **Adjustable speed** for the exploration and path animations.
-- **Result summary** showing the path length and number of explored cells, or a message when the end can't be reached.
-- **Clear path** keeps your walls; **Reset grid** clears everything.
-- **Dark mode by default**, with a light mode toggle that is remembered between visits.
+## Status
+43 pages so far across Arrays & Hashing, Two Pointers & Sliding Window, Searching, Sorting and Graphs.
+See [ROADMAP.md](ROADMAP.md) for the full plan.
 
-## Project structure
+## Development
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm test         # algorithm correctness tests (Vitest)
+npm run build    # typecheck + production build into dist/
+```
 
-| File | Purpose |
-| --- | --- |
-| `index.html` | Page layout and controls. |
-| `styles.css` | Styles and theme colors (CSS variables for dark and light themes). |
-| `script.js` | Grid, controls, animation and the search algorithms. |
-| `netlify.toml` | Netlify config: publishes the repository root as a static site. |
+Requires Node 20.19+.
 
 ## Adding an algorithm
+Each page is a single folder `src/algorithms/<category>/<id>/` — it is picked up automatically.
+Follow [docs/ADDING_AN_ALGORITHM.md](docs/ADDING_AN_ALGORITHM.md).
 
-Algorithms live in the `ALGORITHMS` registry in `script.js`. Each entry has a label, a name, a short description and a `search(isOpen, start, end)` function that returns `{ order, path }`:
-
-- `order`: the cells in the order they were explored.
-- `path`: the cells from start to end, or `null` if there is none.
-
-The algorithm picker is built from this registry, so a new entry shows up in the UI automatically.
-
-## Running locally
-
-No build step is needed. Open `index.html` in a browser, or serve the folder with any static server.
+## Project structure
+| Path | Purpose |
+| --- | --- |
+| `src/engine/` | Step-trace engine: types, tracer, line markers, input parsing, seeded RNG |
+| `src/algorithms/` | One folder per algorithm page; `_shared/` holds helpers per renderer |
+| `src/renderers/` | Visual components (grid, array/bars, matrix, hash table) |
+| `src/components/` | Player, code panel/popup, watch panel, input editor, command palette, … |
+| `src/pages/` | Home, category overview, algorithm page |
+| `public/favicon.svg` | Logo: a search path tracing an "S" on a grid |
+| `netlify.toml` | Netlify build config (`npm run build` → `dist`) |
+| `legacy/` | The original plain-JS BFS/DFS simulator |

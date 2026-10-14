@@ -1,0 +1,10 @@
+def majority_element(nums):
+    candidate, count = None, 0              # @mark init
+    for x in nums:                          # @mark loop
+        if count == 0:                      # @mark check-zero
+            candidate = x                   # @mark pick
+        count += 1 if x == candidate else -1  # @mark vote
+    # second pass: only needed when a majority is not guaranteed
+    if nums.count(candidate) > len(nums) // 2:  # @mark verify
+        return candidate                    # @mark done
+    return None                             # @mark none

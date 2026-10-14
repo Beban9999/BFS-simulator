@@ -1,0 +1,33 @@
+function lowerBound(nums, target) {     // first i with nums[i] >= target
+  let lo = 0, hi = nums.length;                 // half-open [lo, hi)   // @mark lb-init
+  while (lo < hi) {                             // @mark lb-loop
+    const mid = (lo + hi) >> 1;                 // @mark lb-mid
+    if (nums[mid] < target) {
+      lo = mid + 1;                             // @mark lb-right
+    } else {
+      hi = mid;                                 // mid might be the answer   // @mark lb-left
+    }
+  }
+  return lo;                                    // @mark lb-done
+}
+
+function upperBound(nums, target) {     // first i with nums[i] > target
+  let lo = 0, hi = nums.length;                 // @mark ub-init
+  while (lo < hi) {                             // @mark ub-loop
+    const mid = (lo + hi) >> 1;                 // @mark ub-mid
+    if (nums[mid] <= target) {
+      lo = mid + 1;                             // @mark ub-right
+    } else {
+      hi = mid;                                 // @mark ub-left
+    }
+  }
+  return lo;                                    // @mark ub-done
+}
+
+function searchRange(nums, target) {
+  const first = lowerBound(nums, target);       // @mark first
+  if (first === nums.length || nums[first] !== target) {
+    return [-1, -1];                            // @mark absent
+  }
+  return [first, upperBound(nums, target) - 1]; // @mark last
+}

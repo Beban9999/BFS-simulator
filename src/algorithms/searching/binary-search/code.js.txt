@@ -1,0 +1,15 @@
+function binarySearch(nums, target) {
+  let lo = 0, hi = nums.length - 1;             // search range is [lo, hi]   // @mark init
+  while (lo <= hi) {                            // range not empty   // @mark loop
+    const mid = lo + ((hi - lo) >> 1);          // @mark mid
+    if (nums[mid] === target) {                 // @mark compare
+      return mid;                               // @mark found
+    }
+    if (nums[mid] < target) {
+      lo = mid + 1;                             // target is right of mid   // @mark go-right
+    } else {
+      hi = mid - 1;                             // target is left of mid   // @mark go-left
+    }
+  }
+  return -1;                                    // @mark none
+}

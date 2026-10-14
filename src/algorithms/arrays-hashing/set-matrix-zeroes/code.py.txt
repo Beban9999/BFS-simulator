@@ -1,0 +1,22 @@
+def set_zeroes(matrix):
+    R, C = len(matrix), len(matrix[0])
+    row0 = any(matrix[0][c] == 0 for c in range(C))     # @mark scan-first
+    col0 = any(matrix[r][0] == 0 for r in range(R))
+    # 1) record zeros in the first row / column
+    for r in range(1, R):                               # @mark mark-loop
+        for c in range(1, C):
+            if matrix[r][c] == 0:                       # @mark check
+                matrix[r][0] = matrix[0][c] = 0         # @mark mark
+    # 2) zero every cell whose row or column is marked
+    for r in range(1, R):                               # @mark fill-loop
+        for c in range(1, C):
+            if matrix[r][0] == 0 or matrix[0][c] == 0:  # @mark fill-check
+                matrix[r][c] = 0                        # @mark fill
+    # 3) finally the first row / column themselves
+    if row0:                                            # @mark first-row
+        for c in range(C):
+            matrix[0][c] = 0
+    if col0:                                            # @mark first-col
+        for r in range(R):
+            matrix[r][0] = 0
+    return matrix                                       # @mark done

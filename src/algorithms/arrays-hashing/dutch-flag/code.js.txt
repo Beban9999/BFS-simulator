@@ -1,0 +1,16 @@
+function sortColors(nums) {
+  let low = 0, mid = 0, high = nums.length - 1;   // @mark init
+  while (mid <= high) {                         // @mark loop
+    if (nums[mid] === 0) {                      // @mark check
+      [nums[low], nums[mid]] = [nums[mid], nums[low]];   // @mark swap-low
+      low++;
+      mid++;
+    } else if (nums[mid] === 1) {
+      mid++;                                    // @mark skip
+    } else {
+      [nums[mid], nums[high]] = [nums[high], nums[mid]];  // @mark swap-high
+      high--;                                   // don't advance mid: the new value is unseen
+    }
+  }
+  return nums;                                  // @mark done
+}

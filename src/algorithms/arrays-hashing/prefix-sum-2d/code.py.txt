@@ -1,0 +1,12 @@
+def build(matrix):
+    R, C = len(matrix), len(matrix[0])
+    P = [[0] * (C + 1) for _ in range(R + 1)]           # @mark init
+    for r in range(R):                                  # @mark build-loop
+        for c in range(C):
+            P[r + 1][c + 1] = (matrix[r][c] + P[r][c + 1]
+                               + P[r + 1][c] - P[r][c])  # @mark build
+    return P
+
+def region_sum(P, r1, c1, r2, c2):
+    return (P[r2 + 1][c2 + 1] - P[r1][c2 + 1]
+            - P[r2 + 1][c1] + P[r1][c1])                # @mark query

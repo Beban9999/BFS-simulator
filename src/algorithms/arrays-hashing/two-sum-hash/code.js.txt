@@ -1,0 +1,11 @@
+function twoSum(nums, target) {
+  const seen = new Map();                   // value -> index   // @mark init
+  for (let i = 0; i < nums.length; i++) {   // @mark loop
+    const need = target - nums[i];          // @mark need
+    if (seen.has(need)) {                   // @mark lookup
+      return [seen.get(need), i];           // @mark found
+    }
+    seen.set(nums[i], i);                   // @mark store
+  }
+  return [];                                // @mark none
+}

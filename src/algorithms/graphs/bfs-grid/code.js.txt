@@ -1,0 +1,29 @@
+function bfs(grid, start, end) {
+  const rows = grid.length, cols = grid[0].length;
+  const key = ([r, c]) => r * cols + c;
+  const queue = [start];                                    // @mark init
+  const prev = new Map([[key(start), null]]);
+  for (let head = 0; head < queue.length; head++) {         // @mark loop
+    const [r, c] = queue[head];                             // @mark pop
+    if (r === end[0] && c === end[1]) {                     // @mark check-end
+      return buildPath(prev, end, key);                     // @mark found
+    }
+    for (const [dr, dc] of [[-1, 0], [0, 1], [1, 0], [0, -1]]) {
+      const nr = r + dr, nc = c + dc;
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols &&
+          grid[nr][nc] !== '#' && !prev.has(key([nr, nc]))) {
+        prev.set(key([nr, nc]), [r, c]);                    // @mark discover
+        queue.push([nr, nc]);                               // @mark push
+      }
+    }
+  }
+  return null;                                              // @mark no-path
+}
+
+function buildPath(prev, end, key) {
+  const path = [];
+  for (let cell = end; cell; cell = prev.get(key(cell))) {  // @mark trace
+    path.push(cell);
+  }
+  return path.reverse();
+}

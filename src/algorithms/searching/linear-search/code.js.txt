@@ -1,0 +1,8 @@
+function linearSearch(nums, target) {
+  for (let i = 0; i < nums.length; i++) {       // @mark loop
+    if (nums[i] === target) {                   // @mark compare
+      return i;                                 // @mark found
+    }
+  }
+  return -1;                                    // @mark none
+}

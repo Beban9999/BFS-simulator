@@ -1,0 +1,13 @@
+from collections import deque
+
+def max_sliding_window(nums, k):
+    dq, result = deque(), []            # indexes, values decreasing   # @mark init
+    for i, x in enumerate(nums):                        # @mark loop
+        while dq and nums[dq[-1]] <= x:                 # smaller values can never win again   # @mark pop-back
+            dq.pop()
+        dq.append(i)                                    # @mark push
+        if dq[0] <= i - k:                              # front fell out of the window   # @mark pop-front
+            dq.popleft()
+        if i >= k - 1:
+            result.append(nums[dq[0]])                  # @mark record
+    return result                                       # @mark done

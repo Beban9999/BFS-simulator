@@ -1,0 +1,13 @@
+def find_disappeared(nums):              # values are in 1..n
+    i = 0                                   # @mark init
+    while i < len(nums):                    # @mark loop
+        home = nums[i] - 1                  # index where nums[i] belongs   # @mark home
+        if nums[i] != nums[home]:           # @mark check
+            nums[i], nums[home] = nums[home], nums[i]   # @mark swap
+        else:
+            i += 1                          # in place, or a duplicate   # @mark advance
+    missing = []
+    for i, x in enumerate(nums):            # @mark scan
+        if x != i + 1:                      # @mark scan-check
+            missing.append(i + 1)           # @mark missing
+    return missing                          # @mark done

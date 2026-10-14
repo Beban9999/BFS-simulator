@@ -1,0 +1,13 @@
+def rotate(matrix):
+    n = len(matrix)
+    # 1) transpose: swap across the main diagonal
+    for r in range(n):                                  # @mark transpose-loop
+        for c in range(r + 1, n):
+            matrix[r][c], matrix[c][r] = matrix[c][r], matrix[r][c]   # @mark transpose
+    # 2) reverse every row
+    for row in matrix:                                  # @mark reverse-loop
+        left, right = 0, n - 1
+        while left < right:
+            row[left], row[right] = row[right], row[left]   # @mark reverse
+            left, right = left + 1, right - 1
+    return matrix                                       # @mark done

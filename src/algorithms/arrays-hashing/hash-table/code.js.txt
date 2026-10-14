@@ -1,0 +1,41 @@
+function hashString(key) {
+  let h = 0;
+  for (const ch of key) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return h;
+}
+
+class HashSet {
+  constructor(capacity = 4, chaining = true) {
+    this.chaining = chaining;
+    this.buckets = Array.from({ length: capacity }, () => []);  // @mark init
+    this.size = 0;
+  }
+
+  add(key) {
+    let i = hashString(key) % this.buckets.length;            // @mark hash
+    if (this.chaining) {
+      const chain = this.buckets[i];
+      if (chain.includes(key)) return;                        // @mark exists
+      chain.push(key);                // collision? just extend the chain   // @mark append
+    } else {
+      while (this.buckets[i].length) {                        // slot taken   // @mark probe
+        if (this.buckets[i][0] === key) return;               // @mark exists-probe
+        i = (i + 1) % this.buckets.length;                    // try the next slot
+      }
+      this.buckets[i] = [key];                                // @mark place
+    }
+    this.size++;
+    if (this.size / this.buckets.length > 0.75) {             // @mark check-load
+      this.resize();
+    }
+  }
+
+  resize() {
+    const old = this.buckets;                                 // @mark resize
+    this.buckets = Array.from({ length: 2 * old.length }, () => []);
+    this.size = 0;
+    for (const bucket of old) {
+      for (const key of bucket) this.add(key);                // indexes change: rehash   // @mark rehash
+    }
+  }
+}

@@ -1,0 +1,7 @@
+def move_zeroes(nums):
+    write = 0                                   # @mark init
+    for read in range(len(nums)):               # @mark loop
+        if nums[read] != 0:                     # @mark check
+            nums[write], nums[read] = nums[read], nums[write]   # @mark swap
+            write += 1
+    return nums                                 # @mark done

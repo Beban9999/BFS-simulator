@@ -1,0 +1,11 @@
+def max_subarray(nums):
+    best = cur = nums[0]                        # @mark init
+    start = best_l = best_r = 0
+    for i in range(1, len(nums)):               # @mark loop
+        if cur < 0:                             # @mark check
+            cur, start = nums[i], i             # @mark restart
+        else:
+            cur += nums[i]                      # @mark extend
+        if cur > best:                          # @mark compare
+            best, best_l, best_r = cur, start, i  # @mark update
+    return best                                 # @mark done

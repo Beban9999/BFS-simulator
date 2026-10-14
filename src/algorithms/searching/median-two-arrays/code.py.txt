@@ -1,0 +1,21 @@
+def find_median_sorted_arrays(A, B):
+    if len(A) > len(B):
+        A, B = B, A                                 # search the shorter array   # @mark swap
+    m, n = len(A), len(B)
+    half = (m + n + 1) // 2                         # size of the combined left part
+    lo, hi = 0, m                                   # @mark init
+    while lo <= hi:                                 # @mark loop
+        i = (lo + hi) // 2                          # take i elements from A ...   # @mark cut
+        j = half - i                                # ... and the rest from B
+        a_left = A[i - 1] if i > 0 else float('-inf')
+        a_right = A[i] if i < m else float('inf')
+        b_left = B[j - 1] if j > 0 else float('-inf')
+        b_right = B[j] if j < n else float('inf')
+        if a_left <= b_right and b_left <= a_right: # valid partition   # @mark check
+            if (m + n) % 2:
+                return max(a_left, b_left)          # @mark odd
+            return (max(a_left, b_left) + min(a_right, b_right)) / 2   # @mark even
+        if a_left > b_right:
+            hi = i - 1                              # took too many from A   # @mark go-left
+        else:
+            lo = i + 1                              # took too few from A   # @mark go-right

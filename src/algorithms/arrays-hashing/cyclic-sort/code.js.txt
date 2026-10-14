@@ -1,0 +1,18 @@
+function findDisappeared(nums) {             // values are in 1..n
+  let i = 0;                                // @mark init
+  while (i < nums.length) {                 // @mark loop
+    const home = nums[i] - 1;               // index where nums[i] belongs   // @mark home
+    if (nums[i] !== nums[home]) {           // @mark check
+      [nums[i], nums[home]] = [nums[home], nums[i]];   // @mark swap
+    } else {
+      i++;                                  // in place, or a duplicate   // @mark advance
+    }
+  }
+  const missing = [];
+  for (let i = 0; i < nums.length; i++) {   // @mark scan
+    if (nums[i] !== i + 1) {                // @mark scan-check
+      missing.push(i + 1);                  // @mark missing
+    }
+  }
+  return missing;                           // @mark done
+}

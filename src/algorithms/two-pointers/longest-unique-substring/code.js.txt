@@ -1,0 +1,14 @@
+function lengthOfLongestSubstring(s) {
+  const window = new Set();                     // @mark init
+  let left = 0, best = 0;
+  for (let right = 0; right < s.length; right++) {  // @mark loop
+    const ch = s[right];
+    while (window.has(ch)) {                    // repeat: shrink from the left   // @mark check
+      window.delete(s[left]);                   // @mark shrink
+      left++;
+    }
+    window.add(ch);                             // @mark expand
+    best = Math.max(best, right - left + 1);    // @mark update
+  }
+  return best;                                  // @mark done
+}

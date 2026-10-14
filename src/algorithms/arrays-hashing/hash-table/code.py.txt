@@ -1,0 +1,36 @@
+def hash_string(key):
+    h = 0
+    for ch in key:
+        h = (h * 31 + ord(ch)) % 2**32
+    return h
+
+class HashSet:
+    def __init__(self, capacity=4, chaining=True):
+        self.chaining = chaining
+        self.buckets = [[] for _ in range(capacity)]        # @mark init
+        self.size = 0
+
+    def add(self, key):
+        i = hash_string(key) % len(self.buckets)            # @mark hash
+        if self.chaining:
+            chain = self.buckets[i]
+            if key in chain:                                # @mark exists
+                return
+            chain.append(key)                               # collision? just extend the chain   # @mark append
+        else:
+            while self.buckets[i]:                          # slot taken   # @mark probe
+                if self.buckets[i][0] == key:
+                    return                                  # @mark exists-probe
+                i = (i + 1) % len(self.buckets)             # try the next slot
+            self.buckets[i] = [key]                         # @mark place
+        self.size += 1
+        if self.size / len(self.buckets) > 0.75:            # @mark check-load
+            self._resize()
+
+    def _resize(self):
+        old = self.buckets                                  # @mark resize
+        self.buckets = [[] for _ in range(2 * len(old))]
+        self.size = 0
+        for bucket in old:
+            for key in bucket:
+                self.add(key)                               # indexes change: rehash   # @mark rehash

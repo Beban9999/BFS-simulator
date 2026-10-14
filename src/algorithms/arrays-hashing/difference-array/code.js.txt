@@ -1,0 +1,14 @@
+function rangeAdd(n, updates) {
+  const diff = new Array(n + 1).fill(0);    // @mark init
+  for (const [l, r, v] of updates) {        // @mark update-loop
+    diff[l] += v;                           // @mark mark-start
+    diff[r + 1] -= v;                       // @mark mark-end
+  }
+  const result = new Array(n).fill(0);
+  let running = 0;
+  for (let i = 0; i < n; i++) {             // @mark sweep-loop
+    running += diff[i];                     // @mark sweep
+    result[i] = running;
+  }
+  return result;                            // @mark done
+}

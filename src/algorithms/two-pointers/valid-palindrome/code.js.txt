@@ -1,0 +1,16 @@
+function isPalindrome(s) {
+  const isAlnum = (ch) => /[a-z0-9]/i.test(ch);
+  let left = 0, right = s.length - 1;                   // @mark init
+  while (left < right) {                                // @mark loop
+    if (!isAlnum(s[left])) {                            // @mark skip-left
+      left++;
+    } else if (!isAlnum(s[right])) {                    // @mark skip-right
+      right--;
+    } else if (s[left].toLowerCase() !== s[right].toLowerCase()) {  // @mark compare
+      return false;                                     // @mark fail
+    } else {
+      left++; right--;                                  // @mark match
+    }
+  }
+  return true;                                          // @mark done
+}

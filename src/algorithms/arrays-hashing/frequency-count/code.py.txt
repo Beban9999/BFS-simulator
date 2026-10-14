@@ -1,0 +1,11 @@
+def is_anagram(s, t):
+    if len(s) != len(t):                    # @mark length
+        return False
+    count = {}                              # @mark init
+    for ch in s:                            # @mark loop-s
+        count[ch] = count.get(ch, 0) + 1    # @mark inc
+    for ch in t:                            # @mark loop-t
+        count[ch] = count.get(ch, 0) - 1    # @mark dec
+        if count[ch] < 0:                   # @mark check
+            return False                    # @mark fail
+    return True                             # @mark done

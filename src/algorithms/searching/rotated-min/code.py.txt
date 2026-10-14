@@ -1,0 +1,9 @@
+def find_min(nums):
+    lo, hi = 0, len(nums) - 1                       # @mark init
+    while lo < hi:                                  # @mark loop
+        mid = (lo + hi) // 2                        # @mark mid
+        if nums[mid] > nums[hi]:                    # @mark compare
+            lo = mid + 1                            # the drop is right of mid   # @mark go-right
+        else:
+            hi = mid                                # mid could be the minimum   # @mark go-left
+    return nums[lo]                                 # @mark done

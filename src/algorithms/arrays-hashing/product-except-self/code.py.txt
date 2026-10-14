@@ -1,0 +1,12 @@
+def product_except_self(nums):
+    n = len(nums)
+    answer = [1] * n                        # @mark init
+    left = 1
+    for i in range(n):                      # @mark left-loop
+        answer[i] = left                    # product of everything left of i   # @mark left-store
+        left *= nums[i]                     # @mark left-mul
+    right = 1
+    for i in range(n - 1, -1, -1):          # @mark right-loop
+        answer[i] *= right                  # times everything right of i   # @mark right-store
+        right *= nums[i]                    # @mark right-mul
+    return answer                           # @mark done

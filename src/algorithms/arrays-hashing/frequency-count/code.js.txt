@@ -1,0 +1,14 @@
+function isAnagram(s, t) {
+  if (s.length !== t.length) return false;  // @mark length
+  const count = new Map();                  // @mark init
+  for (const ch of s) {                     // @mark loop-s
+    count.set(ch, (count.get(ch) ?? 0) + 1);  // @mark inc
+  }
+  for (const ch of t) {                     // @mark loop-t
+    count.set(ch, (count.get(ch) ?? 0) - 1);  // @mark dec
+    if (count.get(ch) < 0) {                // @mark check
+      return false;                         // @mark fail
+    }
+  }
+  return true;                              // @mark done
+}

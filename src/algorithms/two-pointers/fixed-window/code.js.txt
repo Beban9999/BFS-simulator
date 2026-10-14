@@ -1,0 +1,10 @@
+function maxWindowSum(nums, k) {
+  let window = 0;
+  for (let i = 0; i < k; i++) window += nums[i]; // first window   // @mark init
+  let best = window;
+  for (let right = k; right < nums.length; right++) {  // @mark loop
+    window += nums[right] - nums[right - k];    // one in, one out   // @mark slide
+    best = Math.max(best, window);              // @mark update
+  }
+  return best;                                  // @mark done
+}

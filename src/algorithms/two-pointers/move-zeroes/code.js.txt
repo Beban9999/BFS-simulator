@@ -1,0 +1,10 @@
+function moveZeroes(nums) {
+  let write = 0;                                // @mark init
+  for (let read = 0; read < nums.length; read++) {  // @mark loop
+    if (nums[read] !== 0) {                     // @mark check
+      [nums[write], nums[read]] = [nums[read], nums[write]];   // @mark swap
+      write++;
+    }
+  }
+  return nums;                                  // @mark done
+}

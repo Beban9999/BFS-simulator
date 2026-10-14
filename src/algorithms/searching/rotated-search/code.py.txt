@@ -1,0 +1,17 @@
+def search(nums, target):
+    lo, hi = 0, len(nums) - 1                       # @mark init
+    while lo <= hi:                                 # @mark loop
+        mid = (lo + hi) // 2                        # @mark mid
+        if nums[mid] == target:
+            return mid                              # @mark found
+        if nums[lo] <= nums[mid]:                   # left half [lo..mid] is sorted   # @mark left-sorted
+            if nums[lo] <= target < nums[mid]:
+                hi = mid - 1                        # target inside the sorted left half   # @mark go-left
+            else:
+                lo = mid + 1                        # @mark go-right
+        else:                                       # right half [mid..hi] is sorted   # @mark right-sorted
+            if nums[mid] < target <= nums[hi]:
+                lo = mid + 1                        # target inside the sorted right half   # @mark go-right2
+            else:
+                hi = mid - 1                        # @mark go-left2
+    return -1                                       # @mark none

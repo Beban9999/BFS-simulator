@@ -1,0 +1,14 @@
+function longestConsecutive(nums) {
+  const numSet = new Set(nums);             // @mark init
+  let best = 0;
+  for (const x of numSet) {                 // @mark loop
+    if (!numSet.has(x - 1)) {               // @mark is-start
+      let length = 1;                       // x starts a run   // @mark start
+      while (numSet.has(x + length)) {      // @mark extend
+        length++;
+      }
+      best = Math.max(best, length);        // @mark update
+    }
+  }
+  return best;                              // @mark done
+}

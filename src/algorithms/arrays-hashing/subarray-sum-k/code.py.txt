@@ -1,0 +1,8 @@
+def subarray_sum(nums, k):
+    count = {0: 1}           # prefix total -> times seen   # @mark init
+    total = answer = 0
+    for x in nums:                                  # @mark loop
+        total += x                                  # @mark add
+        answer += count.get(total - k, 0)           # @mark lookup
+        count[total] = count.get(total, 0) + 1      # @mark store
+    return answer                                   # @mark done

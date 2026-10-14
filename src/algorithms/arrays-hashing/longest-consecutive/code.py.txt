@@ -1,0 +1,10 @@
+def longest_consecutive(nums):
+    num_set = set(nums)                     # @mark init
+    best = 0
+    for x in num_set:                       # @mark loop
+        if x - 1 not in num_set:            # @mark is-start
+            length = 1                      # x starts a run   # @mark start
+            while x + length in num_set:    # @mark extend
+                length += 1
+            best = max(best, length)        # @mark update
+    return best                             # @mark done

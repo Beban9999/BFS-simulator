@@ -1,0 +1,20 @@
+def three_sum(nums):
+    nums.sort()                                         # @mark sort
+    result = []
+    for i in range(len(nums) - 2):                      # @mark fix
+        if i > 0 and nums[i] == nums[i - 1]:            # @mark skip-i
+            continue
+        left, right = i + 1, len(nums) - 1              # @mark init-pointers
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]  # @mark sum
+            if total < 0:
+                left += 1                               # @mark move-left
+            elif total > 0:
+                right -= 1                              # @mark move-right
+            else:
+                result.append([nums[i], nums[left], nums[right]])  # @mark found
+                left += 1
+                while left < right and nums[left] == nums[left - 1]:
+                    left += 1                           # skip duplicate pairs   # @mark skip-dup
+                right -= 1
+    return result                                       # @mark done

@@ -1,0 +1,15 @@
+function characterReplacement(s, k) {
+  const count = new Map();                              // @mark init
+  let left = 0, maxFreq = 0, best = 0;
+  for (let right = 0; right < s.length; right++) {      // @mark loop
+    const ch = s[right];
+    count.set(ch, (count.get(ch) ?? 0) + 1);            // @mark expand
+    maxFreq = Math.max(maxFreq, count.get(ch));
+    if (right - left + 1 - maxFreq > k) {               // too many letters to change   // @mark check
+      count.set(s[left], count.get(s[left]) - 1);       // @mark shrink
+      left++;
+    }
+    best = Math.max(best, right - left + 1);            // @mark update
+  }
+  return best;                                          // @mark done
+}

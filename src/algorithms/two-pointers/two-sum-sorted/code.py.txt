@@ -1,0 +1,11 @@
+def two_sum_sorted(numbers, target):
+    left, right = 0, len(numbers) - 1               # @mark init
+    while left < right:                             # @mark loop
+        total = numbers[left] + numbers[right]      # @mark sum
+        if total == target:                         # @mark check
+            return [left, right]                    # @mark found
+        if total < target:
+            left += 1                               # need a bigger sum   # @mark move-left
+        else:
+            right -= 1                              # need a smaller sum   # @mark move-right
+    return []                                       # @mark none

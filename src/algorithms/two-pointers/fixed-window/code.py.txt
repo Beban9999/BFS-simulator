@@ -1,0 +1,7 @@
+def max_window_sum(nums, k):
+    window = sum(nums[:k])                      # first window   # @mark init
+    best = window
+    for right in range(k, len(nums)):           # @mark loop
+        window += nums[right] - nums[right - k] # one in, one out   # @mark slide
+        best = max(best, window)                # @mark update
+    return best                                 # @mark done

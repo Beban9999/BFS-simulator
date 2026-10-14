@@ -1,0 +1,11 @@
+def bubble_sort(nums):
+    n = len(nums)
+    for end in range(n - 1, 0, -1):             # nums[end+1:] is already sorted   # @mark pass
+        swapped = False
+        for i in range(end):                    # @mark inner
+            if nums[i] > nums[i + 1]:           # @mark compare
+                nums[i], nums[i + 1] = nums[i + 1], nums[i]   # @mark swap
+                swapped = True
+        if not swapped:                         # no swaps: already sorted   # @mark early-exit
+            break
+    return nums                                 # @mark done

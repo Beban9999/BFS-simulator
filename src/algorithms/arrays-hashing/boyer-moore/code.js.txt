@@ -1,0 +1,15 @@
+function majorityElement(nums) {
+  let candidate = null, count = 0;          // @mark init
+  for (const x of nums) {                   // @mark loop
+    if (count === 0) {                      // @mark check-zero
+      candidate = x;                        // @mark pick
+    }
+    count += x === candidate ? 1 : -1;      // @mark vote
+  }
+  // second pass: only needed when a majority is not guaranteed
+  const freq = nums.filter((x) => x === candidate).length;
+  if (freq > Math.floor(nums.length / 2)) { // @mark verify
+    return candidate;                       // @mark done
+  }
+  return null;                              // @mark none
+}

@@ -1,0 +1,16 @@
+from collections import Counter
+
+def find_anagrams(s, p):
+    k, result = len(p), []
+    need = Counter(p)                           # @mark init
+    window = Counter()
+    for right, ch in enumerate(s):              # @mark loop
+        window[ch] += 1                         # @mark add
+        if right >= k:                          # window too big: drop the left char
+            out = s[right - k]
+            window[out] -= 1                    # @mark remove
+            if window[out] == 0:
+                del window[out]
+        if window == need:                      # @mark compare
+            result.append(right - k + 1)        # @mark found
+    return result                               # @mark done

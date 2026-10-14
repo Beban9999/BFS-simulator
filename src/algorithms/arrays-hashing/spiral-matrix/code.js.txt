@@ -1,0 +1,28 @@
+function spiralOrder(matrix) {
+  const out = [];
+  let top = 0, bottom = matrix.length - 1;              // @mark init
+  let left = 0, right = matrix[0].length - 1;
+  while (top <= bottom && left <= right) {              // @mark loop
+    for (let c = left; c <= right; c++) {               // @mark right
+      out.push(matrix[top][c]);
+    }
+    top++;
+    for (let r = top; r <= bottom; r++) {               // @mark down
+      out.push(matrix[r][right]);
+    }
+    right--;
+    if (top <= bottom) {                                // @mark check-row
+      for (let c = right; c >= left; c--) {             // @mark left
+        out.push(matrix[bottom][c]);
+      }
+      bottom--;
+    }
+    if (left <= right) {                                // @mark check-col
+      for (let r = bottom; r >= top; r--) {             // @mark up
+        out.push(matrix[r][left]);
+      }
+      left++;
+    }
+  }
+  return out;                                           // @mark done
+}

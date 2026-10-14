@@ -1,0 +1,17 @@
+function searchMatrix(matrix, target) {
+  const R = matrix.length, C = matrix[0].length;
+  let lo = 0, hi = R * C - 1;                   // virtual sorted array of R*C cells   // @mark init
+  while (lo <= hi) {                            // @mark loop
+    const mid = (lo + hi) >> 1;
+    const r = Math.floor(mid / C), c = mid % C; // index -> (row, col)   // @mark map
+    if (matrix[r][c] === target) {              // @mark compare
+      return true;                              // @mark found
+    }
+    if (matrix[r][c] < target) {
+      lo = mid + 1;                             // @mark go-right
+    } else {
+      hi = mid - 1;                             // @mark go-left
+    }
+  }
+  return false;                                 // @mark none
+}

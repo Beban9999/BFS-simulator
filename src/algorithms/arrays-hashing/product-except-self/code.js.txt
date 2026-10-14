@@ -1,0 +1,15 @@
+function productExceptSelf(nums) {
+  const n = nums.length;
+  const answer = new Array(n).fill(1);      // @mark init
+  let left = 1;
+  for (let i = 0; i < n; i++) {             // @mark left-loop
+    answer[i] = left;                       // product of everything left of i   // @mark left-store
+    left *= nums[i];                        // @mark left-mul
+  }
+  let right = 1;
+  for (let i = n - 1; i >= 0; i--) {        // @mark right-loop
+    answer[i] *= right;                     // times everything right of i   // @mark right-store
+    right *= nums[i];                       // @mark right-mul
+  }
+  return answer;                            // @mark done
+}

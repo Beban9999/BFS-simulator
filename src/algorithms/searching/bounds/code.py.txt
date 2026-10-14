@@ -1,0 +1,25 @@
+def lower_bound(nums, target):          # first i with nums[i] >= target
+    lo, hi = 0, len(nums)                       # half-open [lo, hi)   # @mark lb-init
+    while lo < hi:                              # @mark lb-loop
+        mid = (lo + hi) // 2                    # @mark lb-mid
+        if nums[mid] < target:
+            lo = mid + 1                        # @mark lb-right
+        else:
+            hi = mid                            # mid might be the answer   # @mark lb-left
+    return lo                                   # @mark lb-done
+
+def upper_bound(nums, target):          # first i with nums[i] > target
+    lo, hi = 0, len(nums)                       # @mark ub-init
+    while lo < hi:                              # @mark ub-loop
+        mid = (lo + hi) // 2                    # @mark ub-mid
+        if nums[mid] <= target:
+            lo = mid + 1                        # @mark ub-right
+        else:
+            hi = mid                            # @mark ub-left
+    return lo                                   # @mark ub-done
+
+def search_range(nums, target):
+    first = lower_bound(nums, target)           # @mark first
+    if first == len(nums) or nums[first] != target:
+        return [-1, -1]                         # @mark absent
+    return [first, upper_bound(nums, target) - 1]   # @mark last

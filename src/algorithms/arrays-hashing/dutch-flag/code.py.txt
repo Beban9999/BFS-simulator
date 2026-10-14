@@ -1,0 +1,13 @@
+def sort_colors(nums):
+    low, mid, high = 0, 0, len(nums) - 1        # @mark init
+    while mid <= high:                          # @mark loop
+        if nums[mid] == 0:                      # @mark check
+            nums[low], nums[mid] = nums[mid], nums[low]   # @mark swap-low
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1                            # @mark skip
+        else:
+            nums[mid], nums[high] = nums[high], nums[mid]  # @mark swap-high
+            high -= 1                           # don't advance mid: the new value is unseen
+    return nums                                 # @mark done

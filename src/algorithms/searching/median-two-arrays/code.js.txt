@@ -1,0 +1,23 @@
+function findMedianSortedArrays(A, B) {
+  if (A.length > B.length) [A, B] = [B, A];         // search the shorter array   // @mark swap
+  const m = A.length, n = B.length;
+  const half = (m + n + 1) >> 1;                    // size of the combined left part
+  let lo = 0, hi = m;                               // @mark init
+  while (lo <= hi) {                                // @mark loop
+    const i = (lo + hi) >> 1;                       // take i elements from A ...   // @mark cut
+    const j = half - i;                             // ... and the rest from B
+    const aLeft = i > 0 ? A[i - 1] : -Infinity;
+    const aRight = i < m ? A[i] : Infinity;
+    const bLeft = j > 0 ? B[j - 1] : -Infinity;
+    const bRight = j < n ? B[j] : Infinity;
+    if (aLeft <= bRight && bLeft <= aRight) {       // valid partition   // @mark check
+      if ((m + n) % 2) return Math.max(aLeft, bLeft);   // @mark odd
+      return (Math.max(aLeft, bLeft) + Math.min(aRight, bRight)) / 2;   // @mark even
+    }
+    if (aLeft > bRight) {
+      hi = i - 1;                                   // took too many from A   // @mark go-left
+    } else {
+      lo = i + 1;                                   // took too few from A   // @mark go-right
+    }
+  }
+}

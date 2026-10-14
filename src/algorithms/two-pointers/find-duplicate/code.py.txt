@@ -1,0 +1,14 @@
+def find_duplicate(nums):
+    # phase 1: slow moves 1 step, fast moves 2, until they meet in the cycle
+    slow = fast = nums[0]                               # @mark init
+    while True:
+        slow = nums[slow]                               # @mark slow-step
+        fast = nums[nums[fast]]                         # @mark fast-step
+        if slow == fast:                                # @mark meet
+            break
+    # phase 2: restart one pointer; moving both 1 step, they meet at the entrance
+    slow = nums[0]                                      # @mark reset
+    while slow != fast:                                 # @mark phase2
+        slow = nums[slow]
+        fast = nums[fast]                               # @mark step-both
+    return slow                                         # @mark done

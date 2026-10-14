@@ -1,0 +1,10 @@
+def length_of_longest_substring(s):
+    window = set()                              # @mark init
+    left = best = 0
+    for right, ch in enumerate(s):              # @mark loop
+        while ch in window:                     # repeat: shrink from the left   # @mark check
+            window.remove(s[left])              # @mark shrink
+            left += 1
+        window.add(ch)                          # @mark expand
+        best = max(best, right - left + 1)      # @mark update
+    return best                                 # @mark done

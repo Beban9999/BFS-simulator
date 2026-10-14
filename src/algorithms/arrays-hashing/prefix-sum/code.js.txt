@@ -1,0 +1,11 @@
+function rangeSums(nums, queries) {
+  const prefix = new Array(nums.length + 1).fill(0);  // @mark init
+  for (let i = 0; i < nums.length; i++) {             // @mark build-loop
+    prefix[i + 1] = prefix[i] + nums[i];              // @mark build
+  }
+  const answers = [];
+  for (const [l, r] of queries) {                     // @mark query-loop
+    answers.push(prefix[r + 1] - prefix[l]);          // @mark query
+  }
+  return answers;                                     // @mark done
+}

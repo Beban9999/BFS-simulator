@@ -1,0 +1,33 @@
+function dfs(grid, start, end) {
+  const rows = grid.length, cols = grid[0].length;
+  const key = ([r, c]) => r * cols + c;
+  const stack = [start];                                    // @mark init
+  const prev = new Map([[key(start), null]]);
+  const done = new Set();
+  while (stack.length) {                                    // @mark loop
+    const [r, c] = stack.pop();                             // @mark pop
+    if (done.has(key([r, c]))) continue;                    // @mark skip
+    done.add(key([r, c]));                                  // @mark visit
+    if (r === end[0] && c === end[1]) {                     // @mark check-end
+      return buildPath(prev, end, key);                     // @mark found
+    }
+    // push in reverse so "up" ends on top and is explored first
+    for (const [dr, dc] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) {
+      const nr = r + dr, nc = c + dc;
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols &&
+          grid[nr][nc] !== '#' && !done.has(key([nr, nc]))) {
+        prev.set(key([nr, nc]), [r, c]);                    // @mark discover
+        stack.push([nr, nc]);                               // @mark push
+      }
+    }
+  }
+  return null;                                              // @mark no-path
+}
+
+function buildPath(prev, end, key) {
+  const path = [];
+  for (let cell = end; cell; cell = prev.get(key(cell))) {  // @mark trace
+    path.push(cell);
+  }
+  return path.reverse();
+}

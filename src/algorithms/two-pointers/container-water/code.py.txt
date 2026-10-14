@@ -1,0 +1,11 @@
+def max_area(height):
+    left, right = 0, len(height) - 1                    # @mark init
+    best = 0
+    while left < right:                                 # @mark loop
+        area = (right - left) * min(height[left], height[right])  # @mark area
+        best = max(best, area)                          # @mark update
+        if height[left] < height[right]:                # @mark compare
+            left += 1                                   # shorter wall limits the area   # @mark move-left
+        else:
+            right -= 1                                  # @mark move-right
+    return best                                         # @mark done

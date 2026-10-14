@@ -1,0 +1,8 @@
+def two_sum(nums, target):
+    seen = {}                               # value -> index   # @mark init
+    for i, x in enumerate(nums):            # @mark loop
+        need = target - x                   # @mark need
+        if need in seen:                    # @mark lookup
+            return [seen[need], i]          # @mark found
+        seen[x] = i                         # @mark store
+    return []                               # @mark none

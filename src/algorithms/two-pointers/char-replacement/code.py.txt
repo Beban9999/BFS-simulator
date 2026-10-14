@@ -1,0 +1,11 @@
+def character_replacement(s, k):
+    count = {}                                          # @mark init
+    left = max_freq = best = 0
+    for right, ch in enumerate(s):                      # @mark loop
+        count[ch] = count.get(ch, 0) + 1                # @mark expand
+        max_freq = max(max_freq, count[ch])
+        if (right - left + 1) - max_freq > k:           # too many letters to change   # @mark check
+            count[s[left]] -= 1                         # @mark shrink
+            left += 1
+        best = max(best, right - left + 1)              # @mark update
+    return best                                         # @mark done

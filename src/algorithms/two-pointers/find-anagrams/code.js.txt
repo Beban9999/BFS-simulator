@@ -1,0 +1,17 @@
+function findAnagrams(s, p) {
+  const k = p.length, result = [];
+  const need = new Array(26).fill(0);           // @mark init
+  const window = new Array(26).fill(0);
+  const idx = (ch) => ch.charCodeAt(0) - 97;
+  for (const ch of p) need[idx(ch)]++;
+  for (let right = 0; right < s.length; right++) {  // @mark loop
+    window[idx(s[right])]++;                    // @mark add
+    if (right >= k) {                           // window too big: drop the left char
+      window[idx(s[right - k])]--;              // @mark remove
+    }
+    if (window.every((c, i) => c === need[i])) {  // @mark compare
+      result.push(right - k + 1);               // @mark found
+    }
+  }
+  return result;                                // @mark done
+}

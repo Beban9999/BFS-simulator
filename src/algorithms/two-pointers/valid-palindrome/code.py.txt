@@ -1,0 +1,12 @@
+def is_palindrome(s):
+    left, right = 0, len(s) - 1                         # @mark init
+    while left < right:                                 # @mark loop
+        if not s[left].isalnum():                       # @mark skip-left
+            left += 1
+        elif not s[right].isalnum():                    # @mark skip-right
+            right -= 1
+        elif s[left].lower() != s[right].lower():       # @mark compare
+            return False                                # @mark fail
+        else:
+            left, right = left + 1, right - 1           # @mark match
+    return True                                         # @mark done

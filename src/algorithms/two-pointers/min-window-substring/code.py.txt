@@ -1,0 +1,21 @@
+from collections import Counter
+
+def min_window(s, t):
+    need = Counter(t)                                   # @mark init
+    have = Counter()
+    formed, required = 0, len(need)     # letters whose count is fully met
+    best = (float('inf'), 0, 0)
+    left = 0
+    for right, ch in enumerate(s):                      # @mark loop
+        have[ch] += 1                                   # @mark expand
+        if ch in need and have[ch] == need[ch]:
+            formed += 1                                 # @mark formed
+        while formed == required:                       # window covers t   # @mark covered
+            if right - left + 1 < best[0]:
+                best = (right - left + 1, left, right)  # @mark update
+            out = s[left]
+            have[out] -= 1                              # @mark shrink
+            if out in need and have[out] < need[out]:
+                formed -= 1                             # @mark lost
+            left += 1
+    return "" if best[0] == float('inf') else s[best[1]:best[2] + 1]   # @mark done

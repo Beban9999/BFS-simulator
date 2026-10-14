@@ -1,0 +1,15 @@
+function minEatingSpeed(piles, h) {
+  const hours = (k) =>                          // time needed at speed k
+    piles.reduce((sum, p) => sum + Math.ceil(p / k), 0);   // @mark hours
+
+  let lo = 1, hi = Math.max(...piles);          // answer is somewhere in [lo, hi]   // @mark init
+  while (lo < hi) {                             // @mark loop
+    const mid = (lo + hi) >> 1;                 // @mark mid
+    if (hours(mid) <= h) {                      // feasible: try slower   // @mark check
+      hi = mid;                                 // @mark go-left
+    } else {
+      lo = mid + 1;                             // too slow: must eat faster   // @mark go-right
+    }
+  }
+  return lo;                                    // @mark done
+}

@@ -1,0 +1,13 @@
+def trap(height):
+    left, right = 0, len(height) - 1                    # @mark init
+    left_max = right_max = water = 0
+    while left < right:                                 # @mark loop
+        if height[left] < height[right]:                # @mark compare
+            left_max = max(left_max, height[left])      # @mark left-max
+            water += left_max - height[left]            # @mark left-water
+            left += 1
+        else:
+            right_max = max(right_max, height[right])   # @mark right-max
+            water += right_max - height[right]          # @mark right-water
+            right -= 1
+    return water                                        # @mark done

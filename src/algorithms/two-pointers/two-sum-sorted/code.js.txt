@@ -1,0 +1,15 @@
+function twoSumSorted(numbers, target) {
+  let left = 0, right = numbers.length - 1;         // @mark init
+  while (left < right) {                            // @mark loop
+    const total = numbers[left] + numbers[right];   // @mark sum
+    if (total === target) {                         // @mark check
+      return [left, right];                         // @mark found
+    }
+    if (total < target) {
+      left++;                                       // need a bigger sum   // @mark move-left
+    } else {
+      right--;                                      // need a smaller sum   // @mark move-right
+    }
+  }
+  return [];                                        // @mark none
+}

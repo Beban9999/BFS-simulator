@@ -1,0 +1,24 @@
+function threeSum(nums) {
+  nums.sort((a, b) => a - b);                           // @mark sort
+  const result = [];
+  for (let i = 0; i < nums.length - 2; i++) {           // @mark fix
+    if (i > 0 && nums[i] === nums[i - 1]) continue;     // @mark skip-i
+    let left = i + 1, right = nums.length - 1;          // @mark init-pointers
+    while (left < right) {
+      const total = nums[i] + nums[left] + nums[right]; // @mark sum
+      if (total < 0) {
+        left++;                                         // @mark move-left
+      } else if (total > 0) {
+        right--;                                        // @mark move-right
+      } else {
+        result.push([nums[i], nums[left], nums[right]]);  // @mark found
+        left++;
+        while (left < right && nums[left] === nums[left - 1]) {
+          left++;                                       // skip duplicate pairs   // @mark skip-dup
+        }
+        right--;
+      }
+    }
+  }
+  return result;                                        // @mark done
+}

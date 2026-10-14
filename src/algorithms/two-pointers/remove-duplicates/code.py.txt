@@ -1,0 +1,9 @@
+def remove_duplicates(nums):
+    if not nums:
+        return 0
+    write = 1                                   # nums[:write] is the deduplicated prefix   # @mark init
+    for read in range(1, len(nums)):            # @mark loop
+        if nums[read] != nums[write - 1]:       # @mark compare
+            nums[write] = nums[read]            # @mark keep
+            write += 1
+    return write                                # @mark done

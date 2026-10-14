@@ -1,0 +1,14 @@
+function maxArea(height) {
+  let left = 0, right = height.length - 1;              // @mark init
+  let best = 0;
+  while (left < right) {                                // @mark loop
+    const area = (right - left) * Math.min(height[left], height[right]);  // @mark area
+    best = Math.max(best, area);                        // @mark update
+    if (height[left] < height[right]) {                 // @mark compare
+      left++;                                           // shorter wall limits the area   // @mark move-left
+    } else {
+      right--;                                          // @mark move-right
+    }
+  }
+  return best;                                          // @mark done
+}

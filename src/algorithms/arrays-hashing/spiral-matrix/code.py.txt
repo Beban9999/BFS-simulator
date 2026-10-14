@@ -1,0 +1,20 @@
+def spiral_order(matrix):
+    out = []
+    top, bottom = 0, len(matrix) - 1                    # @mark init
+    left, right = 0, len(matrix[0]) - 1
+    while top <= bottom and left <= right:              # @mark loop
+        for c in range(left, right + 1):                # @mark right
+            out.append(matrix[top][c])
+        top += 1
+        for r in range(top, bottom + 1):                # @mark down
+            out.append(matrix[r][right])
+        right -= 1
+        if top <= bottom:                               # @mark check-row
+            for c in range(right, left - 1, -1):        # @mark left
+                out.append(matrix[bottom][c])
+            bottom -= 1
+        if left <= right:                               # @mark check-col
+            for r in range(bottom, top - 1, -1):        # @mark up
+                out.append(matrix[r][left])
+            left += 1
+    return out                                          # @mark done

@@ -1,0 +1,24 @@
+from collections import deque
+
+def bfs(grid, start, end):
+    rows, cols = len(grid), len(grid[0])
+    queue = deque([start])                                  # @mark init
+    prev = {start: None}
+    while queue:                                            # @mark loop
+        r, c = queue.popleft()                              # @mark pop
+        if (r, c) == end:                                   # @mark check-end
+            return build_path(prev, end)                    # @mark found
+        for dr, dc in ((-1, 0), (0, 1), (1, 0), (0, -1)):
+            nr, nc = r + dr, c + dc
+            if (0 <= nr < rows and 0 <= nc < cols
+                    and grid[nr][nc] != '#' and (nr, nc) not in prev):
+                prev[(nr, nc)] = (r, c)                     # @mark discover
+                queue.append((nr, nc))                      # @mark push
+    return None                                             # @mark no-path
+
+def build_path(prev, end):
+    path, cell = [], end
+    while cell is not None:                                 # @mark trace
+        path.append(cell)
+        cell = prev[cell]
+    return path[::-1]

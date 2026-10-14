@@ -1,0 +1,8 @@
+def range_sums(nums, queries):
+    prefix = [0] * (len(nums) + 1)                  # @mark init
+    for i, x in enumerate(nums):                    # @mark build-loop
+        prefix[i + 1] = prefix[i] + x               # @mark build
+    answers = []
+    for l, r in queries:                            # @mark query-loop
+        answers.append(prefix[r + 1] - prefix[l])   # @mark query
+    return answers                                  # @mark done

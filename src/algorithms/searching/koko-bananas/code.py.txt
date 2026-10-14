@@ -1,0 +1,12 @@
+def min_eating_speed(piles, h):
+    def hours(k):                               # time needed at speed k
+        return sum((p + k - 1) // k for p in piles)   # @mark hours
+
+    lo, hi = 1, max(piles)                      # answer is somewhere in [lo, hi]   # @mark init
+    while lo < hi:                              # @mark loop
+        mid = (lo + hi) // 2                    # @mark mid
+        if hours(mid) <= h:                     # feasible: try slower   # @mark check
+            hi = mid                            # @mark go-left
+        else:
+            lo = mid + 1                        # too slow: must eat faster   # @mark go-right
+    return lo                                   # @mark done

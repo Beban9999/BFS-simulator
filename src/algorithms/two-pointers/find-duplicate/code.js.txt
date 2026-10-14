@@ -1,0 +1,16 @@
+function findDuplicate(nums) {
+  // phase 1: slow moves 1 step, fast moves 2, until they meet in the cycle
+  let slow = nums[0], fast = nums[0];                   // @mark init
+  while (true) {
+    slow = nums[slow];                                  // @mark slow-step
+    fast = nums[nums[fast]];                            // @mark fast-step
+    if (slow === fast) break;                           // @mark meet
+  }
+  // phase 2: restart one pointer; moving both 1 step, they meet at the entrance
+  slow = nums[0];                                       // @mark reset
+  while (slow !== fast) {                               // @mark phase2
+    slow = nums[slow];
+    fast = nums[fast];                                  // @mark step-both
+  }
+  return slow;                                          // @mark done
+}
