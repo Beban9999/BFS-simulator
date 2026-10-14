@@ -1,31 +1,37 @@
 # BFS / DFS Simulator
 
-This project is a BFS/DFS Simulator that visualizes the Breadth-First Search (BFS) and Depth-First Search (DFS) algorithms on a grid. The user can set the start and end points, place obstacles, and switch between BFS and DFS algorithms to see how each algorithm explores the grid to find the shortest path.
+An interactive visualizer for Breadth-First Search (BFS) and Depth-First Search (DFS) on a 20×20 grid. Set a start and end cell, draw walls, and watch how each algorithm explores the grid and the path it finds.
 
-## Key Components
+**Live demo:** https://sweet-sopapillas-d5fe17.netlify.app/
 
-### HTML (index.html)
-- Defines the structure of the web page.
-- Includes input fields for setting start and end points.
-- Contains buttons to start the algorithm, reset the grid, and toggle between BFS and DFS.
-- Displays the grid where the maze is visualized.
+## Features
 
-### JavaScript (script.js)
-- Implements the logic for BFS and DFS algorithms.
-- Handles user interactions such as setting start/end points, placing obstacles, and starting the algorithm.
-- Updates the grid visualization based on the algorithm's progress.
-- Provides functions to reset the grid and toggle between BFS and DFS.
+- **Draw walls** by clicking or dragging across cells (tap on touch screens).
+- **Start and end** cells set by row and column, with validation for out-of-range values.
+- **BFS or DFS.** BFS always finds the shortest path; DFS finds *a* path, usually a long one.
+- **Adjustable speed** for the exploration and path animations.
+- **Result summary** showing the path length and number of explored cells, or a message when the end can't be reached.
+- **Clear path** keeps your walls; **Reset grid** clears everything.
+- **Dark mode by default**, with a light mode toggle that is remembered between visits.
 
-### CSS (styles.css)
-- Styles the grid cells, control panel, and other elements on the page.
-- Defines the appearance of different cell types (start, end, obstacle, visited, path).
+## Project structure
 
-## Functionality
-- **Grid Setup**: The grid is dynamically generated with 20x20 cells.
-- **User Controls**: Users can set start and end points, place obstacles, and choose between BFS and DFS.
-- **Algorithm Visualization**: The chosen algorithm (BFS or DFS) is visualized on the grid, showing the pathfinding process.
-- **Reset and Toggle**: Users can reset the grid and toggle between BFS and DFS algorithms.
+| File | Purpose |
+| --- | --- |
+| `index.html` | Page layout and controls. |
+| `styles.css` | Styles and theme colors (CSS variables for dark and light themes). |
+| `script.js` | Grid, controls, animation and the search algorithms. |
+| `netlify.toml` | Netlify config: publishes the repository root as a static site. |
 
-## Link for demo: https://sweet-sopapillas-d5fe17.netlify.app/
+## Adding an algorithm
 
+Algorithms live in the `ALGORITHMS` registry in `script.js`. Each entry has a label, a name, a short description and a `search(isOpen, start, end)` function that returns `{ order, path }`:
 
+- `order`: the cells in the order they were explored.
+- `path`: the cells from start to end, or `null` if there is none.
+
+The algorithm picker is built from this registry, so a new entry shows up in the UI automatically.
+
+## Running locally
+
+No build step is needed. Open `index.html` in a browser, or serve the folder with any static server.

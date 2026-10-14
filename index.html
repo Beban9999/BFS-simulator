@@ -1,28 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Interactive breadth-first and depth-first search visualizer on a 20×20 grid.">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="theme-color" content="#0e1116">
     <title>BFS / DFS Simulator</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161a22'/%3E%3Crect x='6' y='6' width='8' height='8' rx='2' fill='%2322c55e'/%3E%3Crect x='18' y='6' width='8' height='8' rx='2' fill='%233b82f6'/%3E%3Crect x='18' y='18' width='8' height='8' rx='2' fill='%23ef4444'/%3E%3Crect x='6' y='18' width='8' height='8' rx='2' fill='%23475569'/%3E%3C/svg%3E">
+    <script>
+        // Apply the saved theme before the page paints to avoid a flash of the wrong colors.
+        try {
+            if (localStorage.getItem("theme") === "light") {
+                document.documentElement.dataset.theme = "light";
+            }
+        } catch (e) { /* storage unavailable: keep the dark default */ }
+    </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <header class="header">
         <div class="header-inner">
-            <h1>BFS / DFS Simulator</h1>
-            <p class="subtitle">Visualize how breadth-first and depth-first search explore a grid.</p>
+            <div>
+                <h1>BFS / DFS Simulator</h1>
+                <p class="subtitle">Visualize how breadth-first and depth-first search explore a grid.</p>
+            </div>
+            <button id="themeToggle" class="icon-btn" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
         </div>
     </header>
 
     <main class="layout">
-        <section class="panel board">
-            <div id="maze">
-                <!-- Maze grid will be generated here -->
-            </div>
-            <p class="hint">Click cells to add or remove walls. Coordinates are 0–19 (row, column).</p>
+        <section class="panel board" aria-label="Grid">
+            <div id="maze" aria-label="Search grid"></div>
+            <p id="hint" class="hint">Click or drag on cells to draw walls.</p>
         </section>
 
         <aside class="sidebar">
@@ -30,51 +49,60 @@
                 <h2>Controls</h2>
 
                 <div class="field-group">
-                    <span class="field-label"><span class="dot dot-start"></span>Start</span>
+                    <span class="field-label"><span class="swatch swatch-start" aria-hidden="true"></span>Start</span>
                     <div class="coords">
                         <label>Row
-                            <input onchange="paintEverything()" type="number" id="startI" min="0" max="19" value="0">
+                            <input type="number" id="startI" inputmode="numeric" min="0" max="19" step="1" value="0">
                         </label>
                         <label>Col
-                            <input onchange="paintEverything()" type="number" id="startJ" min="0" max="19" value="0">
+                            <input type="number" id="startJ" inputmode="numeric" min="0" max="19" step="1" value="0">
                         </label>
                     </div>
                 </div>
 
                 <div class="field-group">
-                    <span class="field-label"><span class="dot dot-end"></span>End</span>
+                    <span class="field-label"><span class="swatch swatch-end" aria-hidden="true"></span>End</span>
                     <div class="coords">
                         <label>Row
-                            <input onchange="paintEverything()" type="number" id="endI" min="0" max="19" value="15">
+                            <input type="number" id="endI" inputmode="numeric" min="0" max="19" step="1" value="15">
                         </label>
                         <label>Col
-                            <input onchange="paintEverything()" type="number" id="endJ" min="0" max="19" value="15">
+                            <input type="number" id="endJ" inputmode="numeric" min="0" max="19" step="1" value="15">
                         </label>
                     </div>
                 </div>
 
-                <div class="algo-row">
-                    <span class="field-label">Algorithm</span>
-                    <span id="algoName" class="badge">BFS</span>
+                <div class="field-group algo-group">
+                    <span id="algoLabel" class="field-label">Algorithm</span>
+                    <div id="algoPicker" class="segmented" role="radiogroup" aria-labelledby="algoLabel"></div>
+                    <p id="algoDescription" class="algo-description"></p>
                 </div>
 
+                <div class="field-group">
+                    <div class="speed-row">
+                        <label class="field-label" for="speed">Speed</label>
+                        <output id="speedLabel" for="speed">Normal</output>
+                    </div>
+                    <input type="range" id="speed" min="1" max="5" step="1" value="3">
+                </div>
+
+                <button id="start" class="btn btn-primary btn-block" type="button">Begin</button>
                 <div class="actions">
-                    <button id="start" class="btn btn-primary" onclick="startAlgo()">Begin</button>
-                    <button id="reset" class="btn btn-secondary" onclick="reset()">Reset</button>
+                    <button id="clearPath" class="btn btn-secondary" type="button">Clear path</button>
+                    <button id="reset" class="btn btn-secondary" type="button">Reset grid</button>
                 </div>
-                <button id="toggleAlgo" class="btn btn-ghost btn-block" onclick="toggleAlgorithm()">Switch to DFS</button>
 
-                <div id="alert" role="alert"></div>
+                <p id="status" class="status" role="status" aria-live="polite"></p>
             </section>
 
             <section id="info" class="panel">
                 <h2>Legend</h2>
                 <ul class="legend">
-                    <li><span class="swatch" style="background: var(--start);"></span>Start</li>
-                    <li><span class="swatch" style="background: var(--end);"></span>End</li>
-                    <li><span class="swatch" style="background: var(--obstacle);"></span>Wall</li>
-                    <li><span class="swatch" style="background: var(--visited);"></span>Visited</li>
-                    <li><span class="swatch" style="background: var(--path);"></span>Path</li>
+                    <li><span class="swatch swatch-start"></span>Start</li>
+                    <li><span class="swatch swatch-end"></span>End</li>
+                    <li><span class="swatch swatch-wall"></span>Wall</li>
+                    <li><span class="swatch swatch-visited"></span>Visited</li>
+                    <li><span class="swatch swatch-path"></span>Path</li>
                 </ul>
             </section>
         </aside>
