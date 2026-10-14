@@ -1,35 +1,320 @@
-.cell {
-    background: rgb(65, 64, 64);
-    width: 30px;
-    height: 30px;
-    margin-left: 5px;
-    float: left;
-    margin-top: 5px;
-    border-radius: 20%;
+:root {
+    /* Page */
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --border: #e3e6eb;
+    --text: #1f2933;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --danger: #b91c1c;
+
+    /* Cells (also used by script.js) */
+    --cell: #e7eaef;
+    --start: #16a34a;
+    --end: #dc2626;
+    --obstacle: #334155;
+    --visited: #fcd34d;
+    --path: #3b82f6;
+
+    --radius: 10px;
+    --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
 }
-.cell-info {
-    background: rgb(65, 64, 64);
-    width: 30px;
-    height: 30px;
-    border-radius: 20%;
-    margin-left: auto;
-    margin-right: auto;
+
+* {
+    box-sizing: border-box;
 }
-.bg-cell{
-    background: rgb(65, 64, 64);
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
-.bg-body{
-    background: #7F7D7D;
+
+/* Header */
+.header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
 }
-#maze {
-    width: 700px;
+
+.header-inner {
+    max-width: 1120px;
     margin: 0 auto;
+    padding: 20px 16px;
 }
-.obs {
-    background: pink;
-    border-radius: 20%;
-    transition: 0.3s;
-}
+
 h1 {
-    margin-bottom: 20px;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+.subtitle {
+    margin: 2px 0 0;
+    color: var(--muted);
+}
+
+h2 {
+    margin: 0 0 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+/* Layout */
+.layout {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+    align-items: start;
+}
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Grid */
+#maze {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 4px;
+    width: 100%;
+    max-width: max(320px, min(680px, calc(100vh - 230px)));
+    margin: 0 auto;
+    user-select: none;
+}
+
+.cell {
+    aspect-ratio: 1;
+    background: var(--cell);
+    border-radius: 22%;
+    cursor: pointer;
+}
+
+.cell:hover {
+    outline: 2px solid var(--border);
+    outline-offset: 1px;
+}
+
+.obs {
+    background: var(--obstacle);
+    transition: background 0.2s;
+}
+
+.hint {
+    margin: 16px 0 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.875rem;
+}
+
+/* Controls */
+.field-group {
+    margin-bottom: 16px;
+}
+
+.field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dot-start {
+    background: var(--start);
+}
+
+.dot-end {
+    background: var(--end);
+}
+
+.coords {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.coords label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.algo-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    margin-bottom: 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.algo-row .field-label {
+    margin: 0;
+}
+
+.badge {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #eff4ff;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Buttons */
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    padding: 9px 14px;
+    font: inherit;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--bg);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--accent);
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: #eff4ff;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+#alert {
+    color: var(--danger);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+#alert:not(:empty) {
+    margin-top: 12px;
+}
+
+/* Legend */
+.legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 22%;
+    flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .panel {
+        padding: 14px;
+    }
+
+    #maze {
+        gap: 2px;
+    }
 }

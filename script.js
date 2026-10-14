@@ -5,6 +5,7 @@ let useBFS = true;
 function toggleAlgorithm() {
     useBFS = !useBFS;
     document.getElementById("toggleAlgo").innerText = useBFS ? "Switch to DFS" : "Switch to BFS";
+    document.getElementById("algoName").innerText = useBFS ? "BFS" : "DFS";
 }
 
 function paintEverything() {
@@ -21,8 +22,8 @@ function paintEverything() {
     var beg = begI + " " + begJ;
     var end = endI + " " + endJ;
 
-    document.getElementById(beg).style.background = "green";
-    document.getElementById(end).style.background = "red";
+    document.getElementById(beg).style.background = "var(--start)";
+    document.getElementById(end).style.background = "var(--end)";
 }
 
 function reset() {
@@ -40,7 +41,7 @@ function resetColor() {
         for (var j = 0; j < 20; j++) {
             curr = i + " " + j;
             if (!document.getElementById(curr).classList.contains("obs")) {
-                document.getElementById(curr).style.background = "rgb(65, 64, 64)";
+                document.getElementById(curr).style.background = "var(--cell)";
             }
         }
     }
@@ -106,16 +107,16 @@ function doBfs(begI, begJ, endI, endJ) {
             enableButtons();
             return;
         }
-        document.getElementById(bigList[index]).style.background = "yellow";
+        document.getElementById(bigList[index]).style.background = "var(--visited)";
         document.getElementById(bigList[index++]).style.transition = "0.2s";
         if (bigList[index - 1] == ending) {
             clearInterval(interval);
             bigList = [];
             ssPath = sPath.split("|");
             let ind = 0;
-            document.getElementById(ssPath[ssPath.length - 2]).style.background = "red";
+            document.getElementById(ssPath[ssPath.length - 2]).style.background = "var(--end)";
             let intPath = setInterval(function () {
-                document.getElementById(ssPath[ind]).style.background = "lightblue";
+                document.getElementById(ssPath[ind]).style.background = "var(--path)";
                 ind++;
                 if (ind == ssPath.length - 2) {
                     clearInterval(intPath);
@@ -163,16 +164,16 @@ function doDfs(begI, begJ, endI, endJ) {
             enableButtons();
             return;
         }
-        document.getElementById(bigList[index]).style.background = "yellow";
+        document.getElementById(bigList[index]).style.background = "var(--visited)";
         document.getElementById(bigList[index++]).style.transition = "0.2s";
         if (bigList[index - 1] == ending) {
             clearInterval(interval);
             bigList = [];
             ssPath = sPath.split("|");
             let ind = 0;
-            document.getElementById(ssPath[ssPath.length - 2]).style.background = "red";
+            document.getElementById(ssPath[ssPath.length - 2]).style.background = "var(--end)";
             let intPath = setInterval(function () {
-                document.getElementById(ssPath[ind]).style.background = "lightblue";
+                document.getElementById(ssPath[ind]).style.background = "var(--path)";
                 ind++;
                 if (ind == ssPath.length - 2) {
                     clearInterval(intPath);
@@ -197,8 +198,8 @@ function startAlgo() {
     var beg = begI + " " + begJ;
     var end = endI + " " + endJ;
 
-    document.getElementById(beg).style.background = "green";
-    document.getElementById(end).style.background = "red";
+    document.getElementById(beg).style.background = "var(--start)";
+    document.getElementById(end).style.background = "var(--end)";
 
     disableButtons();
 
