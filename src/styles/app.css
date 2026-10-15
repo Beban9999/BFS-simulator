@@ -2270,3 +2270,138 @@ kbd,
   font-size: 0.8rem;
   color: var(--faint);
 }
+
+/* ---------- Linked list renderer ---------- */
+.ll-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ll {
+  display: block;
+  height: auto;
+  overflow: visible;
+  font-family: var(--mono);
+}
+
+.ll-node {
+  transition: transform 0.3s ease;
+}
+
+.ll-box {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.ll-node[data-k] .ll-box {
+  stroke: var(--k);
+  fill: color-mix(in srgb, var(--k) 24%, var(--surface));
+}
+
+.ll-node.ghost .ll-box {
+  stroke-dasharray: 4 3;
+  fill: transparent;
+}
+
+.ll-node[data-k="pruned"],
+.ll-node[data-k="removed"] {
+  opacity: 0.45;
+}
+
+.ll-div {
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+
+.ll-val {
+  fill: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.ll-label {
+  fill: var(--faint);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.ll-glyph {
+  fill: var(--text);
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: end;
+}
+
+.ll-null {
+  stroke: var(--faint);
+  stroke-width: 1.5;
+}
+
+.ll-dot {
+  fill: var(--muted);
+}
+
+.ll-edge {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.6;
+  transition: d 0.3s ease, stroke 0.2s;
+}
+
+.ll-edge[data-k] {
+  stroke: var(--k);
+  stroke-width: 2.6;
+}
+
+.ll-edge.rand {
+  stroke: var(--hl-pivot);
+  stroke-dasharray: 4 3;
+  opacity: 0.8;
+}
+
+.ll-head {
+  fill: var(--muted);
+}
+
+.ll-head[data-k] {
+  fill: var(--k);
+}
+
+.ll-head.rand {
+  fill: var(--hl-pivot);
+}
+
+.ll-ptr {
+  fill: var(--accent-text);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  transition: transform 0.25s ease;
+}
+
+.ll-rowlabel {
+  fill: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ll-nulls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.ll-nulls b {
+  color: var(--accent-text);
+}

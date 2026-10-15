@@ -1,0 +1,13 @@
+def add_two_numbers(l1, l2):                    # digits are stored least significant first
+    dummy = tail = ListNode()
+    carry = 0                                   # @mark init
+    while l1 or l2 or carry:                    # @mark loop
+        x = l1.val if l1 else 0                 # a finished list counts as 0
+        y = l2.val if l2 else 0
+        total = x + y + carry                   # @mark sum
+        carry, digit = divmod(total, 10)        # @mark digit
+        tail.next = ListNode(digit)             # @mark append
+        tail = tail.next
+        l1 = l1.next if l1 else None            # @mark advance
+        l2 = l2.next if l2 else None
+    return dummy.next                           # @mark done

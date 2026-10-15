@@ -1,0 +1,19 @@
+// MinHeap = any binary heap with push / pop / size
+// (on LeetCode: MinPriorityQueue from @datastructures-js/priority-queue).
+function mergeKLists(lists) {
+  const heap = new MinHeap((a, b) => a.node.val - b.node.val || a.i - b.i);
+  lists.forEach((node, i) => {
+    if (node) heap.push({ node, i });           // @mark seed
+  });
+  const dummy = new ListNode();
+  let tail = dummy;                             // @mark init
+  while (heap.size > 0) {                       // @mark loop
+    const { node, i } = heap.pop();             // smallest front of all lists   // @mark pop
+    tail.next = node;                           // @mark attach
+    tail = node;
+    if (node.next) {                            // its successor becomes list i's new front
+      heap.push({ node: node.next, i });        // @mark push
+    }
+  }
+  return dummy.next;                            // @mark done
+}

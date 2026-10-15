@@ -1,0 +1,15 @@
+def is_palindrome(head):
+    slow = fast = head                          # @mark init
+    while fast and fast.next:                   # 1) find the middle   # @mark mid-loop
+        slow, fast = slow.next, fast.next.next  # @mark mid-move
+    prev, curr = None, slow                     # 2) reverse the second half   # @mark rev-init
+    while curr:
+        nxt = curr.next
+        curr.next = prev                        # @mark rev-flip
+        prev, curr = curr, nxt
+    left, right = head, prev                    # 3) walk both halves inward   # @mark cmp-init
+    while right:
+        if left.val != right.val:               # @mark compare
+            return False                        # @mark mismatch
+        left, right = left.next, right.next     # @mark cmp-move
+    return True                                 # @mark done

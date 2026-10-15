@@ -1,0 +1,9 @@
+def remove_nth_from_end(head, n):
+    dummy = ListNode(0, head)                   # handles removing the head itself
+    slow = fast = dummy                         # @mark init
+    for _ in range(n + 1):                      # open a gap of n nodes between them
+        fast = fast.next                        # @mark gap
+    while fast:                                 # @mark loop
+        slow, fast = slow.next, fast.next       # keep the gap while moving   # @mark move
+    slow.next = slow.next.next                  # slow is just before the target: skip it   # @mark unlink
+    return dummy.next                           # @mark done

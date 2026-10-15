@@ -1,0 +1,10 @@
+def detect_cycle(head):
+    slow = fast = head                          # @mark init
+    while fast and fast.next:                   # @mark loop
+        slow, fast = slow.next, fast.next.next  # tortoise 1 step, hare 2 steps   # @mark move
+        if slow is fast:                        # they can only meet inside a cycle   # @mark meet
+            slow = head                         # phase 2: restart one pointer   # @mark reset
+            while slow is not fast:             # @mark phase2
+                slow, fast = slow.next, fast.next   # both 1 step now   # @mark step2
+            return slow                         # the node where the cycle starts   # @mark found
+    return None                                 # fast fell off the end: no cycle   # @mark no-cycle

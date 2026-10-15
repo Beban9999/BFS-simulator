@@ -1,0 +1,23 @@
+function reverseKGroup(head, k) {
+  const dummy = new ListNode(0, head);
+  let groupPrev = dummy;                        // node before the current group   // @mark init
+  while (true) {
+    let kth = groupPrev;
+    for (let i = 0; i < k; i++) {               // find the k-th node of this group
+      kth = kth.next;                           // @mark find-kth
+      if (kth === null) {
+        return dummy.next;                      // fewer than k nodes left: keep them   // @mark done
+      }
+    }
+    const groupNext = kth.next;                 // first node after the group   // @mark group
+    let prev = groupNext, curr = groupPrev.next;   // @mark rev-init
+    while (curr !== groupNext) {                // standard reversal, but the tail links to groupNext
+      const nxt = curr.next;
+      curr.next = prev;                         // @mark rev-flip
+      prev = curr; curr = nxt;
+    }
+    const first = groupPrev.next;               // the old first node is now the group's last   // @mark stitch
+    groupPrev.next = kth;                       // kth is the group's new first node
+    groupPrev = first;                          // @mark next-group
+  }
+}

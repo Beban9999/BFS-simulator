@@ -1,0 +1,21 @@
+function reorderList(head) {
+  let slow = head, fast = head.next;            // @mark init
+  while (fast && fast.next) {                   // 1) slow stops on the first middle   // @mark find-mid
+    slow = slow.next; fast = fast.next.next;
+  }
+  let second = slow.next;                       // 2) cut the list after the middle   // @mark cut
+  slow.next = null;
+  let prev = null;                              // 3) reverse the second half
+  while (second) {
+    const nxt = second.next; second.next = prev; prev = second; second = nxt;   // @mark reverse
+  }
+  let first = head;                             // 4) weave the halves together
+  second = prev;                                // @mark merge-init
+  while (second) {                              // @mark merge-loop
+    const n1 = first.next, n2 = second.next;    // @mark save
+    first.next = second;                        // @mark link1
+    second.next = n1;                           // @mark link2
+    first = n1; second = n2;                    // @mark advance
+  }
+  return head;                                  // (in place; LeetCode's version returns nothing)   // @mark done
+}

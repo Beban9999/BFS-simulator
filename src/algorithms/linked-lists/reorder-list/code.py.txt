@@ -1,0 +1,16 @@
+def reorder_list(head):
+    slow, fast = head, head.next                # @mark init
+    while fast and fast.next:                   # 1) slow stops on the first middle   # @mark find-mid
+        slow, fast = slow.next, fast.next.next
+    second = slow.next                          # 2) cut the list after the middle   # @mark cut
+    slow.next = None
+    prev = None                                 # 3) reverse the second half
+    while second:
+        second.next, prev, second = prev, second, second.next   # @mark reverse
+    first, second = head, prev                  # 4) weave the halves together   # @mark merge-init
+    while second:                               # @mark merge-loop
+        n1, n2 = first.next, second.next        # @mark save
+        first.next = second                     # @mark link1
+        second.next = n1                        # @mark link2
+        first, second = n1, n2                  # @mark advance
+    return head                                 # (in place; LeetCode's version returns nothing)   # @mark done

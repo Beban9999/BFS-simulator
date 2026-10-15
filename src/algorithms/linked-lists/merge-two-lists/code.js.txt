@@ -1,0 +1,14 @@
+function mergeTwoLists(list1, list2) {
+  const dummy = new ListNode();
+  let tail = dummy;                             // tail = last node of the merged list   // @mark init
+  while (list1 && list2) {                      // @mark loop
+    if (list1.val <= list2.val) {               // @mark compare
+      tail.next = list1; list1 = list1.next;    // @mark take1
+    } else {
+      tail.next = list2; list2 = list2.next;    // @mark take2
+    }
+    tail = tail.next;                           // @mark advance
+  }
+  tail.next = list1 ?? list2;                   // attach whatever is left in one piece   // @mark rest
+  return dummy.next;                            // @mark done
+}

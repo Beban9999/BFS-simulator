@@ -1,0 +1,8 @@
+def reverse_list(head):
+    prev, curr = None, head                     # @mark init
+    while curr:                                 # @mark loop
+        nxt = curr.next                         # save the rest before cutting it off   # @mark save
+        curr.next = prev                        # flip this node's arrow   # @mark flip
+        prev = curr                             # @mark move-prev
+        curr = nxt                              # @mark move-curr
+    return prev                                 # prev is the new head   # @mark done

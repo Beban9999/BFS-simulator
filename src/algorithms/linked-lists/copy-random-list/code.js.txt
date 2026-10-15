@@ -1,0 +1,30 @@
+// Approach 1: hash map from each old node to its copy — O(n) extra space
+function copyRandomList(head) {
+  const oldToNew = new Map([[null, null]]);     // @mark map-init
+  for (let curr = head; curr; curr = curr.next) {   // pass 1: clone every node
+    oldToNew.set(curr, new Node(curr.val));     // @mark clone
+  }
+  for (let curr = head; curr; curr = curr.next) {   // pass 2: wire the copies
+    const copy = oldToNew.get(curr);
+    copy.next = oldToNew.get(curr.next);        // @mark wire-next
+    copy.random = oldToNew.get(curr.random);    // @mark wire-random
+  }
+  return oldToNew.get(head);                    // @mark map-done
+}
+
+// Approach 2: weave each copy right after its original — O(1) extra space
+function copyRandomListWeave(head) {
+  for (let curr = head; curr; curr = curr.next.next) {   // 1) A → A' → B → B' → ...
+    curr.next = new Node(curr.val, curr.next);  // @mark weave
+  }
+  for (let curr = head; curr; curr = curr.next.next) {   // 2) the copy of X.random is X.random.next
+    if (curr.random) curr.next.random = curr.random.next;   // @mark weave-random
+  }
+  const newHead = head ? head.next : null;      // @mark split-init
+  for (let curr = head; curr; curr = curr.next) {   // 3) un-weave the two lists
+    const copy = curr.next;
+    curr.next = copy.next;                      // @mark split-orig
+    copy.next = copy.next ? copy.next.next : null;   // @mark split-copy
+  }
+  return newHead;                               // @mark weave-done
+}

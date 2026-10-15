@@ -1,0 +1,20 @@
+function isPalindrome(head) {
+  let slow = head, fast = head;                 // @mark init
+  while (fast && fast.next) {                   // 1) find the middle   // @mark mid-loop
+    slow = slow.next; fast = fast.next.next;    // @mark mid-move
+  }
+  let prev = null, curr = slow;                 // 2) reverse the second half   // @mark rev-init
+  while (curr) {
+    const nxt = curr.next;
+    curr.next = prev;                           // @mark rev-flip
+    prev = curr; curr = nxt;
+  }
+  let left = head, right = prev;                // 3) walk both halves inward   // @mark cmp-init
+  while (right) {
+    if (left.val !== right.val) {               // @mark compare
+      return false;                             // @mark mismatch
+    }
+    left = left.next; right = right.next;       // @mark cmp-move
+  }
+  return true;                                  // @mark done
+}

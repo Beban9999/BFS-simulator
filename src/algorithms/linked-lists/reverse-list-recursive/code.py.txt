@@ -1,0 +1,7 @@
+def reverse_list(head):                         # @mark call
+    if head is None or head.next is None:       # @mark base
+        return head                             # empty or last node: nothing to flip
+    new_head = reverse_list(head.next)          # reverse everything after head   # @mark recurse
+    head.next.next = head                       # the next node now points back at head   # @mark link-back
+    head.next = None                            # head becomes the tail   # @mark cut
+    return new_head                             # @mark return

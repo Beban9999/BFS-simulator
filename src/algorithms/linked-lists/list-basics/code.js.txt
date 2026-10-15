@@ -1,0 +1,51 @@
+class Node {
+  constructor(val) {
+    this.val = val; this.next = null;
+    this.prev = null;                           // doubly linked lists only
+  }
+}
+
+function search(head, target) {                 // O(n): no random access
+  let curr = head, i = 0;                       // @mark s-init
+  while (curr) {                                // @mark s-loop
+    if (curr.val === target) {                  // @mark s-check
+      return i;                                 // @mark s-found
+    }
+    curr = curr.next; i++;                      // @mark s-move
+  }
+  return -1;                                    // @mark s-missing
+}
+
+function insertAt(head, index, val) {           // new node ends up at position index
+  const node = new Node(val);                   // @mark i-new
+  if (index === 0) {                            // the new node becomes the head
+    node.next = head;                           // @mark i-head
+    if (head) head.prev = node;                 // (doubly only)   // @mark i-head-prev
+    return node;                                // @mark i-head-done
+  }
+  let prev = head;                              // @mark i-walk-init
+  for (let i = 0; i < index - 1; i++) {         // stop at the node BEFORE the slot
+    prev = prev.next;                           // @mark i-walk
+  }
+  node.next = prev.next;                        // 1) point at the old occupant first   // @mark i-link-next
+  prev.next = node;                             // 2) then hook the node in   // @mark i-link
+  node.prev = prev;                             // (doubly only)   // @mark i-prev
+  if (node.next) node.next.prev = node;         // (doubly only)   // @mark i-next-prev
+  return head;                                  // @mark i-done
+}
+
+function deleteAt(head, index) {
+  if (index === 0) {                            // deleting the head
+    const newHead = head.next;                  // @mark d-head
+    if (newHead) newHead.prev = null;           // (doubly only)   // @mark d-head-prev
+    return newHead;                             // @mark d-head-done
+  }
+  let prev = head;                              // @mark d-walk-init
+  for (let i = 0; i < index - 1; i++) {         // stop at the node BEFORE the target
+    prev = prev.next;                           // @mark d-walk
+  }
+  const target = prev.next;                     // @mark d-target
+  prev.next = target.next;                      // bypass the target   // @mark d-unlink
+  if (target.next) target.next.prev = prev;     // (doubly only)   // @mark d-prev
+  return head;                                  // @mark d-done
+}

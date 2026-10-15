@@ -1,0 +1,34 @@
+# Approach 1: hash map from each old node to its copy — O(n) extra space
+def copy_random_list(head):
+    old_to_new = {None: None}                   # @mark map-init
+    curr = head
+    while curr:                                 # pass 1: clone every node
+        old_to_new[curr] = Node(curr.val)       # @mark clone
+        curr = curr.next
+    curr = head
+    while curr:                                 # pass 2: wire the copies
+        copy = old_to_new[curr]
+        copy.next = old_to_new[curr.next]       # @mark wire-next
+        copy.random = old_to_new[curr.random]   # @mark wire-random
+        curr = curr.next
+    return old_to_new[head]                     # @mark map-done
+
+# Approach 2: weave each copy right after its original — O(1) extra space
+def copy_random_list_weave(head):
+    curr = head
+    while curr:                                 # 1) A → A' → B → B' → ...
+        curr.next = Node(curr.val, curr.next)   # @mark weave
+        curr = curr.next.next
+    curr = head
+    while curr:                                 # 2) the copy of X.random is X.random.next
+        if curr.random:
+            curr.next.random = curr.random.next # @mark weave-random
+        curr = curr.next.next
+    new_head = head.next if head else None      # @mark split-init
+    curr = head
+    while curr:                                 # 3) un-weave the two lists
+        copy = curr.next
+        curr.next = copy.next                   # @mark split-orig
+        copy.next = copy.next.next if copy.next else None   # @mark split-copy
+        curr = curr.next
+    return new_head                             # @mark weave-done

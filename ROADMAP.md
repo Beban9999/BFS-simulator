@@ -33,7 +33,7 @@ landing page — so a tab goes live the moment its first algorithm folder is add
 
 ## Phase 1 — Core renderers & high-frequency topics
 
-Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [ ] `linkedlist` · [ ] `stackqueue` · [ ] `tree` (moved to Phase 2)
+Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [ ] `stackqueue` · [ ] `tree` (moved to Phase 2)
 
 ### Tab 2 — Arrays & Hashing ✅ (16)
 - [x] Hash table internals — chaining vs linear probing, resize/rehash *(hash-table)*
@@ -72,15 +72,15 @@ Recursive pages (`merge-sort`, `quick-sort-lomuto`, `quick-sort-hoare`) show the
 - [ ] Note page: built-in sorts (Timsort / introsort / pdqsort…) — verify current facts from docs before writing (issue #10)
 - [ ] Sorting race / compare mode + complexity table — **needs:** compare mode (issue #17)
 
-### Tab 6 — Linked Lists (0) — **needs:** `linkedlist` renderer
-Renderer plan: SVG nodes in a row (or `layout` positions from state), arrows for `next` that visibly re-wire (curved when not adjacent), optional `random` pointers drawn below, pointer labels (prev/curr/next/slow/fast) under nodes. State: `{ nodes: {id, val}[], next: Record<id, id|null>, order: id[], pointers: {name, node}[] }`. Highlight ids `n:<id>`, `e:<from>-<to>`.
-- [ ] Traversal / insert / delete; singly vs doubly *(list-basics)*
-- [ ] Reverse iterative (prev/curr/next) *(reverse-list)* · [ ] Reverse recursive (call stack) *(reverse-list-recursive)* · [ ] Reverse k-group *(reverse-k-group)* · [ ] Palindrome list *(palindrome-list)*
-- [ ] Merge two sorted *(merge-two-lists)* · [ ] Merge k sorted (heap aux) *(merge-k-lists)*
-- [ ] Floyd cycle + cycle start *(list-cycle)*
-- [ ] Middle node *(middle-node)* · [ ] Remove n-th from end (gap pointers) *(remove-nth-end)* · [ ] Reorder list *(reorder-list)*
-- [ ] Copy list with random pointer (hashmap + interleaving) *(copy-random-list)*
-- [ ] Add two numbers *(add-two-numbers)*
+### Tab 6 — Linked Lists ✅ (13)
+Renderer: `src/renderers/LinkedListView.tsx` + `src/algorithms/_shared/list.ts`. SVG nodes laid out by `rows` (node ids per row, `null` = gap); `next` arrows are single cubic paths whose `d` is CSS-transitioned, so re-wiring visibly morphs (straight to the right neighbour, arcs above otherwise, curves between rows). Optional `prev` (doubly, second arrow) and `random` (dashed arcs). Pointer labels under nodes; null pointers listed under the drawing. `ListModel` mirrors `node.next = …` in generators (`chain`, `place`, `layout`, `hide`, `values`). Highlight ids `nid(id)` → `n:<id>`, `eid(a, b)` → `e:<a>-<b>` (also `pid` prev, `rid` random).
+- [x] Search / insert / delete; singly vs doubly *(list-basics)*
+- [x] Reverse iterative (prev/curr/next) *(reverse-list)* · [x] Reverse recursive (call stack) *(reverse-list-recursive)* · [x] Reverse k-group *(reverse-k-group)* · [x] Palindrome list *(palindrome-list)*
+- [x] Merge two sorted *(merge-two-lists)* · [x] Merge k sorted (heap aux) *(merge-k-lists)*
+- [x] Floyd cycle + cycle start *(list-cycle)*
+- [x] Middle node *(middle-node)* · [x] Remove n-th from end (gap pointers) *(remove-nth-end)* · [x] Reorder list *(reorder-list)*
+- [x] Copy list with random pointer (hashmap + interleaving) *(copy-random-list)*
+- [x] Add two numbers *(add-two-numbers)*
 
 ### Tab 7 — Stacks & Queues (0) — **needs:** `stackqueue` renderer
 Renderer plan: input token row (reuse array cells) + large vertical stack / horizontal queue/deque / circular buffer ring. Many pages can also use `array` + aux panel only.

@@ -1,0 +1,40 @@
+class Node:
+    def __init__(self, val):
+        self.val, self.next = val, None
+        self.prev = None                        # doubly linked lists only
+
+def search(head, target):                       # O(n): no random access
+    curr, i = head, 0                           # @mark s-init
+    while curr:                                 # @mark s-loop
+        if curr.val == target:                  # @mark s-check
+            return i                            # @mark s-found
+        curr, i = curr.next, i + 1              # @mark s-move
+    return -1                                   # @mark s-missing
+
+def insert_at(head, index, val):                # new node ends up at position index
+    node = Node(val)                            # @mark i-new
+    if index == 0:                              # the new node becomes the head
+        node.next = head                        # @mark i-head
+        if head: head.prev = node               # (doubly only)   # @mark i-head-prev
+        return node                             # @mark i-head-done
+    prev = head                                 # @mark i-walk-init
+    for _ in range(index - 1):                  # stop at the node BEFORE the slot
+        prev = prev.next                        # @mark i-walk
+    node.next = prev.next                       # 1) point at the old occupant first   # @mark i-link-next
+    prev.next = node                            # 2) then hook the node in   # @mark i-link
+    node.prev = prev                            # (doubly only)   # @mark i-prev
+    if node.next: node.next.prev = node         # (doubly only)   # @mark i-next-prev
+    return head                                 # @mark i-done
+
+def delete_at(head, index):
+    if index == 0:                              # deleting the head
+        new_head = head.next                    # @mark d-head
+        if new_head: new_head.prev = None       # (doubly only)   # @mark d-head-prev
+        return new_head                         # @mark d-head-done
+    prev = head                                 # @mark d-walk-init
+    for _ in range(index - 1):                  # stop at the node BEFORE the target
+        prev = prev.next                        # @mark d-walk
+    target = prev.next                          # @mark d-target
+    prev.next = target.next                     # bypass the target   # @mark d-unlink
+    if target.next: target.next.prev = prev     # (doubly only)   # @mark d-prev
+    return head                                 # @mark d-done

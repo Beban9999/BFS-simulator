@@ -1,0 +1,15 @@
+function addTwoNumbers(l1, l2) {                // digits are stored least significant first
+  const dummy = new ListNode();
+  let tail = dummy, carry = 0;                  // @mark init
+  while (l1 || l2 || carry) {                   // @mark loop
+    const x = l1 ? l1.val : 0;                  // a finished list counts as 0
+    const y = l2 ? l2.val : 0;
+    const total = x + y + carry;                // @mark sum
+    carry = Math.floor(total / 10);             // @mark digit
+    tail.next = new ListNode(total % 10);       // @mark append
+    tail = tail.next;
+    l1 = l1 ? l1.next : null;                   // @mark advance
+    l2 = l2 ? l2.next : null;
+  }
+  return dummy.next;                            // @mark done
+}

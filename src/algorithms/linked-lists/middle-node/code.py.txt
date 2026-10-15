@@ -1,0 +1,6 @@
+def middle_node(head):
+    slow = fast = head                          # @mark init
+    while fast and fast.next:                   # @mark loop
+        slow = slow.next                        # 1 step   # @mark move
+        fast = fast.next.next                   # 2 steps
+    return slow                                 # second middle when the length is even   # @mark done

@@ -1,0 +1,18 @@
+def reverse_k_group(head, k):
+    dummy = ListNode(0, head)
+    group_prev = dummy                          # node before the current group   # @mark init
+    while True:
+        kth = group_prev
+        for _ in range(k):                      # find the k-th node of this group
+            kth = kth.next                      # @mark find-kth
+            if kth is None:
+                return dummy.next               # fewer than k nodes left: keep them   # @mark done
+        group_next = kth.next                   # first node after the group   # @mark group
+        prev, curr = group_next, group_prev.next   # @mark rev-init
+        while curr is not group_next:           # standard reversal, but the tail links to group_next
+            nxt = curr.next
+            curr.next = prev                    # @mark rev-flip
+            prev, curr = curr, nxt
+        first = group_prev.next                 # the old first node is now the group's last   # @mark stitch
+        group_prev.next = kth                   # kth is the group's new first node
+        group_prev = first                      # @mark next-group

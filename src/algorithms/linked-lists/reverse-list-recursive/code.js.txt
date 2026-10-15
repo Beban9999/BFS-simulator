@@ -1,0 +1,9 @@
+function reverseList(head) {                    // @mark call
+  if (head === null || head.next === null) {    // @mark base
+    return head;                                // empty or last node: nothing to flip
+  }
+  const newHead = reverseList(head.next);       // reverse everything after head   // @mark recurse
+  head.next.next = head;                        // the next node now points back at head   // @mark link-back
+  head.next = null;                             // head becomes the tail   // @mark cut
+  return newHead;                               // @mark return
+}

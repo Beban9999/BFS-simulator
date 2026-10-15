@@ -1,0 +1,15 @@
+import heapq
+
+def merge_k_lists(lists):
+    heap = []
+    for i, node in enumerate(lists):
+        if node:                                # (val, i) breaks ties without comparing nodes
+            heapq.heappush(heap, (node.val, i, node))   # @mark seed
+    dummy = tail = ListNode()                   # @mark init
+    while heap:                                 # @mark loop
+        _, i, node = heapq.heappop(heap)        # smallest front of all lists   # @mark pop
+        tail.next = node                        # @mark attach
+        tail = node
+        if node.next:                           # its successor becomes list i's new front
+            heapq.heappush(heap, (node.next.val, i, node.next))   # @mark push
+    return dummy.next                           # @mark done

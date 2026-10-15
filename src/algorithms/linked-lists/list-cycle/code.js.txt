@@ -1,0 +1,14 @@
+function detectCycle(head) {
+  let slow = head, fast = head;                 // @mark init
+  while (fast && fast.next) {                   // @mark loop
+    slow = slow.next; fast = fast.next.next;    // tortoise 1 step, hare 2 steps   // @mark move
+    if (slow === fast) {                        // they can only meet inside a cycle   // @mark meet
+      slow = head;                              // phase 2: restart one pointer   // @mark reset
+      while (slow !== fast) {                   // @mark phase2
+        slow = slow.next; fast = fast.next;     // both 1 step now   // @mark step2
+      }
+      return slow;                              // the node where the cycle starts   // @mark found
+    }
+  }
+  return null;                                  // fast fell off the end: no cycle   // @mark no-cycle
+}

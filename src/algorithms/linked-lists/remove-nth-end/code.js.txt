@@ -1,0 +1,12 @@
+function removeNthFromEnd(head, n) {
+  const dummy = new ListNode(0, head);          // handles removing the head itself
+  let slow = dummy, fast = dummy;               // @mark init
+  for (let i = 0; i <= n; i++) {                // open a gap of n nodes between them
+    fast = fast.next;                           // @mark gap
+  }
+  while (fast) {                                // @mark loop
+    slow = slow.next; fast = fast.next;         // keep the gap while moving   // @mark move
+  }
+  slow.next = slow.next.next;                   // slow is just before the target: skip it   // @mark unlink
+  return dummy.next;                            // @mark done
+}

@@ -1,0 +1,8 @@
+function middleNode(head) {
+  let slow = head, fast = head;                 // @mark init
+  while (fast && fast.next) {                   // @mark loop
+    slow = slow.next;                           // 1 step   // @mark move
+    fast = fast.next.next;                      // 2 steps
+  }
+  return slow;                                  // second middle when the length is even   // @mark done
+}
