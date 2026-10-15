@@ -1,0 +1,12 @@
+function inorderSuccessor(root, p) {            // smallest value strictly greater than p
+  let succ = null, node = root;                 // @mark init
+  while (node) {
+    if (p < node.val) {                         // node is bigger than p: a candidate   // @mark compare
+      succ = node;                              // remember it, then look for a smaller one   // @mark candidate
+      node = node.left;
+    } else {
+      node = node.right;                        // node <= p: the answer must be to the right   // @mark go-right
+    }
+  }
+  return succ;                                  // @mark done
+}

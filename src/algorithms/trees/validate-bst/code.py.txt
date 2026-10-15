@@ -1,0 +1,9 @@
+def is_valid_bst(root):
+    def valid(node, low, high):                 # every value here must lie strictly in (low, high)   # @mark call
+        if node is None:                        # @mark base
+            return True
+        if not (low < node.val < high):         # @mark check
+            return False                        # @mark bad
+        return (valid(node.left, low, node.val)       # left side: below node.val   # @mark left
+                and valid(node.right, node.val, high))   # right side: above node.val   # @mark right
+    return valid(root, float("-inf"), float("inf"))     # @mark done

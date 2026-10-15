@@ -1,0 +1,20 @@
+# In a BST the values tell you which way to go.
+def lca_bst(root, p, q):
+    node = root                                 # @mark bst-init
+    while node:
+        if p < node.val and q < node.val:       # both are smaller: both on the left   # @mark bst-compare
+            node = node.left                    # @mark bst-left
+        elif p > node.val and q > node.val:     # both are bigger: both on the right
+            node = node.right                   # @mark bst-right
+        else:
+            return node                         # they split here (or one of them is node)   # @mark bst-found
+
+# In a general binary tree, ask both subtrees.
+def lca(root, p, q):
+    if root is None or root.val in (p, q):      # @mark bt-base
+        return root
+    left = lca(root.left, p, q)                 # @mark bt-left
+    right = lca(root.right, p, q)               # @mark bt-right
+    if left and right:                          # p and q are on different sides   # @mark bt-split
+        return root
+    return left or right                        # pass up whichever side found something   # @mark bt-up

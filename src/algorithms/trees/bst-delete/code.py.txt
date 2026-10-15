@@ -1,0 +1,18 @@
+def delete_node(root, key):                     # returns the new root of this subtree
+    if root is None:                            # key is not in the tree   # @mark call
+        return None
+    if key < root.val:
+        root.left = delete_node(root.left, key) # @mark go-left
+    elif key > root.val:
+        root.right = delete_node(root.right, key)   # @mark go-right
+    else:                                       # found the node to delete
+        if root.left is None:                   # case 1 / 2: no left child   # @mark case-no-left
+            return root.right                   # the right subtree (maybe None) takes its place
+        if root.right is None:                  # case 2: no right child   # @mark case-no-right
+            return root.left
+        succ = root.right                       # case 3: two children -> inorder successor   # @mark case-two
+        while succ.left:
+            succ = succ.left                    # smallest value in the right subtree   # @mark find-succ
+        root.val = succ.val                     # copy it up...   # @mark copy
+        root.right = delete_node(root.right, succ.val)   # ...and delete it from below   # @mark delete-succ
+    return root                                 # @mark return

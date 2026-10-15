@@ -1,0 +1,11 @@
+function isValidBST(root) {
+  function valid(node, low, high) {             // every value here must lie strictly in (low, high)   // @mark call
+    if (node === null) return true;             // @mark base
+    if (!(low < node.val && node.val < high)) { // @mark check
+      return false;                             // @mark bad
+    }
+    return valid(node.left, low, node.val)      // left side: below node.val   // @mark left
+      && valid(node.right, node.val, high);     // right side: above node.val   // @mark right
+  }
+  return valid(root, -Infinity, Infinity);      // @mark done
+}

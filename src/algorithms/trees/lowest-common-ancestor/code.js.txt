@@ -1,0 +1,22 @@
+// In a BST the values tell you which way to go.
+function lcaBST(root, p, q) {
+  let node = root;                              // @mark bst-init
+  while (node) {
+    if (p < node.val && q < node.val) {         // both are smaller: both on the left   // @mark bst-compare
+      node = node.left;                         // @mark bst-left
+    } else if (p > node.val && q > node.val) {  // both are bigger: both on the right
+      node = node.right;                        // @mark bst-right
+    } else {
+      return node;                              // they split here (or one of them is node)   // @mark bst-found
+    }
+  }
+}
+
+// In a general binary tree, ask both subtrees.
+function lca(root, p, q) {
+  if (root === null || root.val === p || root.val === q) return root;   // @mark bt-base
+  const left = lca(root.left, p, q);            // @mark bt-left
+  const right = lca(root.right, p, q);          // @mark bt-right
+  if (left && right) return root;               // p and q are on different sides   // @mark bt-split
+  return left ?? right;                         // pass up whichever side found something   // @mark bt-up
+}

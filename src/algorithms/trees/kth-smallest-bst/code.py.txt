@@ -1,0 +1,11 @@
+def kth_smallest(root, k):
+    stack, node = [], root                      # iterative inorder = values in sorted order   # @mark init
+    while True:
+        while node:                             # smaller values live to the left
+            stack.append(node)                  # @mark push
+            node = node.left
+        node = stack.pop()                      # the next value in sorted order   # @mark pop
+        k -= 1
+        if k == 0:                              # @mark check
+            return node.val                     # stop early: no need to see the rest   # @mark found
+        node = node.right                       # @mark right

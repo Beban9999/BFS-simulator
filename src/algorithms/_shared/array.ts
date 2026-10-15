@@ -55,3 +55,10 @@ export function randomNumbers(rng: Rng, size: number, lo = 0, hi = 30, maxLen = 
 export function sortedNumbers(rng: Rng, size: number, lo = 0, hi = 40, maxLen = 16): number[] {
   return randomNumbers(rng, size, lo, hi, maxLen).sort((a, b) => a - b);
 }
+
+/** 1 → "1st", 2 → "2nd", 11 → "11th", 23 → "23rd". */
+export function ordinal(k: number): string {
+  const t = k % 100;
+  const suffix = t >= 11 && t <= 13 ? "th" : k % 10 === 1 ? "st" : k % 10 === 2 ? "nd" : k % 10 === 3 ? "rd" : "th";
+  return `${k}${suffix}`;
+}

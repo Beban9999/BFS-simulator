@@ -1,0 +1,22 @@
+function deleteNode(root, key) {                // returns the new root of this subtree
+  if (root === null) return null;               // key is not in the tree   // @mark call
+  if (key < root.val) {
+    root.left = deleteNode(root.left, key);     // @mark go-left
+  } else if (key > root.val) {
+    root.right = deleteNode(root.right, key);   // @mark go-right
+  } else {                                      // found the node to delete
+    if (root.left === null) {                   // case 1 / 2: no left child   // @mark case-no-left
+      return root.right;                        // the right subtree (maybe null) takes its place
+    }
+    if (root.right === null) {                  // case 2: no right child   // @mark case-no-right
+      return root.left;
+    }
+    let succ = root.right;                      // case 3: two children -> inorder successor   // @mark case-two
+    while (succ.left) {
+      succ = succ.left;                         // smallest value in the right subtree   // @mark find-succ
+    }
+    root.val = succ.val;                        // copy it up...   // @mark copy
+    root.right = deleteNode(root.right, succ.val);   // ...and delete it from below   // @mark delete-succ
+  }
+  return root;                                  // @mark return
+}

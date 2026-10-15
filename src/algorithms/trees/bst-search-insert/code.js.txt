@@ -1,0 +1,32 @@
+function searchBST(root, target) {
+  let node = root;                              // @mark s-init
+  while (node) {
+    if (target === node.val) {                  // @mark s-compare
+      return node;                              // @mark s-found
+    }
+    node = target < node.val ? node.left : node.right;   // discard the other half   // @mark s-move
+  }
+  return null;                                  // fell off the tree: not present   // @mark s-missing
+}
+
+function insertBST(root, val) {
+  if (root === null) {
+    return new TreeNode(val);                   // @mark i-empty
+  }
+  let node = root;                              // @mark i-init
+  while (true) {
+    if (val < node.val) {                       // @mark i-compare
+      if (node.left === null) {
+        node.left = new TreeNode(val);          // found the empty spot   // @mark i-attach-left
+        return root;
+      }
+      node = node.left;                         // @mark i-left
+    } else {
+      if (node.right === null) {
+        node.right = new TreeNode(val);         // @mark i-attach-right
+        return root;
+      }
+      node = node.right;                        // @mark i-right
+    }
+  }
+}
