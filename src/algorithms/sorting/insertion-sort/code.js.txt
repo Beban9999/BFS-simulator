@@ -1,0 +1,12 @@
+function insertionSort(nums) {
+  for (let i = 1; i < nums.length; i++) {       // nums[0..i-1] is sorted   // @mark pass
+    const key = nums[i];
+    let j = i - 1;
+    while (j >= 0 && nums[j] > key) {           // @mark compare
+      nums[j + 1] = nums[j];                    // shift the larger value right   // @mark shift
+      j--;
+    }
+    nums[j + 1] = key;                          // drop key into the gap   // @mark place
+  }
+  return nums;                                  // @mark done
+}

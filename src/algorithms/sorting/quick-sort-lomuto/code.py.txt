@@ -1,0 +1,21 @@
+def sort_array(nums):
+    quick_sort(nums, 0, len(nums) - 1)
+    return nums                                 # @mark done
+
+def quick_sort(nums, lo, hi):                   # sorts nums[lo..hi]   # @mark call
+    if lo >= hi:                                # 0 or 1 element   # @mark base
+        return
+    p = partition(nums, lo, hi)                 # pivot ends at its final index p   # @mark partition-call
+    quick_sort(nums, lo, p - 1)                 # @mark left
+    quick_sort(nums, p + 1, hi)                 # @mark right
+
+def partition(nums, lo, hi):
+    k = choose_pivot(nums, lo, hi)              # last / middle / median of three   # @mark choose
+    nums[k], nums[hi] = nums[hi], nums[k]       # park the pivot at the end   # @mark pivot-to-end
+    pivot, i = nums[hi], lo                     # nums[lo:i] < pivot   # @mark init
+    for j in range(lo, hi):
+        if nums[j] < pivot:                     # @mark compare
+            nums[i], nums[j] = nums[j], nums[i] # @mark swap
+            i += 1
+    nums[i], nums[hi] = nums[hi], nums[i]       # pivot lands in its final spot   # @mark place
+    return i

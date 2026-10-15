@@ -1,0 +1,13 @@
+function bucketSort(nums, k) {
+  const hi = Math.max(...nums) + 1;             // values lie in [0, hi)
+  const buckets = Array.from({ length: k }, () => []);   // @mark init
+  for (const x of nums) {
+    buckets[Math.floor((x * k) / hi)].push(x);  // slice of width hi/k that x falls into   // @mark scatter
+  }
+  const out = [];
+  for (const b of buckets) {
+    b.sort((p, q) => p - q);                    // small buckets: insertion sort is typical   // @mark sort-bucket
+    out.push(...b);                             // @mark gather
+  }
+  return out;                                   // @mark done
+}

@@ -1,0 +1,9 @@
+def radix_sort(nums):
+    exp = 1                                     # 1 = ones, 10 = tens, 100 = hundreds ...
+    while max(nums) // exp > 0:                 # one pass per digit   # @mark pass
+        buckets = [[] for _ in range(10)]
+        for x in nums:
+            buckets[(x // exp) % 10].append(x)  # append keeps the previous order (stable)   # @mark bucket
+        nums = [x for b in buckets for x in b]  # collect bucket 0, then 1, ... 9   # @mark collect
+        exp *= 10
+    return nums                                 # @mark done

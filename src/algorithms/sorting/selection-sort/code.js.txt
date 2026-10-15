@@ -1,0 +1,13 @@
+function selectionSort(nums) {
+  const n = nums.length;
+  for (let i = 0; i < n - 1; i++) {             // nums[0..i-1] is sorted and final   // @mark pass
+    let minI = i;
+    for (let j = i + 1; j < n; j++) {
+      if (nums[j] < nums[minI]) {               // @mark compare
+        minI = j;                               // @mark new-min
+      }
+    }
+    [nums[i], nums[minI]] = [nums[minI], nums[i]];   // @mark swap
+  }
+  return nums;                                  // @mark done
+}

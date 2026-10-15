@@ -1,0 +1,24 @@
+def sort_array(nums):
+    quick_sort(nums, 0, len(nums) - 1)
+    return nums                                 # @mark done
+
+def quick_sort(nums, lo, hi):                   # @mark call
+    if lo >= hi:                                # @mark base
+        return
+    p = partition(nums, lo, hi)                 # nums[lo..p] <= nums[p+1..hi]   # @mark partition-call
+    quick_sort(nums, lo, p)                     # p is NOT final here, so include it   # @mark left
+    quick_sort(nums, p + 1, hi)                 # @mark right
+
+def partition(nums, lo, hi):
+    pivot = nums[(lo + hi) // 2]                # @mark init
+    i, j = lo - 1, hi + 1
+    while True:
+        i += 1
+        while nums[i] < pivot:                  # stop at a value >= pivot   # @mark move-i
+            i += 1
+        j -= 1
+        while nums[j] > pivot:                  # stop at a value <= pivot   # @mark move-j
+            j -= 1
+        if i >= j:                              # pointers crossed: done   # @mark cross
+            return j
+        nums[i], nums[j] = nums[j], nums[i]     # both are on the wrong side   # @mark swap

@@ -58,21 +58,19 @@ Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` 
 - [x] 2D flattened *(matrix-search)* · [x] Staircase *(staircase-search)*
 - [x] Median of two sorted arrays *(median-two-arrays)*
 
-### Tab 5 — Sorting (1 / 13)
-Shared helper exists: `src/algorithms/_shared/sorting.ts` (`Sortable` with stable ids → bars glide on swaps; `sortField`, `sortPresets`, `randomSortInput`, `sortedCopy`). Use `renderer: "bars"`.
-- [x] Bubble *(bubble-sort)*
-- [ ] Selection *(selection-sort)*
-- [ ] Insertion, with "nearly sorted" preset *(insertion-sort)*
-- [ ] Shell *(shell-sort)*
-- [ ] Merge sort — show merge buffer as an extra row + `callStack` frames `merge_sort(lo, hi)` *(merge-sort)*
-- [ ] Quick sort Lomuto + pivot strategies + worst-case preset *(quick-sort-lomuto)*
-- [ ] Quick sort Hoare *(quick-sort-hoare)*
-- [ ] Heap sort — array bars now; add tree view once `tree` renderer exists *(heap-sort)*
-- [ ] Counting sort *(counting-sort)* · [ ] Radix LSD (bucket rows per digit) *(radix-sort)* · [ ] Bucket sort *(bucket-sort)*
-- [ ] Quickselect / Kth Largest *(quickselect)*
-- [ ] Note page: stability demo (records with equal keys) — **needs:** note-page support (see Phase 4)
-- [ ] Note page: built-in sorts (Timsort / introsort / pdqsort…) — verify current facts from docs before writing
-- [ ] Sorting race / compare mode + complexity table — **needs:** compare mode (Phase 4)
+### Tab 5 — Sorting ✅ (12 pages; 3 items wait on Phase 4 features)
+Shared helper: `src/algorithms/_shared/sorting.ts` (`Sortable` with stable ids → bars glide on swaps; `sortField`, `sortPresets`, `randomSortInput`, `sortedCopy`). Use `renderer: "bars"`.
+Recursive pages (`merge-sort`, `quick-sort-lomuto`, `quick-sort-hoare`) show the pattern for nested generators + `callStack` frames.
+- [x] Bubble *(bubble-sort)* · [x] Selection *(selection-sort)* · [x] Insertion, "nearly sorted" preset *(insertion-sort)* · [x] Shell *(shell-sort)*
+- [x] Merge sort — buffer row + call stack *(merge-sort)*
+- [x] Quick sort Lomuto — pivot rule select (last / middle / median-of-three) + sorted worst-case presets *(quick-sort-lomuto)*
+- [x] Quick sort Hoare *(quick-sort-hoare)*
+- [x] Heap sort — bars + "level" row; add a tree view once the `tree` renderer exists *(heap-sort)*
+- [x] Counting sort (stable, prefix sums) *(counting-sort)* · [x] Radix LSD (buckets in the aux panel) *(radix-sort)* · [x] Bucket sort *(bucket-sort)*
+- [x] Quickselect / Kth Largest *(quickselect)*
+- [ ] Note page: stability demo (records with equal keys) — **needs:** note-page support (issue #10)
+- [ ] Note page: built-in sorts (Timsort / introsort / pdqsort…) — verify current facts from docs before writing (issue #10)
+- [ ] Sorting race / compare mode + complexity table — **needs:** compare mode (issue #17)
 
 ### Tab 6 — Linked Lists (0) — **needs:** `linkedlist` renderer
 Renderer plan: SVG nodes in a row (or `layout` positions from state), arrows for `next` that visibly re-wire (curved when not adjacent), optional `random` pointers drawn below, pointer labels (prev/curr/next/slow/fast) under nodes. State: `{ nodes: {id, val}[], next: Record<id, id|null>, order: id[], pointers: {name, node}[] }`. Highlight ids `n:<id>`, `e:<from>-<to>`.
@@ -150,6 +148,8 @@ Renderer plan: input token row (reuse array cells) + large vertical stack / hori
 - [ ] Optional Java / C++ code tabs (CodePanel already supports `java` / `cpp` keys)
 
 ## Known small issues / ideas
+- Editing only `?step=` in the address bar of an already-open page doesn't jump (the step param is read on mount); a reload or a link from another page works. Fix: watch `params.get("step")` in `AlgorithmPage`.
+- Rows in the `array` renderer are centred independently, so rows of different lengths (e.g. `counting-sort`'s count row vs nums) don't share columns. Fine today; a left-aligned option may help later.
 - `prefix-sum-2d`: P is drawn beside the matrix with the same row numbers; P's row r+1 corresponds to matrix row r — could shift P down one row.
 - Long sequences (e.g. `happy-number` unhappy inputs) make many small cells; fine but could wrap.
 - `legacy/` holds the original BFS/DFS simulator; delete once no longer wanted.

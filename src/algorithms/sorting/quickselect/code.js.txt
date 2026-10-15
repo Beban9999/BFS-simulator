@@ -1,0 +1,18 @@
+function findKthLargest(nums, k) {
+  const target = nums.length - k;               // its index if nums were sorted ascending   // @mark init
+  let lo = 0, hi = nums.length - 1;
+  while (true) {
+    const pivot = nums[hi];                     // Lomuto partition, last element as pivot   // @mark partition
+    let i = lo;
+    for (let j = lo; j < hi; j++) {
+      if (nums[j] < pivot) {                    // @mark compare
+        [nums[i], nums[j]] = [nums[j], nums[i]];   // @mark swap
+        i++;
+      }
+    }
+    [nums[i], nums[hi]] = [nums[hi], nums[i]];  // pivot is now at its sorted index i   // @mark place
+    if (i === target) return nums[i];           // @mark check, found
+    if (i < target) lo = i + 1;                 // answer is right of the pivot   // @mark go-right
+    else hi = i - 1;                            // answer is left of the pivot   // @mark go-left
+  }
+}

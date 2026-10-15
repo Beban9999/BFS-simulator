@@ -1,0 +1,12 @@
+def counting_sort(nums):
+    k = max(nums) + 1                           # values are 0..k-1   # @mark init
+    count = [0] * k
+    for x in nums:
+        count[x] += 1                           # histogram   # @mark count
+    for v in range(1, k):
+        count[v] += count[v - 1]                # now count[v] = how many values are <= v   # @mark prefix
+    out = [0] * len(nums)
+    for x in reversed(nums):                    # right to left keeps equal values in order
+        count[x] -= 1                           # last free slot for value x   # @mark place
+        out[count[x]] = x
+    return out                                  # @mark done

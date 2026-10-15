@@ -7,6 +7,13 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `docs/ADDING_AN_ALGORITHM.md` (exact recipe + conventions) → the original spec
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
+## Current status (update at the end of every session)
+- **54 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Graphs (2: grid BFS/DFS).
+- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`.
+- Last completed: Tab 5 Sorting (2026-10-15, closed issue #2).
+- **Next up:** issue #3 — build the `linkedlist` renderer, then Tab 6 Linked Lists (renderer plan in `ROADMAP.md`).
+  After that: #4 (stack/queue renderer + Tab 7), then #5 (tree renderer + heaps).
+
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
 - `npm test` — Vitest; checks every algorithm against its `reference()` on presets + 200 random inputs
@@ -42,3 +49,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `Map` highlight priority: later highlights override earlier ones for the same id; put the important kind last.
 - Grid traces store per-cell status in `state.marks` (one char per cell) instead of thousands of highlights — keep it that way for big inputs.
 - When writing `meta.problems`, double-check every entry is a real problem (number, title, slug).
+- When checking a page in Chrome at a given step, navigate to `#/<cat>/<id>?step=N` **and reload** — changing only
+  the hash of an open page doesn't re-read `step`. A quick whole-tab check: evaluate a script that sets
+  `location.hash` per page, clicks "Jump to end (End)", and reads `.narration-text` / `.code-line.current`.
+- If the chrome-devtools MCP says "browser is already running", ask the user to close that Chrome window; as a
+  fallback, Playwright with `channel: "chrome"` can take screenshots (script must run from the repo root).
+- Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
+  generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).

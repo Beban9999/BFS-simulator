@@ -1,0 +1,14 @@
+function countingSort(nums) {
+  const k = Math.max(...nums) + 1;              // values are 0..k-1   // @mark init
+  const count = new Array(k).fill(0);
+  for (const x of nums) count[x]++;             // histogram   // @mark count
+  for (let v = 1; v < k; v++) {
+    count[v] += count[v - 1];                   // now count[v] = how many values are <= v   // @mark prefix
+  }
+  const out = new Array(nums.length);
+  for (let i = nums.length - 1; i >= 0; i--) {  // right to left keeps equal values in order
+    const x = nums[i];
+    out[--count[x]] = x;                        // last free slot for value x   // @mark place
+  }
+  return out;                                   // @mark done
+}

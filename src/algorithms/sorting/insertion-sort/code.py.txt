@@ -1,0 +1,9 @@
+def insertion_sort(nums):
+    for i in range(1, len(nums)):               # nums[:i] is sorted   # @mark pass
+        key = nums[i]
+        j = i - 1
+        while j >= 0 and nums[j] > key:         # @mark compare
+            nums[j + 1] = nums[j]               # shift the larger value right   # @mark shift
+            j -= 1
+        nums[j + 1] = key                       # drop key into the gap   # @mark place
+    return nums                                 # @mark done

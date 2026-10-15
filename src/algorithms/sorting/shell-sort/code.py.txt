@@ -1,0 +1,11 @@
+def shell_sort(nums):
+    gap = len(nums) // 2
+    while gap > 0:                              # Shell's original gaps: n/2, n/4, ..., 1   # @mark gap
+        for i in range(gap, len(nums)):         # gap-insertion sort   # @mark pass
+            key, j = nums[i], i
+            while j >= gap and nums[j - gap] > key:   # @mark compare
+                nums[j] = nums[j - gap]         # shift a whole gap to the right   # @mark shift
+                j -= gap
+            nums[j] = key                       # @mark place
+        gap //= 2
+    return nums                                 # @mark done

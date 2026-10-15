@@ -1,0 +1,20 @@
+def heap_sort(nums):
+    n = len(nums)
+    for i in range(n // 2 - 1, -1, -1):         # build a max-heap bottom-up, O(n)   # @mark build
+        sift_down(nums, i, n)
+    for end in range(n - 1, 0, -1):
+        nums[0], nums[end] = nums[end], nums[0] # move the max behind the heap   # @mark extract
+        sift_down(nums, 0, end)                 # repair the heap nums[0..end-1]
+    return nums                                 # @mark done
+
+def sift_down(nums, i, size):
+    while True:
+        largest, l, r = i, 2 * i + 1, 2 * i + 2 # children of i   # @mark sift
+        if l < size and nums[l] > nums[largest]:   # @mark compare-left
+            largest = l
+        if r < size and nums[r] > nums[largest]:   # @mark compare-right
+            largest = r
+        if largest == i:                        # parent >= both children   # @mark settled
+            return
+        nums[i], nums[largest] = nums[largest], nums[i]   # @mark sift-swap
+        i = largest

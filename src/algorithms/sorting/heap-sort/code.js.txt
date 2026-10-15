@@ -1,0 +1,23 @@
+function heapSort(nums) {
+  const n = nums.length;
+  for (let i = (n >> 1) - 1; i >= 0; i--) {     // build a max-heap bottom-up, O(n)   // @mark build
+    siftDown(nums, i, n);
+  }
+  for (let end = n - 1; end > 0; end--) {
+    [nums[0], nums[end]] = [nums[end], nums[0]];   // move the max behind the heap   // @mark extract
+    siftDown(nums, 0, end);                     // repair the heap nums[0..end-1]
+  }
+  return nums;                                  // @mark done
+}
+
+function siftDown(nums, i, size) {
+  for (;;) {
+    let largest = i;
+    const l = 2 * i + 1, r = 2 * i + 2;         // children of i   // @mark sift
+    if (l < size && nums[l] > nums[largest]) largest = l;   // @mark compare-left
+    if (r < size && nums[r] > nums[largest]) largest = r;   // @mark compare-right
+    if (largest === i) return;                  // parent >= both children   // @mark settled
+    [nums[i], nums[largest]] = [nums[largest], nums[i]];   // @mark sift-swap
+    i = largest;
+  }
+}

@@ -1,0 +1,10 @@
+def bucket_sort(nums, k):
+    hi = max(nums) + 1                          # values lie in [0, hi)
+    buckets = [[] for _ in range(k)]            # @mark init
+    for x in nums:
+        buckets[x * k // hi].append(x)          # slice of width hi/k that x falls into   # @mark scatter
+    out = []
+    for b in buckets:
+        b.sort()                                # small buckets: insertion sort is typical   # @mark sort-bucket
+        out.extend(b)                           # @mark gather
+    return out                                  # @mark done

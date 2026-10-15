@@ -1,0 +1,11 @@
+function radixSort(nums) {
+  const max = Math.max(...nums);
+  for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {   // one pass per digit   // @mark pass
+    const buckets = Array.from({ length: 10 }, () => []);
+    for (const x of nums) {
+      buckets[Math.floor(x / exp) % 10].push(x);   // push keeps the previous order (stable)   // @mark bucket
+    }
+    nums = buckets.flat();                      // collect bucket 0, then 1, ... 9   // @mark collect
+  }
+  return nums;                                  // @mark done
+}

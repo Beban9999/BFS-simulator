@@ -22,7 +22,7 @@ It grew out of a small BFS/DFS grid simulator (kept in [`legacy/`](legacy/)).
 - Dark and light themes, colour + shape legend for colour-blind users, works on mobile, respects reduced motion.
 
 ## Status
-43 pages so far across Arrays & Hashing, Two Pointers & Sliding Window, Searching, Sorting and Graphs.
+54 pages so far across Arrays & Hashing, Two Pointers & Sliding Window, Searching, Sorting and Graphs.
 See [ROADMAP.md](ROADMAP.md) for the full plan.
 
 ## Development

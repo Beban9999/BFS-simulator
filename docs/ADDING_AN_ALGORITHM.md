@@ -25,6 +25,9 @@ src/algorithms/<category>/<id>/
 | Grid with drawing | `graphs/bfs-grid` |
 | Custom renderer | `arrays-hashing/hash-table` + `src/renderers/HashTableView.tsx` |
 | Nested helper generators (`yield*`) | `searching/bounds`, `arrays-hashing/hash-table` |
+| Recursion with a call-stack panel | `sorting/merge-sort`, `sorting/quick-sort-lomuto` (frames array pushed/popped around `yield*`) |
+| Extra rows under bars (buffer, levels) | `sorting/merge-sort`, `sorting/heap-sort` |
+| Select-field option that changes behaviour | `sorting/quick-sort-lomuto` (pivot rule) |
 
 ## 1. `meta.ts`
 

@@ -1,0 +1,16 @@
+def find_kth_largest(nums, k):
+    target = len(nums) - k                      # its index if nums were sorted ascending   # @mark init
+    lo, hi = 0, len(nums) - 1
+    while True:
+        pivot, i = nums[hi], lo                 # Lomuto partition, last element as pivot   # @mark partition
+        for j in range(lo, hi):
+            if nums[j] < pivot:                 # @mark compare
+                nums[i], nums[j] = nums[j], nums[i]   # @mark swap
+                i += 1
+        nums[i], nums[hi] = nums[hi], nums[i]   # pivot is now at its sorted index i   # @mark place
+        if i == target:                         # @mark check
+            return nums[i]                      # @mark found
+        if i < target:
+            lo = i + 1                          # answer is right of the pivot   # @mark go-right
+        else:
+            hi = i - 1                          # answer is left of the pivot   # @mark go-left

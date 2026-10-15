@@ -1,0 +1,27 @@
+function sortArray(nums) {
+  mergeSort(nums, 0, nums.length - 1);
+  return nums;                                  // @mark done
+}
+
+function mergeSort(nums, lo, hi) {              // sorts nums[lo..hi]   // @mark call
+  if (lo >= hi) return;                         // 0 or 1 element: already sorted   // @mark base
+  const mid = (lo + hi) >> 1;                   // @mark split
+  mergeSort(nums, lo, mid);                     // @mark left
+  mergeSort(nums, mid + 1, hi);                 // @mark right
+  merge(nums, lo, mid, hi);                     // @mark merge-call
+}
+
+function merge(nums, lo, mid, hi) {
+  const buf = [];                               // @mark merge-start
+  let i = lo, j = mid + 1;
+  while (i <= mid && j <= hi) {
+    if (nums[i] <= nums[j]) {                   // <= keeps equal values in order (stable)   // @mark compare
+      buf.push(nums[i++]);                      // @mark take-left
+    } else {
+      buf.push(nums[j++]);                      // @mark take-right
+    }
+  }
+  while (i <= mid) buf.push(nums[i++]);         // leftovers are already sorted   // @mark drain
+  while (j <= hi) buf.push(nums[j++]);
+  for (let k = 0; k < buf.length; k++) nums[lo + k] = buf[k];   // @mark copy-back
+}

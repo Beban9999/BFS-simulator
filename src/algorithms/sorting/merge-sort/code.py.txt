@@ -1,0 +1,22 @@
+def sort_array(nums):
+    merge_sort(nums, 0, len(nums) - 1)
+    return nums                                 # @mark done
+
+def merge_sort(nums, lo, hi):                   # sorts nums[lo..hi]   # @mark call
+    if lo >= hi:                                # 0 or 1 element: already sorted   # @mark base
+        return
+    mid = (lo + hi) // 2                        # @mark split
+    merge_sort(nums, lo, mid)                   # @mark left
+    merge_sort(nums, mid + 1, hi)               # @mark right
+    merge(nums, lo, mid, hi)                    # @mark merge-call
+
+def merge(nums, lo, mid, hi):
+    buf, i, j = [], lo, mid + 1                 # @mark merge-start
+    while i <= mid and j <= hi:
+        if nums[i] <= nums[j]:                  # <= keeps equal values in order (stable)   # @mark compare
+            buf.append(nums[i]); i += 1         # @mark take-left
+        else:
+            buf.append(nums[j]); j += 1         # @mark take-right
+    buf.extend(nums[i:mid + 1])                 # leftovers are already sorted   # @mark drain
+    buf.extend(nums[j:hi + 1])
+    nums[lo:hi + 1] = buf                       # @mark copy-back

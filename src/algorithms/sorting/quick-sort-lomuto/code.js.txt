@@ -1,0 +1,26 @@
+function sortArray(nums) {
+  quickSort(nums, 0, nums.length - 1);
+  return nums;                                  // @mark done
+}
+
+function quickSort(nums, lo, hi) {              // sorts nums[lo..hi]   // @mark call
+  if (lo >= hi) return;                         // 0 or 1 element   // @mark base
+  const p = partition(nums, lo, hi);            // pivot ends at its final index p   // @mark partition-call
+  quickSort(nums, lo, p - 1);                   // @mark left
+  quickSort(nums, p + 1, hi);                   // @mark right
+}
+
+function partition(nums, lo, hi) {
+  const k = choosePivot(nums, lo, hi);          // last / middle / median of three   // @mark choose
+  [nums[k], nums[hi]] = [nums[hi], nums[k]];    // park the pivot at the end   // @mark pivot-to-end
+  const pivot = nums[hi];                       // nums[lo..i-1] < pivot   // @mark init
+  let i = lo;
+  for (let j = lo; j < hi; j++) {
+    if (nums[j] < pivot) {                      // @mark compare
+      [nums[i], nums[j]] = [nums[j], nums[i]];  // @mark swap
+      i++;
+    }
+  }
+  [nums[i], nums[hi]] = [nums[hi], nums[i]];    // pivot lands in its final spot   // @mark place
+  return i;
+}

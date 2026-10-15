@@ -1,0 +1,9 @@
+def selection_sort(nums):
+    n = len(nums)
+    for i in range(n - 1):                      # nums[:i] is sorted and final   # @mark pass
+        min_i = i
+        for j in range(i + 1, n):
+            if nums[j] < nums[min_i]:           # @mark compare
+                min_i = j                       # @mark new-min
+        nums[i], nums[min_i] = nums[min_i], nums[i]   # @mark swap
+    return nums                                 # @mark done

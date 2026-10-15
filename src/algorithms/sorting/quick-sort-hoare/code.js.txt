@@ -1,0 +1,22 @@
+function sortArray(nums) {
+  quickSort(nums, 0, nums.length - 1);
+  return nums;                                  // @mark done
+}
+
+function quickSort(nums, lo, hi) {              // @mark call
+  if (lo >= hi) return;                         // @mark base
+  const p = partition(nums, lo, hi);            // nums[lo..p] <= nums[p+1..hi]   // @mark partition-call
+  quickSort(nums, lo, p);                       // p is NOT final here, so include it   // @mark left
+  quickSort(nums, p + 1, hi);                   // @mark right
+}
+
+function partition(nums, lo, hi) {
+  const pivot = nums[(lo + hi) >> 1];           // @mark init
+  let i = lo - 1, j = hi + 1;
+  while (true) {
+    do i++; while (nums[i] < pivot);            // stop at a value >= pivot   // @mark move-i
+    do j--; while (nums[j] > pivot);            // stop at a value <= pivot   // @mark move-j
+    if (i >= j) return j;                       // pointers crossed: done   // @mark cross
+    [nums[i], nums[j]] = [nums[j], nums[i]];    // both are on the wrong side   // @mark swap
+  }
+}
