@@ -1,0 +1,19 @@
+// MinHeap of [w, v, from] (ties: smaller v, then smaller from)
+function prim(graph, start = 0) {
+  // graph[u] = array of [v, w], undirected and connected
+  const inTree = Array(graph.length).fill(false);
+  const heap = new MinHeap([[0, start, -1]]);   // @mark init
+  let total = 0;
+  const mst = [];
+  while (heap.size) {
+    const [w, u, from] = heap.pop();            // @mark pop
+    if (inTree[u]) continue;                    // @mark stale
+    inTree[u] = true;                           // @mark add
+    total += w;
+    if (from !== -1) mst.push([from, u, w]);
+    for (const [v, wv] of graph[u]) {
+      if (!inTree[v]) heap.push([wv, v, u]);    // @mark push
+    }
+  }
+  return [total, mst];                          // @mark done
+}

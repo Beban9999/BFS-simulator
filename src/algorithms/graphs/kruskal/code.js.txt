@@ -1,0 +1,22 @@
+function kruskal(n, edges) {
+  const parent = Array.from({ length: n }, (_, i) => i);
+  const find = (x) => {
+    while (parent[x] !== x) {
+      parent[x] = parent[parent[x]];            // path halving
+      x = parent[x];
+    }
+    return x;
+  };
+  let total = 0;
+  const mst = [];
+  const sorted = [...edges].sort((a, b) => a[2] - b[2] || a[0] - b[0] || a[1] - b[1]);  // @mark sort
+  for (const [u, v, w] of sorted) {
+    const ru = find(u), rv = find(v);           // @mark consider
+    if (ru === rv) continue;                    // @mark skip
+    parent[ru] = rv;                            // @mark take
+    total += w;
+    mst.push([u, v, w]);
+    if (mst.length === n - 1) break;            // @mark full
+  }
+  return [total, mst];                          // @mark done
+}

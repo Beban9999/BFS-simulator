@@ -1,0 +1,19 @@
+import heapq
+
+def prim(graph, start=0):
+    # graph[u] = list of (v, w), undirected and connected
+    in_tree = [False] * len(graph)
+    heap = [(0, start, -1)]                     # @mark init
+    total, mst = 0, []
+    while heap:
+        w, u, frm = heapq.heappop(heap)         # @mark pop
+        if in_tree[u]:
+            continue                            # @mark stale
+        in_tree[u] = True                       # @mark add
+        total += w
+        if frm != -1:
+            mst.append((frm, u, w))
+        for v, wv in graph[u]:
+            if not in_tree[v]:
+                heapq.heappush(heap, (wv, v, u))    # @mark push
+    return total, mst                           # @mark done

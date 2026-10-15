@@ -3,7 +3,7 @@
 Source of truth for what exists and what's next. The full original spec is
 [algo-visualizer-build-prompt.md](algo-visualizer-build-prompt.md) (section numbers below refer to it).
 How to build a page: [docs/ADDING_AN_ALGORITHM.md](docs/ADDING_AN_ALGORITHM.md).
-GitHub issues [#2–#18](https://github.com/Beban9999/BFS-simulator/issues) mirror the unchecked sections below (one per tab / feature); tick both when done.
+GitHub issues [#2–#19](https://github.com/Beban9999/BFS-simulator/issues) mirror the unchecked sections below (one per tab / feature); tick both when done.
 
 Legend: `[x]` done (tests pass + checked in the browser) · `[ ]` to do · *(id)* = planned folder name ·
 **needs:** = renderer/feature that must exist first.
@@ -113,7 +113,7 @@ Shared: `_shared/bintree.ts` (`BTree` with stable ids, level-order parse/seriali
 - [x] Segment tree build / query / update *(segment-tree)* · Fenwick / BIT *(fenwick-tree)*
 - [ ] Later: lazy propagation for the segment tree (range updates) — only described in its info tab; BST delete for AVL / red-black
 
-### Tab 10 — Graphs (20 done)
+### Tab 10 — Graphs ✅ (22; advanced pages moved to issue #19)
 Shared: `_shared/graph.ts` (sample graphs `SAMPLE_UNDIRECTED`, `SAMPLE_DIRECTED`, `SAMPLE_DAG`, `SAMPLE_WEIGHTED`…, `randomGraph` / `randomDagish`, `adjacency`, `dsuForest`, `sourceField`). Grid pages use `charGridField` / `randomCharGrid` / `capFrames` from `_shared/grid.ts`. Copy `graphs/bfs-graph` for a new graph page, `graphs/number-of-islands` for a grid one.
 - [x] BFS grid *(bfs-grid)* · [x] DFS grid *(dfs-grid)*
 - [x] Representations: edge list → adjacency lists + matrix *(representations)*
@@ -122,8 +122,8 @@ Shared: `_shared/graph.ts` (sample graphs `SAMPLE_UNDIRECTED`, `SAMPLE_DIRECTED`
 - [x] Cycle detection, undirected parent + directed 3-colour *(cycle-detection)* · topo sort Kahn *(topo-sort-kahn)* + DFS *(topo-sort-dfs)* · *(bipartite)*
 - [x] Union-Find with path compression + union by rank, forest view *(union-find)*
 - [x] Shortest paths: BFS (*bfs-graph*), 0-1 BFS *(zero-one-bfs)*, *(dijkstra)*, *(bellman-ford)*, *(floyd-warshall)*, A* on grid *(a-star)*
-- [ ] MST: Kruskal, Prim
-- [ ] Advanced: Tarjan/Kosaraju SCC, bridges/articulation points, Hierholzer, Edmonds-Karp, clone graph, word ladder
+- [x] MST: *(kruskal)* (sorted edges + union-find forest) · *(prim)* (lazy heap)
+- [ ] Later (issue #19): Tarjan/Kosaraju SCC, bridges/articulation points, Hierholzer, Edmonds-Karp, clone graph, word ladder
 
 ## Phase 3 — Backtracking & DP
 - [ ] `decisiontree` renderer (choose → explore → un-choose, pruned branches greyed) synced with the concrete state view

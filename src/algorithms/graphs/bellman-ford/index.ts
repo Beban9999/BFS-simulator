@@ -40,7 +40,8 @@ function* generate({ graph, source }: Input) {
     graph: { ...base, sub: dist.map(distLabel) },
     array: {
       rows: [
-        { label: "edges", values: edges.map(([u, v, w]) => `${u}→${v}:${w}`) },
+        { label: "edges", values: edges.map(([u, v]) => `${u}→${v}`) },
+        { label: "weight", values: edges.map(([, , w]) => w), hideIndex: true },
         { label: "dist", values: dist.map(distLabel) },
       ],
       pointers: i === null ? [] : [{ name: "e", index: i }],
@@ -87,7 +88,7 @@ function* generate({ graph, source }: Input) {
       yield t.step("improve", `Edge ${u}→${v} (${w}): ${du} + ${w} = ${du + w} < ${distLabel(dv)}. dist[${v}] = ${du + w}.`, {
         state: state(i),
         vars: { pass: round, u, v, w, "dist[v]": du + w },
-        highlights: [...marks(), ...hl("found", ge(u, v), gn(v), ai(v, 1)), ...hl("current", ai(i, 0))],
+        highlights: [...marks(), ...hl("found", ge(u, v), gn(v), ai(v, 2)), ...hl("current", ai(i, 0))],
       });
     }
     if (!changed) {

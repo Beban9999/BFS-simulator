@@ -1,0 +1,20 @@
+def kruskal(n, edges):
+    parent = list(range(n))
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]       # path halving
+            x = parent[x]
+        return x
+
+    total, mst = 0, []
+    for w, u, v in sorted((w, u, v) for u, v, w in edges):  # @mark sort
+        ru, rv = find(u), find(v)               # @mark consider
+        if ru == rv:
+            continue                            # @mark skip
+        parent[ru] = rv                         # @mark take
+        total += w
+        mst.append((u, v, w))
+        if len(mst) == n - 1:
+            break                               # @mark full
+    return total, mst                           # @mark done

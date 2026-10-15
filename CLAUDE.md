@@ -8,10 +8,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **125 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (20).
+- **127 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22).
 - Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`.
-- Last completed: `graph` renderer + `graph` input field + 18 Graphs pages (2026-10-15, issue #7 in progress): traversal, grid patterns, representations, cycles/topo/bipartite, union-find, shortest paths.
-- **Next up:** rest of issue #7 — MST (Kruskal, Prim) and Advanced (SCC, bridges/articulation points, Hierholzer, Edmonds-Karp, clone graph, word ladder). Then #8 backtracking, #9 DP.
+- Last completed: `graph` renderer + `graph` input field + 20 new Graphs pages (2026-10-15, closes issue #7): traversal, grid patterns, representations, cycles/topo/bipartite, union-find, shortest paths, MST.
+- **Next up:** issue #8 — `decisiontree` renderer + Tab 11 Backtracking, then #9 DP. Advanced graph pages (SCC, bridges, Hierholzer, max flow, clone graph, word ladder) are parked in issue #19.
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
