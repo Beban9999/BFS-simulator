@@ -1,0 +1,13 @@
+function traverse(root, order) {                // order: "pre" | "in" | "post"
+  const out = [];
+  function dfs(node) {                          // @mark call
+    if (node === null) return;                  // empty subtree: nothing to do   // @mark base
+    if (order === "pre") out.push(node.val);    // node, then left, then right   // @mark visit-pre
+    dfs(node.left);                             // @mark go-left
+    if (order === "in") out.push(node.val);     // left, node, right   // @mark visit-in
+    dfs(node.right);                            // @mark go-right
+    if (order === "post") out.push(node.val);   // left, right, then node   // @mark visit-post
+  }
+  dfs(root);
+  return out;                                   // @mark done
+}

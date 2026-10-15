@@ -1,0 +1,28 @@
+def preorder(root):
+    out, stack = [], [root] if root else []     # @mark pre-init
+    while stack:
+        node = stack.pop()                      # visit as soon as it is popped   # @mark pre-pop
+        out.append(node.val)
+        if node.right: stack.append(node.right) # push right first so left pops first   # @mark pre-push
+        if node.left: stack.append(node.left)
+    return out                                  # @mark pre-done
+
+def inorder(root):
+    out, stack, cur = [], [], root              # @mark in-init
+    while cur or stack:
+        while cur:                              # slide down the left spine
+            stack.append(cur)                   # @mark in-push
+            cur = cur.left
+        cur = stack.pop()                       # leftmost node not yet visited   # @mark in-pop
+        out.append(cur.val)
+        cur = cur.right                         # then its right subtree   # @mark in-right
+    return out                                  # @mark in-done
+
+def postorder(root):                            # node-right-left, reversed = left-right-node
+    out, stack = [], [root] if root else []     # @mark post-init
+    while stack:
+        node = stack.pop()                      # @mark post-pop
+        out.append(node.val)
+        if node.left: stack.append(node.left)   # left first so right pops first   # @mark post-push
+        if node.right: stack.append(node.right)
+    return out[::-1]                            # @mark post-done

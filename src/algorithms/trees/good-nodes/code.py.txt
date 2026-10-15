@@ -1,0 +1,10 @@
+def good_nodes(root):
+    def dfs(node, best):                        # best = largest value on the path above   # @mark call
+        if node is None:                        # @mark base
+            return 0
+        good = 1 if node.val >= best else 0     # nothing above is bigger   # @mark check
+        best = max(best, node.val)              # pass the new maximum down   # @mark update
+        left = dfs(node.left, best)             # @mark left
+        right = dfs(node.right, best)           # @mark right
+        return good + left + right              # @mark combine
+    return dfs(root, float("-inf"))             # @mark done

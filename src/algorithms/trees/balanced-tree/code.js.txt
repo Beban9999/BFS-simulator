@@ -1,0 +1,15 @@
+function isBalanced(root) {
+  function height(node) {                       // height, or -1 if this subtree is unbalanced   // @mark call
+    if (node === null) return 0;                // @mark base
+    const left = height(node.left);             // @mark left
+    if (left === -1) {
+      return -1;                                // already unbalanced below: stop early   // @mark left-bad
+    }
+    const right = height(node.right);           // @mark right
+    if (right === -1 || Math.abs(left - right) > 1) {   // @mark check
+      return -1;                                // @mark bad
+    }
+    return 1 + Math.max(left, right);           // @mark combine
+  }
+  return height(root) !== -1;                   // @mark done
+}

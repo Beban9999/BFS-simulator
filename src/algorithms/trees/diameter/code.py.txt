@@ -1,0 +1,12 @@
+def diameter_of_binary_tree(root):
+    best = 0                                    # longest path seen, in edges
+    def height(node):                           # @mark call
+        nonlocal best
+        if node is None:                        # @mark base
+            return 0
+        left = height(node.left)                # @mark left
+        right = height(node.right)              # @mark right
+        best = max(best, left + right)          # longest path that bends at this node   # @mark update
+        return 1 + max(left, right)             # only one side can continue upward   # @mark combine
+    height(root)
+    return best                                 # @mark done

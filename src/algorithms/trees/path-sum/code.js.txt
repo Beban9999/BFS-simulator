@@ -1,0 +1,16 @@
+function pathSum(root, target) {
+  const res = [], path = [];
+  function dfs(node, remaining) {               // @mark call
+    if (node === null) return;                  // @mark base
+    path.push(node.val);                        // choose this node   // @mark choose
+    remaining -= node.val;
+    if (!node.left && !node.right && remaining === 0) {   // a leaf that hits the target   // @mark leaf
+      res.push([...path]);                      // copy: path keeps changing   // @mark record
+    }
+    dfs(node.left, remaining);                  // @mark left
+    dfs(node.right, remaining);                 // @mark right
+    path.pop();                                 // un-choose before returning   // @mark undo
+  }
+  dfs(root, target);
+  return res;                                   // @mark done
+}

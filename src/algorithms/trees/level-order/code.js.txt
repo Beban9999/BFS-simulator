@@ -1,0 +1,18 @@
+function levelOrder(root, zigzag = false) {
+  const res = [];
+  let queue = root ? [root] : [];               // @mark init
+  while (queue.length) {
+    const level = [], next = [];
+    for (const node of queue) {                 // exactly the nodes of this level   // @mark level
+      level.push(node.val);                     // @mark pop
+      if (node.left) next.push(node.left);      // children wait for the next level   // @mark push
+      if (node.right) next.push(node.right);
+    }
+    if (zigzag && res.length % 2 === 1) {
+      level.reverse();                          // every other level right-to-left   // @mark zigzag
+    }
+    res.push(level);                            // @mark add-level
+    queue = next;
+  }
+  return res;                                   // @mark done
+}

@@ -1,0 +1,11 @@
+function goodNodes(root) {
+  function dfs(node, best) {                    // best = largest value on the path above   // @mark call
+    if (node === null) return 0;                // @mark base
+    const good = node.val >= best ? 1 : 0;      // nothing above is bigger   // @mark check
+    best = Math.max(best, node.val);            // pass the new maximum down   // @mark update
+    const left = dfs(node.left, best);          // @mark left
+    const right = dfs(node.right, best);        // @mark right
+    return good + left + right;                 // @mark combine
+  }
+  return dfs(root, -Infinity);                  // @mark done
+}

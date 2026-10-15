@@ -1,0 +1,12 @@
+function maxPathSum(root) {
+  let best = -Infinity;
+  function gain(node) {                         // best sum of a path going DOWN from node   // @mark call
+    if (node === null) return 0;                // @mark base
+    const left = Math.max(gain(node.left), 0);  // a negative arm is better left out   // @mark left
+    const right = Math.max(gain(node.right), 0);   // @mark right
+    best = Math.max(best, node.val + left + right);   // the path that bends here   // @mark update
+    return node.val + Math.max(left, right);    // going up, only one arm can come along   // @mark combine
+  }
+  gain(root);
+  return best;                                  // @mark done
+}

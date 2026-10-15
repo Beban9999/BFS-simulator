@@ -1,6 +1,7 @@
+import { useId } from "react";
 import { hierarchy, tree as d3tree } from "d3-hierarchy";
 import type { HighlightKind, RendererProps } from "../engine/types";
-import { te, tn, type TreeId, type TreeState, type TreeView } from "../algorithms/_shared/tree";
+import { te, tl, tn, type TreeId, type TreeState, type TreeView } from "../algorithms/_shared/tree";
 import { ArrayRenderer, KIND_GLYPH } from "./ArrayView";
 
 const NODE_W = 50; // horizontal spacing between neighbouring nodes
@@ -23,6 +24,7 @@ function build(id: TreeId, children: TreeView["children"], seen: Set<TreeId>): D
 }
 
 function OneTree({ t, highlights }: { t: TreeView; highlights: Map<string, HighlightKind> }) {
+  const uid = useId().replace(/:/g, "");
   if (t.root === null) {
     return (
       <div className="tv-empty">
@@ -62,6 +64,13 @@ function OneTree({ t, highlights }: { t: TreeView; highlights: Map<string, Highl
   return (
     <div className="tv-one">
       <svg className="tv" viewBox={`0 0 ${width} ${height}`} style={{ width: "100%", maxWidth: Math.round(width * 1.25) }} role="img" aria-label={t.name ?? "Tree"}>
+        {t.links?.length ? (
+          <defs>
+            <marker id={`${uid}-arrow`} viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+              <path d="M0,0 L8,4 L0,8 z" className="tv-link-head" />
+            </marker>
+          </defs>
+        ) : null}
         {all.map((d) => {
           if (!d.parent || d.data.id === null || d.parent.data.id === null) return null;
           const [x1, y1] = pos(d.parent);
@@ -69,6 +78,26 @@ function OneTree({ t, highlights }: { t: TreeView; highlights: Map<string, Highl
           const k = highlights.get(te(d.parent.data.id, d.data.id));
           const path = `M ${x1} ${y1} L ${x2} ${y2}`;
           return <path key={`${d.parent.data.id}-${d.data.id}`} className="tv-edge" data-k={k} d={path} />;
+        })}
+        {(t.links ?? []).map(({ from, to }) => {
+          const a = place.get(from);
+          const b = place.get(to);
+          if (!a || !b) return null;
+          // Bow the curve sideways so it doesn't run along the tree edges.
+          const mx = (a[0] + b[0]) / 2 + (b[1] - a[1]) * 0.45;
+          const my = (a[1] + b[1]) / 2 - (b[0] - a[0]) * 0.2;
+          // Trim both ends to the circle edges so the arrowhead stays visible.
+          const trim = (p: readonly [number, number], q: readonly [number, number], by: number) => {
+            const dx = q[0] - p[0];
+            const dy = q[1] - p[1];
+            const len = Math.hypot(dx, dy) || 1;
+            return [p[0] + (dx / len) * by, p[1] + (dy / len) * by] as const;
+          };
+          const s0 = trim(a, [mx, my], R + 2);
+          const e0 = trim(b, [mx, my], R + 3);
+          return (
+            <path key={`l${from}-${to}`} className="tv-link" data-k={highlights.get(tl(from, to))} d={`M ${s0[0]} ${s0[1]} Q ${mx} ${my} ${e0[0]} ${e0[1]}`} markerEnd={`url(#${uid}-arrow)`} />
+          );
         })}
         {all.map((d) => {
           if (d.data.id === null) return null;

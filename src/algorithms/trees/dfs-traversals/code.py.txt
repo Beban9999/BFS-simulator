@@ -1,0 +1,12 @@
+def traverse(root, order):                      # order: "pre" | "in" | "post"
+    out = []
+    def dfs(node):                              # @mark call
+        if node is None:                        # empty subtree: nothing to do   # @mark base
+            return
+        if order == "pre": out.append(node.val) # node, then left, then right   # @mark visit-pre
+        dfs(node.left)                          # @mark go-left
+        if order == "in": out.append(node.val)  # left, node, right   # @mark visit-in
+        dfs(node.right)                         # @mark go-right
+        if order == "post": out.append(node.val)   # left, right, then node   # @mark visit-post
+    dfs(root)
+    return out                                  # @mark done

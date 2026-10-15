@@ -1,0 +1,6 @@
+def max_depth(root):                            # @mark call
+    if root is None:                            # an empty tree has depth 0   # @mark base
+        return 0
+    left = max_depth(root.left)                 # @mark left
+    right = max_depth(root.right)               # @mark right
+    return 1 + max(left, right)                 # this node + the deeper side   # @mark combine

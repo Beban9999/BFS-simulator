@@ -1,0 +1,35 @@
+function preorder(root) {
+  const out = [], stack = root ? [root] : [];   // @mark pre-init
+  while (stack.length) {
+    const node = stack.pop();                   // visit as soon as it is popped   // @mark pre-pop
+    out.push(node.val);
+    if (node.right) stack.push(node.right);     // push right first so left pops first   // @mark pre-push
+    if (node.left) stack.push(node.left);
+  }
+  return out;                                   // @mark pre-done
+}
+
+function inorder(root) {
+  const out = [], stack = []; let cur = root;   // @mark in-init
+  while (cur || stack.length) {
+    while (cur) {                               // slide down the left spine
+      stack.push(cur);                          // @mark in-push
+      cur = cur.left;
+    }
+    cur = stack.pop();                          // leftmost node not yet visited   // @mark in-pop
+    out.push(cur.val);
+    cur = cur.right;                            // then its right subtree   // @mark in-right
+  }
+  return out;                                   // @mark in-done
+}
+
+function postorder(root) {                      // node-right-left, reversed = left-right-node
+  const out = [], stack = root ? [root] : [];   // @mark post-init
+  while (stack.length) {
+    const node = stack.pop();                   // @mark post-pop
+    out.push(node.val);
+    if (node.left) stack.push(node.left);       // left first so right pops first   // @mark post-push
+    if (node.right) stack.push(node.right);
+  }
+  return out.reverse();                         // @mark post-done
+}

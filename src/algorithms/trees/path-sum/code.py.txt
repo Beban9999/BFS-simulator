@@ -1,0 +1,14 @@
+def path_sum(root, target):
+    res, path = [], []
+    def dfs(node, remaining):                   # @mark call
+        if node is None:                        # @mark base
+            return
+        path.append(node.val)                   # choose this node   # @mark choose
+        remaining -= node.val
+        if node.left is None and node.right is None and remaining == 0:   # a leaf that hits the target   # @mark leaf
+            res.append(path[:])                 # copy: path keeps changing   # @mark record
+        dfs(node.left, remaining)               # @mark left
+        dfs(node.right, remaining)              # @mark right
+        path.pop()                              # un-choose before returning   # @mark undo
+    dfs(root, target)
+    return res                                  # @mark done

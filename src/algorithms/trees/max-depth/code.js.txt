@@ -1,0 +1,6 @@
+function maxDepth(root) {                       // @mark call
+  if (root === null) return 0;                  // an empty tree has depth 0   // @mark base
+  const left = maxDepth(root.left);             // @mark left
+  const right = maxDepth(root.right);           // @mark right
+  return 1 + Math.max(left, right);             // this node + the deeper side   // @mark combine
+}

@@ -17,6 +17,8 @@ export interface TreeView {
   children: Record<TreeId, (TreeId | null)[]>;
   /** Variable labels drawn under nodes (null pointers are listed under the tree). */
   pointers?: { name: string; node: TreeId | null }[];
+  /** Extra non-tree links drawn as dashed curves (e.g. Morris threads); highlight id `l:<from>-<to>`. */
+  links?: { from: TreeId; to: TreeId }[];
   note?: string;
 }
 
@@ -31,6 +33,7 @@ export interface TreeState {
 /** Highlight ids: node and parent→child edge. Node ids must be unique across all trees of a state. */
 export const tn = (id: TreeId) => `n:${id}`;
 export const te = (parent: TreeId, child: TreeId) => `e:${parent}-${child}`;
+export const tl = (from: TreeId, to: TreeId) => `l:${from}-${to}`;
 
 /** An element stored in a heap array, with a stable id so the drawing can animate swaps. */
 export interface HeapItem {

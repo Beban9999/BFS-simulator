@@ -1,0 +1,23 @@
+function morrisInorder(root) {
+  const out = []; let cur = root;               // @mark init
+  while (cur) {
+    if (cur.left === null) {
+      out.push(cur.val);                        // nothing on the left: visit now   // @mark visit
+      cur = cur.right;                          // (this may follow a thread back up)   // @mark go-right
+    } else {
+      let pred = cur.left;                      // find cur's inorder predecessor:
+      while (pred.right && pred.right !== cur) {
+        pred = pred.right;                      // the rightmost node of the left subtree   // @mark find-pred
+      }
+      if (pred.right === null) {
+        pred.right = cur;                       // first visit: leave a thread back to cur   // @mark thread
+        cur = cur.left;                         // @mark go-left
+      } else {
+        pred.right = null;                      // second visit: the left side is done, remove the thread   // @mark unthread
+        out.push(cur.val);                      // @mark visit-after
+        cur = cur.right;                        // @mark leave
+      }
+    }
+  }
+  return out;                                   // @mark done
+}
