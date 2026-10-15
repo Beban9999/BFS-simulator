@@ -126,9 +126,10 @@ Shared: `_shared/graph.ts` (sample graphs `SAMPLE_UNDIRECTED`, `SAMPLE_DIRECTED`
 - [ ] Later (issue #19): Tarjan/Kosaraju SCC, bridges/articulation points, Hierholzer, Edmonds-Karp, clone graph, word ladder
 
 ## Phase 3 — Backtracking & DP
-- [ ] `decisiontree` renderer (choose → explore → un-choose, pruned branches greyed) synced with the concrete state view
+- [x] `decisiontree` — `src/renderers/DecisionTreeView.tsx` + `src/algorithms/_shared/decision.ts`. Generators drive a `DecisionTree` builder (`child` = choose, `enter` = explore, `finish` = return / un-choose, `prune` = branch cut without exploring, `found`) and put `view()` in `state.tree`, `marks()` in the highlights (current path, solutions, pruned, finished). Concrete view beside the tree: `array` (ids `ai`) and/or `matrix` board (ids `mi`). Big trees fold finished subtrees off the current path into `+k` nodes (limit per tree, default 70); the box scrolls to keep the current node visible. Highlight ids `dn(node)`, `de(parent, child)`.
 - [ ] `table2d` renderer = `matrix` + arrows from each cell to its dependencies + path reconstruction (extend `src/renderers/MatrixView.tsx`)
-- [ ] Tab 11 Backtracking: subsets (± dups), permutations, combinations, combination sum I/II, N-Queens, Sudoku, word search, palindrome partitioning, phone letters, generate parentheses, template note page
+- [x] Tab 11 Backtracking ✅ (9): *(subsets)* ± dups · *(permutations)* ± dups · *(combinations)* · *(combination-sum)* I/II · *(n-queens)* · *(sudoku)* 4×4 / 9×9 · *(word-search)* · *(palindrome-partitioning)* · *(letter-combinations)*. Generate parentheses already lives in Stacks & Queues (`stacks-queues/generate-parentheses`, listed in the problems of the backtracking pages). Copy `backtracking/subsets` for a new page.
+- [ ] Note page: universal backtracking template — **needs:** note-page support (issue #10)
 - [ ] Tab 12 DP: "From recursion to DP" (4 views), 1D (house robber I/II, coin change, decode ways, word break, min cost stairs), LIS (n² and n log n), grid (unique paths, min path sum), strings (LCS, edit distance + alignment, longest palindromic substring, distinct subsequences), knapsack (0/1 + 1D trick, unbounded, partition, target sum), interval (burst balloons, matrix chain), state machine (stock variants, automaton view), trees (House Robber III), bitmask TSP
 
 ## Phase 4 — The rest + platform features

@@ -1,0 +1,15 @@
+function subsets(nums) {
+  nums.sort((a, b) => a - b);                   // @mark sort
+  const res = [], path = [];
+  function backtrack(start) {
+    res.push([...path]);                        // @mark record
+    for (let i = start; i < nums.length; i++) { // @mark loop
+      if (i > start && nums[i] === nums[i - 1]) continue;  // @mark skip-dup
+      path.push(nums[i]);                       // @mark choose
+      backtrack(i + 1);                         // @mark explore
+      path.pop();                               // @mark unchoose
+    }
+  }
+  backtrack(0);
+  return res;                                   // @mark done
+}

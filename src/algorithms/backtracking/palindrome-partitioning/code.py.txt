@@ -1,0 +1,17 @@
+def partition(s):
+    res, path = [], []
+
+    def backtrack(start):
+        if start == len(s):                     # @mark full
+            res.append(path[:])                 # @mark record
+            return
+        for end in range(start + 1, len(s) + 1):
+            piece = s[start:end]
+            if piece != piece[::-1]:            # @mark check
+                continue                        # not a palindrome: prune
+            path.append(piece)                  # @mark choose
+            backtrack(end)                      # @mark explore
+            path.pop()                          # @mark unchoose
+
+    backtrack(0)
+    return res                                  # @mark done

@@ -8,10 +8,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **127 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22).
-- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`.
-- Last completed: `graph` renderer + `graph` input field + 20 new Graphs pages (2026-10-15, closes issue #7): traversal, grid patterns, representations, cycles/topo/bipartite, union-find, shortest paths, MST.
-- **Next up:** issue #8 — `decisiontree` renderer + Tab 11 Backtracking, then #9 DP. Advanced graph pages (SCC, bridges, Hierholzer, max flow, clone graph, word ladder) are parked in issue #19.
+- **136 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (9).
+- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`.
+- Last completed: `decisiontree` renderer + Tab 11 Backtracking, 9 pages (2026-10-15, closes issue #8). Earlier the same day: `graph` renderer + 22 Graphs pages (#7; advanced graph pages parked in #19).
+- **Next up:** issue #9 — Tab 12 DP. The user asked for the meaningful core only, with the rest split into its own issue.
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -24,9 +24,9 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `src/engine/` — types (`AlgorithmModule`, `Step`, `InputField`…), `Tracer` (deep-copied immutable steps,
   cumulative counters), `buildTrace` (10 000-step cap), `@mark` line-marker parser, input parse/validate, seeded RNG.
 - `src/algorithms/<category>/<id>/` — one folder per page (`meta.ts`, `index.ts`, `code.py.txt`, `code.js.txt`,
-  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated, graph).
+  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated, graph, decision).
 - `src/registry.ts` — auto-collects folders with `import.meta.glob` (meta eager, module lazy).
-- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`. Registered in `renderers/index.ts`.
+- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`. Registered in `renderers/index.ts`.
 - `src/engine/graph.ts` — the `graph` input value (`{ n, edges, directed, pos?, labels? }`), its text form and validation.
 - `src/pages/AlgorithmPage.tsx` — wires input bar, renderer, narration, player, code panel, watch/aux, counters, legend, info tabs; syncs `?input=` / `?step=` in the URL.
 - `src/store/prefs.ts` — zustand + localStorage (`steplore-prefs`): theme, language, speed, progress, popup geometry.
@@ -72,5 +72,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - Grid pages with their own alphabet need `charGridField({ alphabet, empty, tools })` — the first tool is the default
   paint tool and `empty` is what a toggled cell becomes. A grid field without `tools` is not editable on the canvas.
 - Grid cells with a label move their centre glyph (path diamond, frontier square) to the corner (`.cell.labelled`).
+- `Tracer.step` deep-freezes every snapshot in dev/tests. `import.meta.env` is rebuilt on every access under Vitest,
+  so it is read once into a constant in `engine/trace.ts` — reading it inside `deepFreeze` made steps ~50× slower
+  (full suite went from 6.5 min to 40 s after the fix). Keep hot paths in the engine free of `import.meta` reads.
+- `decisiontree`: `DecisionTree.finish("done")` never downgrades a node already marked `found`. Keep presets small
+  (n ≤ 4–6): every choice is at least one step. Matrix cells: `null` draws an empty box with a faint dot, `""` draws nothing.
 - Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
   generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).

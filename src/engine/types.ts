@@ -261,6 +261,7 @@ export type RendererId =
   | "linkedlist"
   | "tree"
   | "graph"
+  | "decisiontree"
   | "matrix";
 
 export interface CodeSet {

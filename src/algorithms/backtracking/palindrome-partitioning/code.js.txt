@@ -1,0 +1,19 @@
+function partition(s) {
+  const res = [], path = [];
+  const isPal = (t) => t === [...t].reverse().join('');
+  function backtrack(start) {
+    if (start === s.length) {                   // @mark full
+      res.push([...path]);                      // @mark record
+      return;
+    }
+    for (let end = start + 1; end <= s.length; end++) {
+      const piece = s.slice(start, end);
+      if (!isPal(piece)) continue;              // @mark check
+      path.push(piece);                         // @mark choose
+      backtrack(end);                           // @mark explore
+      path.pop();                               // @mark unchoose
+    }
+  }
+  backtrack(0);
+  return res;                                   // @mark done
+}

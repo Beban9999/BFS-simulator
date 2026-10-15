@@ -1,0 +1,21 @@
+function solveNQueens(n) {
+  const cols = new Set(), diag = new Set(), anti = new Set();  // columns, r-c and r+c diagonals
+  const board = Array.from({ length: n }, () => Array(n).fill('.'));
+  const res = [];
+  function place(r) {
+    if (r === n) {                              // @mark full
+      res.push(board.map((row) => row.join('')));  // @mark record
+      return;
+    }
+    for (let c = 0; c < n; c++) {
+      if (cols.has(c) || diag.has(r - c) || anti.has(r + c)) continue;  // @mark attacked
+      cols.add(c); diag.add(r - c); anti.add(r + c);   // @mark place
+      board[r][c] = 'Q';
+      place(r + 1);                             // @mark explore
+      board[r][c] = '.';                        // @mark remove
+      cols.delete(c); diag.delete(r - c); anti.delete(r + c);
+    }
+  }
+  place(0);
+  return res;                                   // @mark done
+}

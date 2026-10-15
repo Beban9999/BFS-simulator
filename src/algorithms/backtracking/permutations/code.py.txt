@@ -1,0 +1,21 @@
+def permute(nums):
+    nums.sort()                                 # @mark sort
+    res, path, used = [], [], [False] * len(nums)
+
+    def backtrack():
+        if len(path) == len(nums):              # @mark full
+            res.append(path[:])                 # @mark record
+            return
+        for i in range(len(nums)):
+            if used[i]:
+                continue                        # @mark used
+            if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
+                continue                        # @mark skip-dup
+            used[i] = True                      # @mark choose
+            path.append(nums[i])
+            backtrack()                         # @mark explore
+            path.pop()                          # @mark unchoose
+            used[i] = False
+
+    backtrack()
+    return res                                  # @mark done

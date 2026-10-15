@@ -1,0 +1,22 @@
+// reuse=true: Combination Sum I (unlimited use of each distinct number)
+// reuse=false: Combination Sum II (each element once, input may repeat)
+function combinationSum(candidates, target, reuse) {
+  candidates.sort((a, b) => a - b);             // @mark sort
+  const res = [], path = [];
+  function backtrack(start, remain) {
+    if (remain === 0) {                         // @mark hit
+      res.push([...path]);                      // @mark record
+      return;
+    }
+    for (let i = start; i < candidates.length; i++) {
+      const c = candidates[i];
+      if (c > remain) break;                    // @mark too-big
+      if (!reuse && i > start && c === candidates[i - 1]) continue;  // @mark skip-dup
+      path.push(c);                             // @mark choose
+      backtrack(reuse ? i : i + 1, remain - c); // @mark explore
+      path.pop();                               // @mark unchoose
+    }
+  }
+  backtrack(0, target);
+  return res;                                   // @mark done
+}

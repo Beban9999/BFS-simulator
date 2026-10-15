@@ -1,0 +1,21 @@
+function permute(nums) {
+  nums.sort((a, b) => a - b);                   // @mark sort
+  const res = [], path = [], used = Array(nums.length).fill(false);
+  function backtrack() {
+    if (path.length === nums.length) {          // @mark full
+      res.push([...path]);                      // @mark record
+      return;
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) continue;                    // @mark used
+      if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) continue;  // @mark skip-dup
+      used[i] = true;                           // @mark choose
+      path.push(nums[i]);
+      backtrack();                              // @mark explore
+      path.pop();                               // @mark unchoose
+      used[i] = false;
+    }
+  }
+  backtrack();
+  return res;                                   // @mark done
+}

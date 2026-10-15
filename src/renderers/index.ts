@@ -7,6 +7,7 @@ import { LinkedListRenderer } from "./LinkedListView";
 import { StackQueueRenderer } from "./StackQueueView";
 import { TreeRenderer } from "./TreeView";
 import { GraphRenderer } from "./GraphView";
+import { DecisionTreeRenderer } from "./DecisionTreeView";
 
 /** Renderers are pure views of (state, highlights); algorithms pick one by id. */
 export const RENDERERS: Partial<Record<RendererId, Renderer>> = {
@@ -19,4 +20,5 @@ export const RENDERERS: Partial<Record<RendererId, Renderer>> = {
   stackqueue: StackQueueRenderer as Renderer,
   tree: TreeRenderer as Renderer,
   graph: GraphRenderer as Renderer,
+  decisiontree: DecisionTreeRenderer as Renderer,
 };

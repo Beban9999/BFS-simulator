@@ -69,8 +69,11 @@ export function hl(kind: HighlightKind, ...ids: (string | false | null | undefin
   return ids.filter((id): id is string => typeof id === "string").map((id) => ({ id, kind }));
 }
 
+// Read once: under Vitest `import.meta.env` is rebuilt on every access, which made deepFreeze very slow.
+const PROD = !!import.meta.env?.PROD;
+
 function deepFreeze<T>(value: T): T {
-  if (import.meta.env?.PROD) return value; // freezing is a dev-time guard only
+  if (PROD) return value; // freezing is a dev-time guard only
   if (value && typeof value === "object" && !Object.isFrozen(value)) {
     Object.freeze(value);
     for (const key of Object.keys(value)) deepFreeze((value as Record<string, unknown>)[key]);

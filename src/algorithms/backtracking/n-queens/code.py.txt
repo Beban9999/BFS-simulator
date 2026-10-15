@@ -1,0 +1,20 @@
+def solve_n_queens(n):
+    cols, diag, anti = set(), set(), set()      # taken columns, r-c and r+c diagonals
+    board = [['.'] * n for _ in range(n)]
+    res = []
+
+    def place(r):
+        if r == n:                              # @mark full
+            res.append([''.join(row) for row in board])   # @mark record
+            return
+        for c in range(n):
+            if c in cols or r - c in diag or r + c in anti:
+                continue                        # @mark attacked
+            cols.add(c); diag.add(r - c); anti.add(r + c)  # @mark place
+            board[r][c] = 'Q'
+            place(r + 1)                        # @mark explore
+            board[r][c] = '.'                   # @mark remove
+            cols.remove(c); diag.remove(r - c); anti.remove(r + c)
+
+    place(0)
+    return res                                  # @mark done

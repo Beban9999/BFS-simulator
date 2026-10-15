@@ -1,0 +1,18 @@
+function combine(n, k) {
+  const res = [], path = [];
+  function backtrack(start) {
+    if (path.length === k) {                    // @mark full
+      res.push([...path]);                      // @mark record
+      return;
+    }
+    const need = k - path.length;
+    for (let x = start; x <= n; x++) {          // @mark loop
+      if (n - x + 1 < need) break;              // @mark prune
+      path.push(x);                             // @mark choose
+      backtrack(x + 1);                         // @mark explore
+      path.pop();                               // @mark unchoose
+    }
+  }
+  backtrack(1);
+  return res;                                   // @mark done
+}

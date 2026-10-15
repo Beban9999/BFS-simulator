@@ -1,0 +1,30 @@
+def solve_sudoku(board):
+    n = len(board)                              # 4 or 9
+    box = 2 if n == 4 else 3
+    digits = [str(d) for d in range(1, n + 1)]
+
+    def ok(r, c, d):
+        br, bc = r - r % box, c - c % box
+        for k in range(n):
+            if board[r][k] == d or board[k][c] == d:
+                return False                    # same row or column
+            if board[br + k // box][bc + k % box] == d:
+                return False                    # same box
+        return True
+
+    def solve():
+        for r in range(n):
+            for c in range(n):
+                if board[r][c] != '.':
+                    continue
+                for d in digits:                # @mark find
+                    if not ok(r, c, d):         # @mark check
+                        continue
+                    board[r][c] = d             # @mark place
+                    if solve():                 # @mark explore
+                        return True
+                    board[r][c] = '.'           # @mark undo
+                return False                    # @mark dead
+        return True                             # @mark solved
+
+    return solve()

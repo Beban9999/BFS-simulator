@@ -1,0 +1,19 @@
+KEYS = {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
+
+def letter_combinations(digits):
+    if not digits:
+        return []                               # @mark empty
+    res, path = [], []
+
+    def backtrack(i):
+        if i == len(digits):                    # @mark full
+            res.append(''.join(path))           # @mark record
+            return
+        for ch in KEYS[digits[i]]:              # @mark loop
+            path.append(ch)                     # @mark choose
+            backtrack(i + 1)                    # @mark explore
+            path.pop()                          # @mark unchoose
+
+    backtrack(0)
+    return res                                  # @mark done

@@ -1,0 +1,21 @@
+function exist(board, word) {
+  const rows = board.length, cols = board[0].length;
+  // can word[i:] start at (r, c)?
+  function dfs(r, c, i) {
+    if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] !== word[i]) {
+      return false;                             // @mark mismatch
+    }
+    if (i === word.length - 1) return true;     // @mark complete
+    board[r][c] = '#';                          // @mark mark
+    const found = dfs(r + 1, c, i + 1) || dfs(r - 1, c, i + 1) ||
+                  dfs(r, c + 1, i + 1) || dfs(r, c - 1, i + 1);  // @mark explore
+    board[r][c] = word[i];                      // @mark restore
+    return found;
+  }
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (dfs(r, c, 0)) return true;            // @mark start
+    }
+  }
+  return false;                                 // @mark done
+}

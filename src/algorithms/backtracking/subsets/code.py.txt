@@ -1,0 +1,15 @@
+def subsets(nums):
+    nums.sort()                                 # @mark sort
+    res, path = [], []
+
+    def backtrack(start):
+        res.append(path[:])                     # @mark record
+        for i in range(start, len(nums)):       # @mark loop
+            if i > start and nums[i] == nums[i - 1]:
+                continue                        # @mark skip-dup
+            path.append(nums[i])                # @mark choose
+            backtrack(i + 1)                    # @mark explore
+            path.pop()                          # @mark unchoose
+
+    backtrack(0)
+    return res                                  # @mark done

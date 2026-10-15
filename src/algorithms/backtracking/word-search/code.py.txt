@@ -1,0 +1,20 @@
+def exist(board, word):
+    rows, cols = len(board), len(board[0])
+
+    def dfs(r, c, i):                           # can word[i:] start at (r, c)?
+        if (r < 0 or r >= rows or c < 0 or c >= cols
+                or board[r][c] != word[i]):
+            return False                        # @mark mismatch
+        if i == len(word) - 1:
+            return True                         # @mark complete
+        board[r][c] = '#'                       # @mark mark
+        found = (dfs(r + 1, c, i + 1) or dfs(r - 1, c, i + 1)
+                 or dfs(r, c + 1, i + 1) or dfs(r, c - 1, i + 1))  # @mark explore
+        board[r][c] = word[i]                   # @mark restore
+        return found
+
+    for r in range(rows):
+        for c in range(cols):
+            if dfs(r, c, 0):                    # @mark start
+                return True
+    return False                                # @mark done

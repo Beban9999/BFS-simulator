@@ -1,0 +1,22 @@
+def combination_sum(candidates, target, reuse):
+    # reuse=True: Combination Sum I (unlimited use of each distinct number)
+    # reuse=False: Combination Sum II (each element once, input may repeat)
+    candidates.sort()                           # @mark sort
+    res, path = [], []
+
+    def backtrack(start, remain):
+        if remain == 0:                         # @mark hit
+            res.append(path[:])                 # @mark record
+            return
+        for i in range(start, len(candidates)):
+            c = candidates[i]
+            if c > remain:                      # @mark too-big
+                break                           # sorted: later ones are bigger too
+            if not reuse and i > start and c == candidates[i - 1]:
+                continue                        # @mark skip-dup
+            path.append(c)                      # @mark choose
+            backtrack(i if reuse else i + 1, remain - c)   # @mark explore
+            path.pop()                          # @mark unchoose
+
+    backtrack(0, target)
+    return res                                  # @mark done

@@ -1,0 +1,17 @@
+def combine(n, k):
+    res, path = [], []
+
+    def backtrack(start):
+        if len(path) == k:                      # @mark full
+            res.append(path[:])                 # @mark record
+            return
+        need = k - len(path)
+        for x in range(start, n + 1):           # @mark loop
+            if n - x + 1 < need:                # @mark prune
+                break                           # not enough numbers left
+            path.append(x)                      # @mark choose
+            backtrack(x + 1)                    # @mark explore
+            path.pop()                          # @mark unchoose
+
+    backtrack(1)
+    return res                                  # @mark done

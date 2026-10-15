@@ -2960,3 +2960,120 @@ kbd,
 .canvas-tools .tool-error {
   color: var(--hl-mismatch);
 }
+
+/* ---------- Decision-tree renderer ---------- */
+.dt-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dt-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dt-concrete {
+  flex: 1 1 240px;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dt-box {
+  flex: 3 1 360px;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.dt-box .sub-label {
+  margin: 0;
+  text-align: center;
+}
+
+.dt-scroll {
+  width: 100%;
+  max-height: 440px;
+  overflow: auto;
+  display: flex;
+}
+
+.dt {
+  display: block;
+  margin: 0 auto;
+  flex: none;
+  font-family: var(--mono);
+}
+
+.dt-edge {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.6;
+}
+
+.dt-edge[data-k] {
+  stroke: var(--k);
+  stroke-width: 2.6;
+}
+
+.dt-edge[data-k="pruned"] {
+  stroke: var(--faint);
+  stroke-width: 1.4;
+  stroke-dasharray: 3 3;
+}
+
+.dt-node circle {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+  stroke-width: 1.6;
+}
+
+.dt-node[data-k] circle {
+  stroke: var(--k);
+  stroke-width: 2.2;
+  fill: color-mix(in srgb, var(--k) 30%, var(--surface));
+}
+
+.dt-node[data-k="visited"] circle {
+  stroke: color-mix(in srgb, var(--hl-visited) 45%, var(--text));
+  fill: color-mix(in srgb, var(--hl-visited) 70%, var(--surface));
+}
+
+.dt-node[data-k="pruned"] {
+  opacity: 0.45;
+}
+
+.dt-node[data-k="pruned"] circle {
+  stroke-dasharray: 3 2;
+}
+
+.dt-node.folded circle {
+  stroke-dasharray: 2 2;
+}
+
+.dt-label {
+  fill: var(--text);
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.dt-glyph {
+  fill: var(--text);
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
