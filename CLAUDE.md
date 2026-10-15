@@ -12,8 +12,8 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`, `dptable`.
 - Last completed (2026-10-15): `dptable` renderer + DP core, 10 pages (closes #9; rest parked in #20). Earlier the same
   day: `decisiontree` + Backtracking (9, #8) and `graph` + Graphs (22, #7; advanced pages parked in #19).
-- **Next up:** pick from the open issues — #10 note pages (+ cheat sheet), #11 Fundamentals, #12 Greedy & Intervals,
-  #13 Strings, #14 Bits, #15 Math, #16 Design, #17 compare/quiz, #18 polish; parked: #19 graphs advanced, #20 DP rest.
+- **Next up:** #10 note-page support (module kind with a custom React page, no `generate`) + Tab 18 cheat sheet, then
+  #11 Tab 1 Fundamentals. The skipped algorithms stay parked for later: #19 (graphs advanced), #20 (DP rest).
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
