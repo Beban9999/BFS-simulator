@@ -1,0 +1,17 @@
+from collections import deque
+
+def zero_one_bfs(graph, source):
+    # graph[u] = list of (v, w) with w in {0, 1}
+    dist = [float('inf')] * len(graph)
+    dist[source] = 0                            # @mark init
+    dq = deque([source])
+    while dq:
+        u = dq.popleft()                        # @mark pop
+        for v, w in graph[u]:
+            if dist[u] + w < dist[v]:           # @mark relax
+                dist[v] = dist[u] + w
+                if w == 0:
+                    dq.appendleft(v)            # @mark front
+                else:
+                    dq.append(v)                # @mark back
+    return dist                                 # @mark done

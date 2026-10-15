@@ -1,0 +1,15 @@
+def bellman_ford(n, edges, source):
+    dist = [float('inf')] * n
+    dist[source] = 0                            # @mark init
+    for i in range(n - 1):                      # @mark round
+        changed = False
+        for u, v, w in edges:
+            if dist[u] + w < dist[v]:           # @mark relax
+                dist[v] = dist[u] + w           # @mark improve
+                changed = True
+        if not changed:                         # @mark early
+            break                               # nothing moved: done early
+    for u, v, w in edges:                       # one extra pass
+        if dist[u] + w < dist[v]:               # @mark negcycle
+            return None                         # a negative cycle is reachable
+    return dist                                 # @mark done

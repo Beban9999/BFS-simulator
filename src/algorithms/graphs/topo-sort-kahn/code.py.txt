@@ -1,0 +1,19 @@
+from collections import deque
+
+def topo_sort(n, graph):
+    indeg = [0] * n
+    for u in range(n):
+        for v in graph[u]:
+            indeg[v] += 1                       # @mark count
+    queue = deque(u for u in range(n) if indeg[u] == 0)  # @mark seed
+    order = []
+    while queue:
+        u = queue.popleft()                     # @mark pop
+        order.append(u)
+        for v in graph[u]:
+            indeg[v] -= 1                       # @mark relax
+            if indeg[v] == 0:
+                queue.append(v)                 # @mark ready
+    if len(order) < n:                          # @mark check
+        return []                               # some nodes sit on a cycle
+    return order                                # @mark done

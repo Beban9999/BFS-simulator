@@ -1,0 +1,18 @@
+function bellmanFord(n, edges, source) {
+  const dist = Array(n).fill(Infinity);
+  dist[source] = 0;                             // @mark init
+  for (let i = 0; i < n - 1; i++) {             // @mark round
+    let changed = false;
+    for (const [u, v, w] of edges) {
+      if (dist[u] + w < dist[v]) {              // @mark relax
+        dist[v] = dist[u] + w;                  // @mark improve
+        changed = true;
+      }
+    }
+    if (!changed) break;                        // @mark early
+  }
+  for (const [u, v, w] of edges) {              // one extra pass
+    if (dist[u] + w < dist[v]) return null;     // @mark negcycle
+  }
+  return dist;                                  // @mark done
+}

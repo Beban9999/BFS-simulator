@@ -128,3 +128,36 @@ export class Marks {
     return this.rows * this.cols;
   }
 }
+
+/** Grid field for character puzzles (islands, oranges…): `empty` is what a toggled-off cell becomes. */
+export function charGridField(o: {
+  alphabet: string;
+  empty: string;
+  tools: { char: string; label: string }[];
+  help: string;
+  key?: string;
+  label?: string;
+  max?: number;
+}): GridField {
+  return { key: o.key ?? "grid", label: o.label ?? "Grid", kind: "grid", maxRows: o.max ?? 14, maxCols: o.max ?? 14, alphabet: o.alphabet, empty: o.empty, tools: o.tools, help: o.help };
+}
+
+/** Random grid where each cell is drawn from `weights` ([char, relative weight]). */
+export function randomCharGrid(rng: Rng, rows: number, cols: number, weights: [string, number][]): string[] {
+  const total = weights.reduce((s, [, w]) => s + w, 0);
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => {
+      let x = rng() * total;
+      for (const [ch, w] of weights) if ((x -= w) < 0) return ch;
+      return weights[weights.length - 1][0];
+    }).join(""),
+  );
+}
+
+/** Keep the call-stack panel readable on deep recursions: the bottom frame, an ellipsis, then the top ones. */
+export function capFrames<T extends { call: string }>(frames: T[], max = 9): { call: string }[] {
+  if (frames.length <= max) return frames;
+  return [frames[0], { call: `… ${frames.length - max + 1} more frames …` }, ...frames.slice(frames.length - max + 2)];
+}
+
+export const key = ([r, c]: Cell) => `${r},${c}`;

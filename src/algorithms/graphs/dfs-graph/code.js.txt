@@ -1,0 +1,32 @@
+// Recursive: the call stack remembers where to resume
+function dfs(graph, source) {
+  const visited = new Set(), order = [];
+  function visit(u) {
+    visited.add(u);                             // @mark r-enter
+    order.push(u);
+    for (const v of graph[u]) {                 // @mark r-scan
+      if (visited.has(v)) continue;             // @mark r-seen
+      visit(v);                                 // @mark r-recurse
+    }
+  }
+  visit(source);                                // @mark r-start
+  return order;                                 // @mark r-done
+}
+
+// Iterative: an explicit stack replaces the call stack
+function dfsIterative(graph, source) {
+  const visited = new Set(), order = [];
+  const stack = [source];                       // @mark i-init
+  while (stack.length) {
+    const u = stack.pop();                      // @mark i-pop
+    if (visited.has(u)) continue;               // @mark i-skip
+    visited.add(u);                             // @mark i-visit
+    order.push(u);
+    // push in reverse so the smallest neighbour is on top
+    for (let k = graph[u].length - 1; k >= 0; k--) {
+      const v = graph[u][k];
+      if (!visited.has(v)) stack.push(v);       // @mark i-push
+    }
+  }
+  return order;                                 // @mark i-done
+}

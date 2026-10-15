@@ -1,0 +1,18 @@
+function topoSortDfs(n, graph) {
+  const state = Array(n).fill(0);               // 0 new, 1 on the path, 2 finished
+  const finished = [];
+  function dfs(u) {
+    state[u] = 1;                               // @mark enter
+    for (const v of graph[u]) {
+      if (state[v] === 1) return false;         // @mark cycle
+      if (state[v] === 0 && !dfs(v)) return false;  // @mark recurse
+    }
+    state[u] = 2;
+    finished.push(u);                           // @mark finish
+    return true;
+  }
+  for (let u = 0; u < n; u++) {
+    if (state[u] === 0 && !dfs(u)) return [];   // @mark start
+  }
+  return finished.reverse();                    // @mark done
+}

@@ -1,0 +1,15 @@
+function floydWarshall(n, edges) {
+  const dist = Array.from({ length: n }, (_, i) =>
+    Array.from({ length: n }, (_, j) => (i === j ? 0 : Infinity)));
+  for (const [u, v, w] of edges) dist[u][v] = w;    // @mark init
+  for (let k = 0; k < n; k++) {                     // @mark k
+    for (let i = 0; i < n; i++) {                   // may we route i → j through k?
+      for (let j = 0; j < n; j++) {
+        if (dist[i][k] + dist[k][j] < dist[i][j]) {  // @mark relax
+          dist[i][j] = dist[i][k] + dist[k][j];      // @mark improve
+        }
+      }
+    }
+  }
+  return dist;                                      // @mark done
+}

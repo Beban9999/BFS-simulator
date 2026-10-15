@@ -1,0 +1,19 @@
+def topo_sort_dfs(n, graph):
+    state = [0] * n                             # 0 new, 1 on the path, 2 finished
+    finished = []
+
+    def dfs(u):
+        state[u] = 1                            # @mark enter
+        for v in graph[u]:
+            if state[v] == 1:                   # @mark cycle
+                return False                    # back edge: no order exists
+            if state[v] == 0 and not dfs(v):    # @mark recurse
+                return False
+        state[u] = 2
+        finished.append(u)                      # @mark finish
+        return True
+
+    for u in range(n):
+        if state[u] == 0 and not dfs(u):        # @mark start
+            return []
+    return finished[::-1]                       # @mark done

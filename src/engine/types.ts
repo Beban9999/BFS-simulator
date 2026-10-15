@@ -185,6 +185,8 @@ export interface GridField extends FieldBase {
   alphabet: string;
   /** Characters that must appear exactly once (e.g. "SE"). */
   unique?: string;
+  /** Character of an unpainted cell (default "."). */
+  empty?: string;
   /** Paint tools offered when drawing on the grid: char -> label. */
   tools?: { char: string; label: string }[];
 }
@@ -208,6 +210,23 @@ export interface TreeField extends FieldBase {
   max?: number;
 }
 
+/**
+ * A graph on nodes 0..n-1: `{ n, edges: [[u, v, w?], ...], directed, pos?, labels? }` (see `_shared/graph.ts`).
+ * Text form: `n=6 directed` on the first line, then edges like `0-1:4, 1>2`.
+ */
+export interface GraphField extends FieldBase {
+  kind: "graph";
+  maxNodes: number;
+  /** Force every value to be directed (true) or undirected (false); leave undefined to allow both. */
+  directed?: boolean;
+  /** Edges carry integer weights (default weight 1 when omitted in the text form). */
+  weighted?: boolean;
+  minWeight?: number;
+  maxWeight?: number;
+  /** Reject inputs without at least this many nodes (default 1). */
+  minNodes?: number;
+}
+
 /** Free JSON validated by the module's `validate`. */
 export interface JsonField extends FieldBase {
   kind: "json";
@@ -222,6 +241,7 @@ export type InputField =
   | GridField
   | MatrixField
   | TreeField
+  | GraphField
   | JsonField;
 
 export interface InputSchema<I> {
@@ -240,6 +260,7 @@ export type RendererId =
   | "hashtable"
   | "linkedlist"
   | "tree"
+  | "graph"
   | "matrix";
 
 export interface CodeSet {
@@ -290,6 +311,10 @@ export interface RendererProps<S = any> {
     onChange: (next: any) => void;
     /** Active paint tool, e.g. "#" for walls. */
     tool?: string;
+    /** Grid: the character a cell gets when a painted cell is toggled off (default "."). */
+    empty?: string;
+    /** Graph: weight given to new edges. */
+    weight?: number;
   };
 }
 

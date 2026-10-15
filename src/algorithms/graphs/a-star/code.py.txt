@@ -1,0 +1,31 @@
+import heapq
+
+def a_star(grid, start, end):
+    def h(cell):                                # Manhattan distance: never overestimates
+        return abs(cell[0] - end[0]) + abs(cell[1] - end[1])
+
+    g = {start: 0}
+    prev = {start: None}
+    heap = [(h(start), h(start), start)]        # @mark init
+    closed = set()
+    while heap:
+        f, _, cell = heapq.heappop(heap)        # @mark pop
+        if cell in closed:                      # @mark stale
+            continue
+        closed.add(cell)
+        if cell == end:
+            return build_path(prev, end)        # @mark found
+        r, c = cell
+        for nxt in ((r - 1, c), (r, c + 1), (r + 1, c), (r, c - 1)):
+            if is_open(grid, nxt) and g[cell] + 1 < g.get(nxt, float('inf')):
+                g[nxt] = g[cell] + 1            # @mark relax
+                prev[nxt] = cell
+                heapq.heappush(heap, (g[nxt] + h(nxt), h(nxt), nxt))
+    return None                                 # @mark no-path
+
+def build_path(prev, cell):
+    path = []
+    while cell is not None:                     # @mark trace
+        path.append(cell)
+        cell = prev[cell]
+    return path[::-1]

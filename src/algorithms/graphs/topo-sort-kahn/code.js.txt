@@ -1,0 +1,19 @@
+function topoSort(n, graph) {
+  const indeg = Array(n).fill(0);
+  for (let u = 0; u < n; u++) {
+    for (const v of graph[u]) indeg[v]++;       // @mark count
+  }
+  const queue = [];
+  for (let u = 0; u < n; u++) if (indeg[u] === 0) queue.push(u);  // @mark seed
+  const order = [];
+  for (let head = 0; head < queue.length; head++) {
+    const u = queue[head];                      // @mark pop
+    order.push(u);
+    for (const v of graph[u]) {
+      indeg[v]--;                               // @mark relax
+      if (indeg[v] === 0) queue.push(v);        // @mark ready
+    }
+  }
+  if (order.length < n) return [];             // @mark check
+  return order;                                 // @mark done
+}

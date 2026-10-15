@@ -1,0 +1,29 @@
+# Recursive: the call stack remembers where to resume
+def dfs(graph, source):
+    visited, order = set(), []
+
+    def visit(u):
+        visited.add(u)                          # @mark r-enter
+        order.append(u)
+        for v in graph[u]:                      # @mark r-scan
+            if v in visited:                    # @mark r-seen
+                continue
+            visit(v)                            # @mark r-recurse
+
+    visit(source)                               # @mark r-start
+    return order                                # @mark r-done
+
+# Iterative: an explicit stack replaces the call stack
+def dfs_iterative(graph, source):
+    visited, order = set(), []
+    stack = [source]                            # @mark i-init
+    while stack:
+        u = stack.pop()                         # @mark i-pop
+        if u in visited:                        # @mark i-skip
+            continue
+        visited.add(u)                          # @mark i-visit
+        order.append(u)
+        for v in reversed(graph[u]):            # reversed: smallest on top
+            if v not in visited:
+                stack.append(v)                 # @mark i-push
+    return order                                # @mark i-done

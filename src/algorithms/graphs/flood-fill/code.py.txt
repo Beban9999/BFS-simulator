@@ -1,0 +1,16 @@
+from collections import deque
+
+def flood_fill(image, sr, sc, color):
+    old = image[sr][sc]
+    if old == color:                            # @mark same
+        return image                            # nothing would change
+    rows, cols = len(image), len(image[0])
+    image[sr][sc] = color                       # @mark start
+    queue = deque([(sr, sc)])
+    while queue:
+        r, c = queue.popleft()                  # @mark pop
+        for nr, nc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):
+            if 0 <= nr < rows and 0 <= nc < cols and image[nr][nc] == old:
+                image[nr][nc] = color           # @mark paint
+                queue.append((nr, nc))
+    return image                                # @mark done

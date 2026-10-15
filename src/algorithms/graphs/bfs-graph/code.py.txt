@@ -1,0 +1,16 @@
+from collections import deque
+
+def bfs(graph, source):
+    # graph[u] = list of neighbours of u
+    dist = {source: 0}                          # @mark init
+    queue = deque([source])
+    order = []
+    while queue:                                # @mark loop
+        u = queue.popleft()                     # @mark pop
+        order.append(u)
+        for v in graph[u]:                      # @mark scan
+            if v in dist:                       # @mark seen
+                continue
+            dist[v] = dist[u] + 1               # @mark discover
+            queue.append(v)
+    return order, dist                          # @mark done

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import type { AlgorithmModule, GridField, HighlightKind } from "../engine/types";
+import type { AlgorithmModule, GraphField, GridField, HighlightKind } from "../engine/types";
 import { buildTrace, kindsInTrace, MAX_STEPS } from "../engine/trace";
-import { decodeInput, encodeInput } from "../engine/input";
+import { decodeInput, encodeInput, validateInput } from "../engine/input";
 import { loadAlgorithm, META_BY_ID } from "../registry";
 import { CATEGORY_BY_ID } from "../catalog/categories";
 import { RENDERERS } from "../renderers";
@@ -63,11 +63,27 @@ const LEGEND_ORDER: HighlightKind[] = [
   "removed",
 ];
 
+type StatePair<T> = [T, (v: T) => void];
+interface EditTools {
+  grid: StatePair<string>;
+  graph: StatePair<string>;
+  weight: StatePair<number>;
+  error: StatePair<string | null>;
+}
+
 function AlgorithmView({ module }: { module: AlgorithmModule }) {
   const [params, setParams] = useSearchParams();
   const [input, setInputState] = useState<unknown>(() => decodeInput(module, params.get("input")) ?? module.presets[0].input);
   const [version, setVersion] = useState(0);
   const initialStep = useMemo(() => Number(params.get("step")) || 0, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Drawing tools live here so they survive the remount that every input edit causes.
+  const tools: EditTools = {
+    grid: useState(() => module.inputSchema.fields.find((f): f is GridField => f.kind === "grid")?.tools?.[0]?.char ?? "#"),
+    graph: useState("move"),
+    weight: useState(1),
+    error: useState<string | null>(null),
+  };
 
   const setInput = (next: unknown) => {
     setInputState(next);
@@ -106,6 +122,7 @@ function AlgorithmView({ module }: { module: AlgorithmModule }) {
         legendKinds={legendKinds}
         initialStep={version === 0 ? initialStep : 0}
         setInput={setInput}
+        tools={tools}
       />
       <InfoTabs info={module.info} problems={module.problems} />
     </>
@@ -165,6 +182,7 @@ function TraceView({
   legendKinds,
   initialStep,
   setInput,
+  tools,
 }: {
   module: AlgorithmModule;
   input: unknown;
@@ -172,11 +190,15 @@ function TraceView({
   legendKinds: HighlightKind[];
   initialStep: number;
   setInput: (v: unknown) => void;
+  tools: EditTools;
 }) {
   const steps = trace.steps;
   const player = usePlayer(steps.length);
   usePlayerKeys(player);
-  const [tool, setTool] = useState("#");
+  const [tool, setTool] = tools.grid;
+  const [graphTool, setGraphTool] = tools.graph;
+  const [weight, setWeight] = tools.weight;
+  const [editError, setEditError] = tools.error;
 
   useEffect(() => {
     if (initialStep > 0) player.setIndex(initialStep);
@@ -188,15 +210,30 @@ function TraceView({
   const Renderer = RENDERERS[module.renderer];
 
   const gridField = module.inputSchema.fields.find((f): f is GridField => f.kind === "grid");
+  const graphField = module.inputSchema.fields.find((f): f is GraphField => f.kind === "graph");
   const rec = input as Record<string, unknown>;
+  const gridEmpty = gridField?.empty ?? ".";
   const edit =
-    gridField && module.renderer === "grid"
+    gridField?.tools && module.renderer === "grid"
       ? {
           value: rec[gridField.key],
           tool,
+          empty: gridEmpty,
           onChange: (g: string[]) => setInput({ ...rec, [gridField.key]: g }),
         }
-      : undefined;
+      : graphField && module.renderer === "graph" && !module.rendererOptions?.noEdit
+        ? {
+            value: rec[graphField.key],
+            tool: graphTool,
+            weight: graphField.weighted ? weight : undefined,
+            onChange: (g: unknown) => {
+              const next = { ...rec, [graphField.key]: g };
+              const err = validateInput(module, next);
+              setEditError(err);
+              if (!err) setInput(next);
+            },
+          }
+        : undefined;
 
   const share = async () => {
     const url = new URL(window.location.href);
@@ -238,11 +275,69 @@ function TraceView({
               <button
                 type="button"
                 className="btn btn-ghost small"
-                onClick={() => setInput({ ...rec, [gridField.key]: (rec[gridField.key] as string[]).map((row) => row.replace(/#/g, ".")) })}
+                onClick={() => {
+                  const paint = new Set(gridField.tools!.map((t) => t.char).filter((c) => c !== "S" && c !== "E"));
+                  setInput({ ...rec, [gridField.key]: (rec[gridField.key] as string[]).map((row) => Array.from(row, (c) => (paint.has(c) ? gridEmpty : c)).join("")) });
+                }}
               >
-                <Icon name="trash" /> Clear walls
+                <Icon name="trash" /> Clear
               </button>
-              <span>Drag the start or end to move them. Editing restarts the run.</span>
+              <span>{gridField.unique ? "Drag the start or end to move them. " : ""}Editing restarts the run.</span>
+            </div>
+          )}
+          {edit && graphField && (
+            <div className="canvas-tools" data-no-player-keys>
+              <span>Edit:</span>
+              <div className="segmented" role="group" aria-label="Graph tool">
+                {[
+                  ["move", "Move"],
+                  ["node", "Add node"],
+                  ["edge", "Add edge"],
+                  ["delete", "Delete"],
+                ].map(([id, label]) => (
+                  <button key={id} type="button" aria-pressed={graphTool === id} onClick={() => setGraphTool(id)}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {graphField.weighted && (
+                <label className="speed" title="Weight of new edges">
+                  weight
+                  <input
+                    type="number"
+                    value={weight}
+                    min={graphField.minWeight}
+                    max={graphField.maxWeight}
+                    onChange={(e) => setWeight(Number(e.target.value) || 0)}
+                    aria-label="Weight of new edges"
+                  />
+                </label>
+              )}
+              <button
+                type="button"
+                className="btn btn-ghost small"
+                onClick={() => {
+                  const g = { ...(rec[graphField.key] as Record<string, unknown>) };
+                  delete g.pos;
+                  setInput({ ...rec, [graphField.key]: g });
+                }}
+              >
+                Auto layout
+              </button>
+              <span>
+                {editError ? (
+                  <span className="tool-error">{editError}</span>
+                ) : graphTool === "move" ? (
+                  "Drag nodes to tidy the drawing (doesn't restart)."
+                ) : graphTool === "node" ? (
+                  "Click empty space to add a node."
+                ) : graphTool === "edge" ? (
+                  "Click two nodes to connect them."
+                ) : (
+                  "Click a node or edge to delete it."
+                )}{" "}
+                {graphTool !== "move" && !editError && "Editing restarts the run."}
+              </span>
             </div>
           )}
           {trace.truncated && (

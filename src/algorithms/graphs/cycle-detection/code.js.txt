@@ -1,0 +1,37 @@
+// Undirected: a visited neighbour that is not our parent closes a cycle
+function hasCycleUndirected(n, graph) {
+  const visited = Array(n).fill(false);
+  function dfs(u, parent) {
+    visited[u] = true;                          // @mark u-enter
+    for (const v of graph[u]) {
+      if (v === parent) continue;               // @mark u-parent
+      if (visited[v]) return true;              // @mark u-back
+      if (dfs(v, u)) return true;               // @mark u-recurse
+    }
+    return false;                               // @mark u-exit
+  }
+  for (let s = 0; s < n; s++) {
+    if (!visited[s] && dfs(s, -1)) return true; // @mark u-start
+  }
+  return false;                                 // @mark u-none
+}
+
+// Directed: an edge into a GRAY node (still on the path) closes a cycle
+const WHITE = 0, GRAY = 1, BLACK = 2;
+
+function hasCycleDirected(n, graph) {
+  const color = Array(n).fill(WHITE);
+  function dfs(u) {
+    color[u] = GRAY;                            // @mark d-enter
+    for (const v of graph[u]) {
+      if (color[v] === GRAY) return true;       // @mark d-back
+      if (color[v] === WHITE && dfs(v)) return true;  // @mark d-recurse
+    }
+    color[u] = BLACK;                           // @mark d-exit
+    return false;
+  }
+  for (let s = 0; s < n; s++) {
+    if (color[s] === WHITE && dfs(s)) return true;    // @mark d-start
+  }
+  return false;                                 // @mark d-none
+}

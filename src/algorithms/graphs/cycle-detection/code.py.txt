@@ -1,0 +1,40 @@
+# Undirected: a visited neighbour that is not our parent closes a cycle
+def has_cycle_undirected(n, graph):
+    visited = [False] * n
+
+    def dfs(u, parent):
+        visited[u] = True                       # @mark u-enter
+        for v in graph[u]:
+            if v == parent:                     # @mark u-parent
+                continue
+            if visited[v]:                      # @mark u-back
+                return True
+            if dfs(v, u):                       # @mark u-recurse
+                return True
+        return False                            # @mark u-exit
+
+    for s in range(n):
+        if not visited[s] and dfs(s, -1):       # @mark u-start
+            return True
+    return False                                # @mark u-none
+
+# Directed: an edge into a GRAY node (still on the path) closes a cycle
+WHITE, GRAY, BLACK = 0, 1, 2
+
+def has_cycle_directed(n, graph):
+    color = [WHITE] * n
+
+    def dfs(u):
+        color[u] = GRAY                         # @mark d-enter
+        for v in graph[u]:
+            if color[v] == GRAY:                # @mark d-back
+                return True
+            if color[v] == WHITE and dfs(v):    # @mark d-recurse
+                return True
+        color[u] = BLACK                        # @mark d-exit
+        return False
+
+    for s in range(n):
+        if color[s] == WHITE and dfs(s):        # @mark d-start
+            return True
+    return False                                # @mark d-none

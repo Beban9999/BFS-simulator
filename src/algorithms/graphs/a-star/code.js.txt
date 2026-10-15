@@ -1,0 +1,31 @@
+// MinHeap ordered by [f, h] (ties: closer to the goal first)
+function aStar(grid, start, end) {
+  const h = ([r, c]) => Math.abs(r - end[0]) + Math.abs(c - end[1]);  // never overestimates
+  const key = ([r, c]) => `${r},${c}`;
+  const g = new Map([[key(start), 0]]);
+  const prev = new Map([[key(start), null]]);
+  const heap = new MinHeap([[h(start), h(start), start]]);   // @mark init
+  const closed = new Set();
+  while (heap.size) {
+    const [f, , cell] = heap.pop();                           // @mark pop
+    if (closed.has(key(cell))) continue;                      // @mark stale
+    closed.add(key(cell));
+    if (key(cell) === key(end)) return buildPath(prev, end, key);  // @mark found
+    const [r, c] = cell;
+    for (const nxt of [[r - 1, c], [r, c + 1], [r + 1, c], [r, c - 1]]) {
+      const ng = g.get(key(cell)) + 1;
+      if (isOpen(grid, nxt) && ng < (g.get(key(nxt)) ?? Infinity)) {
+        g.set(key(nxt), ng);                                  // @mark relax
+        prev.set(key(nxt), cell);
+        heap.push([ng + h(nxt), h(nxt), nxt]);
+      }
+    }
+  }
+  return null;                                                // @mark no-path
+}
+
+function buildPath(prev, cell, key) {
+  const path = [];
+  for (; cell; cell = prev.get(key(cell))) path.push(cell);  // @mark trace
+  return path.reverse();
+}

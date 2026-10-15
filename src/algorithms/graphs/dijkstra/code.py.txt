@@ -1,0 +1,16 @@
+import heapq
+
+def dijkstra(graph, source):
+    # graph[u] = list of (v, weight); all weights >= 0
+    dist = [float('inf')] * len(graph)
+    dist[source] = 0                            # @mark init
+    heap = [(0, source)]
+    while heap:
+        d, u = heapq.heappop(heap)              # @mark pop
+        if d > dist[u]:                         # @mark stale
+            continue                            # an outdated entry
+        for v, w in graph[u]:
+            if d + w < dist[v]:                 # @mark relax
+                dist[v] = d + w                 # @mark improve
+                heapq.heappush(heap, (dist[v], v))
+    return dist                                 # @mark done

@@ -1,0 +1,15 @@
+def build(n, edges, directed):
+    adj = [[] for _ in range(n)]                # @mark init
+    matrix = [[0] * n for _ in range(n)]
+    for u, v in edges:                          # @mark edge
+        adj[u].append(v)                        # @mark add
+        matrix[u][v] = 1
+        if not directed:
+            adj[v].append(u)                    # @mark add-back
+            matrix[v][u] = 1
+    return adj, matrix                          # @mark done
+
+# Asking "is there an edge u-v?"
+#   matrix: matrix[u][v]          O(1)
+#   lists:  v in adj[u]           O(deg(u))
+#   edges:  (u, v) in edges       O(E)

@@ -1,0 +1,28 @@
+class DSU:
+    def __init__(self, n):
+        self.parent = list(range(n))            # @mark init
+        self.rank = [0] * n                     # upper bound on tree height
+
+    def find(self, x):
+        if self.parent[x] != x:                 # @mark find
+            self.parent[x] = self.find(self.parent[x])  # @mark compress
+        return self.parent[x]
+
+    def union(self, a, b):
+        ra, rb = self.find(a), self.find(b)     # @mark union
+        if ra == rb:
+            return False                        # @mark same
+        if self.rank[ra] < self.rank[rb]:       # @mark rank
+            ra, rb = rb, ra                     # attach the shorter tree
+        self.parent[rb] = ra                    # @mark link
+        if self.rank[ra] == self.rank[rb]:
+            self.rank[ra] += 1                  # @mark grow
+        return True
+
+def count_components(n, edges):
+    dsu = DSU(n)
+    components = n
+    for a, b in edges:
+        if dsu.union(a, b):                     # @mark edge
+            components -= 1
+    return components                           # @mark done

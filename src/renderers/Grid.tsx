@@ -65,7 +65,7 @@ export function GridRenderer({ step, highlights, options, edit }: RendererProps<
       if (ch === "S" || ch === "E") return;
       const from = findChar(g, drag.ch);
       let next = g;
-      if (from) next = setCell(next, from[0], from[1], ".");
+      if (from) next = setCell(next, from[0], from[1], ed.empty ?? ".");
       ed.onChange(setCell(next, r, c, drag.ch));
     }
   };
@@ -108,7 +108,7 @@ export function GridRenderer({ step, highlights, options, edit }: RendererProps<
     if (node && boxRef.current?.contains(node)) apply(Number(node.dataset.r), Number(node.dataset.c));
   };
 
-  const maxW = Math.min(640, cols * 44);
+  const maxW = Math.min(640, cols * (cols <= 8 ? 60 : 44));
   const labelSize = cols > 22 ? 8 : cols > 14 ? 10 : 12;
 
   return (
@@ -165,7 +165,7 @@ const GridCell = memo(function GridCell({
   const outline = endpoint && (hl === "current" || hl === "path" || mark === "path");
   return (
     <div
-      className={`cell${kind ? ` k-${kind}` : ""}${outline ? " ring" : ""}`}
+      className={`cell${kind ? ` k-${kind}` : ""}${outline ? " ring" : ""}${label ? " labelled" : ""}`}
       data-r={r}
       data-c={c}
     >

@@ -1,0 +1,18 @@
+// Deque with pushFront / pushBack / popFront (a plain array works for small inputs)
+function zeroOneBfs(graph, source) {
+  // graph[u] = array of [v, w] with w in {0, 1}
+  const dist = Array(graph.length).fill(Infinity);
+  dist[source] = 0;                             // @mark init
+  const dq = new Deque([source]);
+  while (dq.size) {
+    const u = dq.popFront();                    // @mark pop
+    for (const [v, w] of graph[u]) {
+      if (dist[u] + w < dist[v]) {              // @mark relax
+        dist[v] = dist[u] + w;
+        if (w === 0) dq.pushFront(v);           // @mark front
+        else dq.pushBack(v);                    // @mark back
+      }
+    }
+  }
+  return dist;                                  // @mark done
+}

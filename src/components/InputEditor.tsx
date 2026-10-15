@@ -137,6 +137,12 @@ function InputForm({
           return;
         }
         value[f.key] = r.value;
+        // The text form has no layout: keep the old positions/labels while the node count is unchanged.
+        const old = rec[f.key] as { n?: number; pos?: unknown; labels?: unknown } | undefined;
+        const next = r.value as { n?: number; pos?: unknown; labels?: unknown };
+        if (f.kind === "graph" && old && old.n === next.n && next.pos === undefined) {
+          value[f.key] = { ...next, ...(old.pos ? { pos: old.pos } : {}), ...(old.labels ? { labels: old.labels } : {}) };
+        }
       }
     }
     const err = validateInput(module, value);
@@ -224,8 +230,8 @@ function FieldEditor({
         ))}
       </select>
     );
-  } else if (field.kind === "grid" || field.kind === "matrix" || field.kind === "json") {
-    const rows = field.kind === "grid" || field.kind === "matrix" ? Math.min(14, Math.max(3, value.split("\n").length)) : 6;
+  } else if (field.kind === "grid" || field.kind === "matrix" || field.kind === "graph" || field.kind === "json") {
+    const rows = field.kind === "grid" || field.kind === "matrix" || field.kind === "graph" ? Math.min(14, Math.max(3, value.split("\n").length)) : 6;
     control = (
       <textarea
         id={id}
@@ -274,6 +280,8 @@ function fieldHelp(f: InputField): string | undefined {
       return "One row per line, numbers separated by spaces (or JSON [[...]]).";
     case "words":
       return "Comma- or space-separated words.";
+    case "graph":
+      return "First line n=<nodes> directed|undirected, then edges like 0-1, 1>2 or 0-1:4 (weight). Or draw on the canvas with the tools under it.";
     case "grid":
       return `One row per line using the characters "${(f as GridField).alphabet}".`;
     default:

@@ -8,10 +8,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **107 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (2: grid BFS/DFS).
-- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`.
-- Last completed: Tab 9 Trees, 23 pages (2026-10-15, closes issue #6). Earlier the same day: #3 lists, #4 stacks/queues, #5 heaps.
-- **Next up:** issue #7 — `graph` renderer + Tab 10 Graphs (plan in `ROADMAP.md`, Phase 2). Then #8 backtracking, #9 DP.
+- **125 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (20).
+- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`.
+- Last completed: `graph` renderer + `graph` input field + 18 Graphs pages (2026-10-15, issue #7 in progress): traversal, grid patterns, representations, cycles/topo/bipartite, union-find, shortest paths.
+- **Next up:** rest of issue #7 — MST (Kruskal, Prim) and Advanced (SCC, bridges/articulation points, Hierholzer, Edmonds-Karp, clone graph, word ladder). Then #8 backtracking, #9 DP.
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -24,9 +24,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `src/engine/` — types (`AlgorithmModule`, `Step`, `InputField`…), `Tracer` (deep-copied immutable steps,
   cumulative counters), `buildTrace` (10 000-step cap), `@mark` line-marker parser, input parse/validate, seeded RNG.
 - `src/algorithms/<category>/<id>/` — one folder per page (`meta.ts`, `index.ts`, `code.py.txt`, `code.js.txt`,
-  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated).
+  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated, graph).
 - `src/registry.ts` — auto-collects folders with `import.meta.glob` (meta eager, module lazy).
-- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`. Registered in `renderers/index.ts`.
+- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`. Registered in `renderers/index.ts`.
+- `src/engine/graph.ts` — the `graph` input value (`{ n, edges, directed, pos?, labels? }`), its text form and validation.
 - `src/pages/AlgorithmPage.tsx` — wires input bar, renderer, narration, player, code panel, watch/aux, counters, legend, info tabs; syncs `?input=` / `?step=` in the URL.
 - `src/store/prefs.ts` — zustand + localStorage (`steplore-prefs`): theme, language, speed, progress, popup geometry.
 - Styling: `src/styles/app.css`, theme tokens on `:root` / `[data-theme="light"]`, highlight kinds use `.k-<kind>` and `[data-k]`.
@@ -64,5 +65,12 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
   (serialize-tree) needs offset ids because node ids must be unique per state. Ops-style inputs (`sum:1-4`,
   `insert:cat`) use a `words` field with a regex + simulation in `validate`.
 - Heredocs failed again this session on a large multi-file write; prefer the Write tool for anything long.
+- `graph` renderer: positions are unit-square `pos` per node; give presets hand-placed `pos` via `gridPos([[x, y], …])`
+  and check that no edge passes through a third node (collinear nodes hide edges). Random graphs fall back to the
+  deterministic `autoLayout`. Editing tools (`AlgorithmPage` → `edit.tool`) only appear when the state graph has the
+  same nodes/edges as the input field; tool state lives in `AlgorithmView` so it survives the remount after each edit.
+- Grid pages with their own alphabet need `charGridField({ alphabet, empty, tools })` — the first tool is the default
+  paint tool and `empty` is what a toggled cell becomes. A grid field without `tools` is not editable on the canvas.
+- Grid cells with a label move their centre glyph (path diamond, frontier square) to the corner (`.cell.labelled`).
 - Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
   generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).

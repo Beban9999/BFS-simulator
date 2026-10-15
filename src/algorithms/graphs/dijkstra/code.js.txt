@@ -1,0 +1,18 @@
+// MinHeap: push([d, v]) / pop() → smallest d (ties: smaller v)
+function dijkstra(graph, source) {
+  // graph[u] = array of [v, weight]; all weights >= 0
+  const dist = Array(graph.length).fill(Infinity);
+  dist[source] = 0;                             // @mark init
+  const heap = new MinHeap([[0, source]]);
+  while (heap.size) {
+    const [d, u] = heap.pop();                  // @mark pop
+    if (d > dist[u]) continue;                  // @mark stale
+    for (const [v, w] of graph[u]) {
+      if (d + w < dist[v]) {                    // @mark relax
+        dist[v] = d + w;                        // @mark improve
+        heap.push([dist[v], v]);
+      }
+    }
+  }
+  return dist;                                  // @mark done
+}

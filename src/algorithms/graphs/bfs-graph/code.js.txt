@@ -1,0 +1,16 @@
+function bfs(graph, source) {
+  // graph[u] = array of neighbours of u
+  const dist = new Map([[source, 0]]);          // @mark init
+  const queue = [source];
+  const order = [];
+  for (let head = 0; head < queue.length; ) {   // @mark loop
+    const u = queue[head++];                    // @mark pop
+    order.push(u);
+    for (const v of graph[u]) {                 // @mark scan
+      if (dist.has(v)) continue;                // @mark seen
+      dist.set(v, dist.get(u) + 1);             // @mark discover
+      queue.push(v);
+    }
+  }
+  return [order, dist];                         // @mark done
+}

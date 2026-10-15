@@ -47,6 +47,14 @@
   --hl-mismatch: #dc2626;
   --hl-pivot: #c026d3;
 
+  /* Graph colour groups (components, bipartite sides, SCCs) */
+  --grp-0: #38bdf8;
+  --grp-1: #fb923c;
+  --grp-2: #4ade80;
+  --grp-3: #c084fc;
+  --grp-4: #f472b6;
+  --grp-5: #facc15;
+
   /* Code */
   --code-bg: #0b0e13;
   --code-text: #d6dae1;
@@ -111,6 +119,13 @@
   --hl-match: #22c55e;
   --hl-mismatch: #ef4444;
   --hl-pivot: #c026d3;
+
+  --grp-0: #0284c7;
+  --grp-1: #ea580c;
+  --grp-2: #16a34a;
+  --grp-3: #9333ea;
+  --grp-4: #db2777;
+  --grp-5: #ca8a04;
 
   --code-bg: #f8f9fb;
   --code-text: #24292f;
@@ -1850,6 +1865,22 @@ a.card:hover {
   stroke-linejoin: round;
 }
 
+/* Cells with text: move centre glyphs to the corner so the text stays readable. */
+.grid .cell.labelled.k-path::after,
+.grid .cell.labelled.k-frontier::after,
+.grid .cell.labelled.k-start::after,
+.grid .cell.labelled.k-end::after {
+  inset: auto;
+  top: 8%;
+  right: 8%;
+  width: 22%;
+  height: 22%;
+}
+
+.grid .cell.labelled {
+  font-weight: 700;
+}
+
 .grid .cell.ring {
   box-shadow: 0 0 0 2px var(--hl-path);
 }
@@ -2735,4 +2766,197 @@ kbd,
 
 .tv-link-head {
   fill: var(--hl-pivot);
+}
+
+/* ---------- Graph renderer ---------- */
+.gv-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.gv-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.gv-box {
+  flex: 3 1 340px;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.gv-side {
+  flex: 1 1 220px;
+  max-width: 100%;
+}
+
+.gv {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--mono);
+  touch-action: none;
+  user-select: none;
+}
+
+.gv.mode-node {
+  cursor: copy;
+}
+
+.gv-edge {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: stroke 0.2s, stroke-width 0.2s, opacity 0.2s;
+}
+
+.gv-head {
+  fill: var(--border-strong);
+  transition: fill 0.2s;
+}
+
+.gv-e[data-k] .gv-edge {
+  stroke: var(--k);
+  stroke-width: 3.4;
+}
+
+.gv-e[data-k] .gv-head {
+  fill: var(--k);
+}
+
+.gv-e[data-k="pruned"] .gv-edge,
+.gv-e[data-k="removed"] .gv-edge {
+  stroke-dasharray: 5 5;
+  stroke-width: 2;
+  opacity: 0.7;
+}
+
+.gv-e[data-k="visited"] .gv-edge {
+  stroke: color-mix(in srgb, var(--hl-visited) 55%, var(--text));
+}
+
+.gv-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+}
+
+.gv.mode-delete .gv-hit,
+.gv.mode-delete .gv-node {
+  cursor: not-allowed;
+}
+
+.gv-w {
+  fill: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.gv-e[data-k] .gv-w {
+  fill: var(--text);
+}
+
+.gv-node {
+  cursor: grab;
+}
+
+.gv-node circle.gv-c {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.gv-node[data-g] circle.gv-c {
+  fill: color-mix(in srgb, var(--g) 22%, var(--surface));
+  stroke: var(--g);
+}
+
+.gv-node[data-k] circle.gv-c {
+  stroke: var(--k);
+  stroke-width: 3;
+  fill: color-mix(in srgb, var(--k) 30%, var(--surface));
+}
+
+.gv-node[data-k="visited"] circle.gv-c {
+  stroke: color-mix(in srgb, var(--hl-visited) 45%, var(--text));
+  fill: color-mix(in srgb, var(--hl-visited) 80%, var(--surface));
+}
+
+.gv-node[data-k][data-g] circle.gv-c {
+  fill: color-mix(in srgb, var(--g) 22%, var(--surface));
+}
+
+.gv-node[data-k="pruned"],
+.gv-node[data-k="removed"] {
+  opacity: 0.5;
+}
+
+.gv-node.picked circle.gv-c {
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-dasharray: 4 3;
+}
+
+.gv-node[data-g="0"] { --g: var(--grp-0); }
+.gv-node[data-g="1"] { --g: var(--grp-1); }
+.gv-node[data-g="2"] { --g: var(--grp-2); }
+.gv-node[data-g="3"] { --g: var(--grp-3); }
+.gv-node[data-g="4"] { --g: var(--grp-4); }
+.gv-node[data-g="5"] { --g: var(--grp-5); }
+
+.gv-label {
+  fill: var(--text);
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.gv-sub {
+  fill: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: start;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+.gv-glyph {
+  fill: var(--text);
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.gv-empty {
+  padding: 24px 0;
+  font-size: 0.85rem;
+  color: var(--faint);
+}
+
+.canvas-tools input[type="number"] {
+  width: 56px;
+}
+
+.canvas-tools .tool-error {
+  color: var(--hl-mismatch);
 }

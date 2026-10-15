@@ -1,0 +1,23 @@
+function numIslands(grid) {
+  const rows = grid.length, cols = grid[0].length;
+  const seen = new Set();
+  // returns the island's area
+  function dfs(r, c) {
+    if (r < 0 || r >= rows || c < 0 || c >= cols ||
+        grid[r][c] !== '1' || seen.has(r * cols + c)) return 0;
+    seen.add(r * cols + c);                     // @mark visit
+    return 1 + dfs(r + 1, c) + dfs(r - 1, c)    // @mark recurse
+             + dfs(r, c + 1) + dfs(r, c - 1);
+  }
+  let count = 0, best = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === '1' && !seen.has(r * cols + c)) {  // @mark scan
+        count++;
+        const area = dfs(r, c);                 // @mark island-done
+        best = Math.max(best, area);
+      }
+    }
+  }
+  return [count, best];                         // @mark done
+}

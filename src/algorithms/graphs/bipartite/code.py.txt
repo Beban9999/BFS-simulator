@@ -1,0 +1,19 @@
+from collections import deque
+
+def is_bipartite(graph):
+    n = len(graph)
+    color = [-1] * n                            # -1 = not coloured yet
+    for s in range(n):
+        if color[s] != -1:
+            continue
+        color[s] = 0                            # @mark start
+        queue = deque([s])
+        while queue:
+            u = queue.popleft()                 # @mark pop
+            for v in graph[u]:
+                if color[v] == -1:
+                    color[v] = 1 - color[u]     # @mark paint
+                    queue.append(v)
+                elif color[v] == color[u]:      # @mark conflict
+                    return False
+    return True                                 # @mark done

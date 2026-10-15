@@ -1,0 +1,31 @@
+class DSU {
+  constructor(n) {
+    this.parent = Array.from({ length: n }, (_, i) => i);  // @mark init
+    this.rank = Array(n).fill(0);               // upper bound on tree height
+  }
+  find(x) {
+    if (this.parent[x] !== x) {                 // @mark find
+      this.parent[x] = this.find(this.parent[x]);  // @mark compress
+    }
+    return this.parent[x];
+  }
+  union(a, b) {
+    let ra = this.find(a), rb = this.find(b);   // @mark union
+    if (ra === rb) return false;                // @mark same
+    if (this.rank[ra] < this.rank[rb]) {        // @mark rank
+      [ra, rb] = [rb, ra];                      // attach the shorter tree
+    }
+    this.parent[rb] = ra;                       // @mark link
+    if (this.rank[ra] === this.rank[rb]) this.rank[ra]++;  // @mark grow
+    return true;
+  }
+}
+
+function countComponents(n, edges) {
+  const dsu = new DSU(n);
+  let components = n;
+  for (const [a, b] of edges) {
+    if (dsu.union(a, b)) components--;          // @mark edge
+  }
+  return components;                            // @mark done
+}

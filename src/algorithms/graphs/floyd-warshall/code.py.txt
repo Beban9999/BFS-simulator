@@ -1,0 +1,11 @@
+def floyd_warshall(n, edges):
+    INF = float('inf')
+    dist = [[0 if i == j else INF for j in range(n)] for i in range(n)]
+    for u, v, w in edges:
+        dist[u][v] = w                          # @mark init
+    for k in range(n):                          # @mark k
+        for i in range(n):                      # may we route i → j through k?
+            for j in range(n):
+                if dist[i][k] + dist[k][j] < dist[i][j]:   # @mark relax
+                    dist[i][j] = dist[i][k] + dist[k][j]   # @mark improve
+    return dist                                 # @mark done

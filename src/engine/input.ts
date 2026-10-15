@@ -1,4 +1,5 @@
 import type { AlgorithmModule, InputField } from "./types";
+import { checkGraph, formatGraph, parseGraph, type GraphValue } from "./graph";
 
 type Parsed = { value: unknown; error?: undefined } | { error: string; value?: undefined };
 
@@ -21,6 +22,8 @@ export function formatField(field: InputField, value: unknown): string {
       return (value as number[][]).map((r) => r.join(" ")).join("\n");
     case "tree":
       return "[" + (value as (number | null)[]).map((v) => (v === null ? "null" : v)).join(", ") + "]";
+    case "graph":
+      return formatGraph(value as GraphValue);
     case "json":
       return JSON.stringify(value);
   }
@@ -105,6 +108,11 @@ export function parseField(field: InputField, text: string): Parsed {
         }
       }
       return checkField(field, values);
+    }
+    case "graph": {
+      const g = parseGraph(text, field);
+      if (typeof g === "string") return { error: `${field.label}: ${g}` };
+      return checkField(field, g);
     }
     case "json": {
       try {
@@ -201,6 +209,10 @@ export function checkField(field: InputField, value: unknown): Parsed {
       if (field.min !== undefined && value.some((v) => v !== null && v < field.min!)) return fail(`values must be ≥ ${field.min}.`);
       if (field.max !== undefined && value.some((v) => v !== null && v > field.max!)) return fail(`values must be ≤ ${field.max}.`);
       return { value };
+    }
+    case "graph": {
+      const err = checkGraph(value, field);
+      return err ? fail(err) : { value };
     }
     case "json":
       return { value };

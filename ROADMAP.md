@@ -33,7 +33,7 @@ landing page — so a tab goes live the moment its first algorithm folder is add
 
 ## Phase 1 — Core renderers & high-frequency topics
 
-Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [x] `stackqueue` · [x] `tree`
+Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [x] `stackqueue` · [x] `tree` · [x] `graph`
 
 ### Tab 2 — Arrays & Hashing ✅ (16)
 - [x] Hash table internals — chaining vs linear probing, resize/rehash *(hash-table)*
@@ -95,7 +95,7 @@ Renderer: `src/renderers/StackQueueView.tsx` + `src/algorithms/_shared/stackqueu
 
 ### Renderers
 - [x] `tree` — `src/renderers/TreeView.tsx` + `src/algorithms/_shared/tree.ts`. Binary + n-ary via `d3-hierarchy` (null children keep left/right positions), several trees per state (`trees: TreeView[]`), optional `array` (ArrayState, drawn below with the array renderer) in sync. Highlight ids `tn(id)` → `n:<id>`, `te(p, c)` → `e:<p>-<c>`; node ids must be unique across trees. Heaps: `heapView(items)` + `siftUpEvents` / `siftDownEvents` (yield compare/swap/stop so pages choose their own lines). Input field kind `tree` (level order with nulls) is used by the Tab 9 pages (`treeField`). Extra dashed links (`TreeView.links`, highlight `tl(from, to)`) draw Morris threads.
-- [ ] `graph` — SVG nodes/edges, directed/undirected, weights, fixed layout + drag; graph builder input (click to add nodes/edges) + JSON edge-list field. Show distance table / heap in aux.
+- [x] `graph` — `src/renderers/GraphView.tsx` + `src/algorithms/_shared/graph.ts`. SVG nodes/edges, directed (arrowheads; two-way pairs bend apart) or undirected, weight labels, node sub-labels (`sub`, e.g. distances) and colour groups (`groups`, 6 hues for components / bipartite sides). Optional `trees` (forest via the tree renderer, e.g. union-find) and `matrix` beside the drawing, `array` below. Highlight ids `gn(v)`, `ge(u, v)` (undirected edges match either order; the later highlight wins). Input field kind `graph` (`graphField`): value `{ n, edges: [[u, v, w?]], directed, pos?, labels? }`, text form `n=6 directed` + `0-1:4, 1>2`. On the canvas: drag nodes (view only), Add node / Add edge (+ weight) / Delete / Auto layout tools under it (edits are validated, then restart the run). Layout: `pos` from presets (`gridPos`), else deterministic force layout (`autoLayout`) or `layeredLayout` for DAGs.
 
 ### Tab 8 — Heaps ✅ (5)
 - [x] Binary heap: build-heap O(n), push/sift-up, pop/sift-down — tree + array *(binary-heap)*
@@ -113,14 +113,15 @@ Shared: `_shared/bintree.ts` (`BTree` with stable ids, level-order parse/seriali
 - [x] Segment tree build / query / update *(segment-tree)* · Fenwick / BIT *(fenwick-tree)*
 - [ ] Later: lazy propagation for the segment tree (range updates) — only described in its info tab; BST delete for AVL / red-black
 
-### Tab 10 — Graphs (2 done)
+### Tab 10 — Graphs (20 done)
+Shared: `_shared/graph.ts` (sample graphs `SAMPLE_UNDIRECTED`, `SAMPLE_DIRECTED`, `SAMPLE_DAG`, `SAMPLE_WEIGHTED`…, `randomGraph` / `randomDagish`, `adjacency`, `dsuForest`, `sourceField`). Grid pages use `charGridField` / `randomCharGrid` / `capFrames` from `_shared/grid.ts`. Copy `graphs/bfs-graph` for a new graph page, `graphs/number-of-islands` for a grid one.
 - [x] BFS grid *(bfs-grid)* · [x] DFS grid *(dfs-grid)*
-- [ ] Representations toggle (adj list / matrix / edge list)
-- [ ] BFS/DFS on graphs; recursive vs iterative DFS
-- [ ] Grid patterns: number of islands, flood fill, max area, multi-source BFS (rotting oranges, walls & gates), Pacific Atlantic, surrounded regions — all on the existing `grid` renderer (use `rendererOptions.charKinds` to draw land/water)
-- [ ] Cycle detection (undirected parent/DSU, directed 3-colour) · topo sort (Kahn + DFS) · bipartite
-- [ ] Union-Find with path compression + union by rank (forest view)
-- [ ] Shortest paths: BFS, 0-1 BFS, Dijkstra, Bellman-Ford, Floyd-Warshall, A* on grid
+- [x] Representations: edge list → adjacency lists + matrix *(representations)*
+- [x] BFS on graphs *(bfs-graph)* · DFS recursive vs iterative *(dfs-graph)*
+- [x] Grid patterns: islands + max area *(number-of-islands)* · *(flood-fill)* · multi-source BFS *(rotting-oranges, Walls and Gates / 01 Matrix in its problems)* · *(pacific-atlantic)* · *(surrounded-regions)*
+- [x] Cycle detection, undirected parent + directed 3-colour *(cycle-detection)* · topo sort Kahn *(topo-sort-kahn)* + DFS *(topo-sort-dfs)* · *(bipartite)*
+- [x] Union-Find with path compression + union by rank, forest view *(union-find)*
+- [x] Shortest paths: BFS (*bfs-graph*), 0-1 BFS *(zero-one-bfs)*, *(dijkstra)*, *(bellman-ford)*, *(floyd-warshall)*, A* on grid *(a-star)*
 - [ ] MST: Kruskal, Prim
 - [ ] Advanced: Tarjan/Kosaraju SCC, bridges/articulation points, Hierholzer, Edmonds-Karp, clone graph, word ladder
 

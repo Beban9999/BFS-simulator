@@ -1,0 +1,21 @@
+function isBipartite(graph) {
+  const n = graph.length;
+  const color = Array(n).fill(-1);              // -1 = not coloured yet
+  for (let s = 0; s < n; s++) {
+    if (color[s] !== -1) continue;
+    color[s] = 0;                               // @mark start
+    const queue = [s];
+    for (let head = 0; head < queue.length; head++) {
+      const u = queue[head];                    // @mark pop
+      for (const v of graph[u]) {
+        if (color[v] === -1) {
+          color[v] = 1 - color[u];              // @mark paint
+          queue.push(v);
+        } else if (color[v] === color[u]) {     // @mark conflict
+          return false;
+        }
+      }
+    }
+  }
+  return true;                                  // @mark done
+}

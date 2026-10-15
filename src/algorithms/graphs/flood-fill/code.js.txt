@@ -1,0 +1,17 @@
+function floodFill(image, sr, sc, color) {
+  const old = image[sr][sc];
+  if (old === color) return image;              // @mark same
+  const rows = image.length, cols = image[0].length;
+  image[sr][sc] = color;                        // @mark start
+  const queue = [[sr, sc]];
+  for (let head = 0; head < queue.length; head++) {
+    const [r, c] = queue[head];                 // @mark pop
+    for (const [nr, nc] of [[r + 1, c], [r - 1, c], [r, c + 1], [r, c - 1]]) {
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && image[nr][nc] === old) {
+        image[nr][nc] = color;                  // @mark paint
+        queue.push([nr, nc]);
+      }
+    }
+  }
+  return image;                                 // @mark done
+}

@@ -1,0 +1,23 @@
+function solve(board) {
+  const rows = board.length, cols = board[0].length;
+  function markSafe(r, c) {
+    if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c] !== 'O') return;
+    board[r][c] = 'S';                                  // @mark safe
+    markSafe(r + 1, c); markSafe(r - 1, c);
+    markSafe(r, c + 1); markSafe(r, c - 1);
+  }
+  // 1) every 'O' connected to the border can never be surrounded
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const onBorder = r === 0 || r === rows - 1 || c === 0 || c === cols - 1;
+      if (onBorder && board[r][c] === 'O') markSafe(r, c);  // @mark border
+    }
+  }
+  // 2) the remaining 'O's are surrounded: capture them; un-mark the safe ones
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (board[r][c] === 'O') board[r][c] = 'X';           // @mark capture
+      else if (board[r][c] === 'S') board[r][c] = 'O';      // @mark restore
+    }
+  }
+}
