@@ -1,0 +1,21 @@
+def rob(nums):
+    n = len(nums)
+    if n == 0:
+        return 0, []                            # @mark empty
+    dp = [0] * n                                # dp[i] = best loot from houses 0..i
+    dp[0] = nums[0]                             # @mark base0
+    if n > 1:
+        dp[1] = max(nums[0], nums[1])           # @mark base1
+    for i in range(2, n):
+        dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])   # @mark fill
+    return dp[-1], houses(nums, dp)             # @mark done
+
+def houses(nums, dp):                           # walk back to see what was robbed
+    i, picked = len(nums) - 1, []
+    while i >= 0:
+        if i > 0 and dp[i] == dp[i - 1]:
+            i -= 1                              # @mark skip
+        else:
+            picked.append(i)                    # @mark pick
+            i -= 2
+    return picked[::-1]

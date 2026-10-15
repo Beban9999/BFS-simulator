@@ -3,7 +3,7 @@
 Source of truth for what exists and what's next. The full original spec is
 [algo-visualizer-build-prompt.md](algo-visualizer-build-prompt.md) (section numbers below refer to it).
 How to build a page: [docs/ADDING_AN_ALGORITHM.md](docs/ADDING_AN_ALGORITHM.md).
-GitHub issues [#2–#19](https://github.com/Beban9999/BFS-simulator/issues) mirror the unchecked sections below (one per tab / feature); tick both when done.
+GitHub issues [#2–#20](https://github.com/Beban9999/BFS-simulator/issues) mirror the unchecked sections below (one per tab / feature); tick both when done.
 
 Legend: `[x]` done (tests pass + checked in the browser) · `[ ]` to do · *(id)* = planned folder name ·
 **needs:** = renderer/feature that must exist first.
@@ -127,10 +127,11 @@ Shared: `_shared/graph.ts` (sample graphs `SAMPLE_UNDIRECTED`, `SAMPLE_DIRECTED`
 
 ## Phase 3 — Backtracking & DP
 - [x] `decisiontree` — `src/renderers/DecisionTreeView.tsx` + `src/algorithms/_shared/decision.ts`. Generators drive a `DecisionTree` builder (`child` = choose, `enter` = explore, `finish` = return / un-choose, `prune` = branch cut without exploring, `found`) and put `view()` in `state.tree`, `marks()` in the highlights (current path, solutions, pruned, finished). Concrete view beside the tree: `array` (ids `ai`) and/or `matrix` board (ids `mi`). Big trees fold finished subtrees off the current path into `+k` nodes (limit per tree, default 70); the box scrolls to keep the current node visible. Highlight ids `dn(node)`, `de(parent, child)`.
-- [ ] `table2d` renderer = `matrix` + arrows from each cell to its dependencies + path reconstruction (extend `src/renderers/MatrixView.tsx`)
+- [x] `dptable` — `src/renderers/DPTableView.tsx` + `src/algorithms/_shared/dp.ts` (`DPState`). A table (1D DP = a table with an input row and a dp row; 2D DP = the full grid, optionally with the input stacked above) with the recurrence (`formula`) above it, measured SVG **dependency arrows** (`arrows: [{ from: [r, c], to: [r, c] }]`; same-row arrows arc under the last row / over others), optional recursion `tree` (decision-tree drawing, ids `dn`) and `array` rows below (e.g. edit-distance alignment). Highlight ids `tc(r, c)`; walk-back paths use the `path` kind.
 - [x] Tab 11 Backtracking ✅ (9): *(subsets)* ± dups · *(permutations)* ± dups · *(combinations)* · *(combination-sum)* I/II · *(n-queens)* · *(sudoku)* 4×4 / 9×9 · *(word-search)* · *(palindrome-partitioning)* · *(letter-combinations)*. Generate parentheses already lives in Stacks & Queues (`stacks-queues/generate-parentheses`, listed in the problems of the backtracking pages). Copy `backtracking/subsets` for a new page.
 - [ ] Note page: universal backtracking template — **needs:** note-page support (issue #10)
-- [ ] Tab 12 DP: "From recursion to DP" (4 views), 1D (house robber I/II, coin change, decode ways, word break, min cost stairs), LIS (n² and n log n), grid (unique paths, min path sum), strings (LCS, edit distance + alignment, longest palindromic substring, distinct subsequences), knapsack (0/1 + 1D trick, unbounded, partition, target sum), interval (burst balloons, matrix chain), state machine (stock variants, automaton view), trees (House Robber III), bitmask TSP
+- [x] Tab 12 DP core (10): "From recursion to DP" on climbing stairs, 4 views *(climbing-stairs)* · *(house-robber)* · *(coin-change)* · *(word-break)* · LIS n² + n log n *(lis)* · *(unique-paths)* with obstacles · *(min-path-sum)* · *(lcs)* · *(edit-distance)* + alignment · 0/1 *(knapsack)* + 1D trick. Copy `dp/house-robber` (1D) or `dp/lcs` (2D).
+- [ ] Later (issue #20): House Robber II, decode ways, min cost stairs, longest palindromic substring, distinct subsequences, unbounded knapsack / partition / target sum, interval DP (burst balloons, matrix chain), state-machine stock variants, House Robber III, bitmask TSP
 
 ## Phase 4 — The rest + platform features
 - [ ] **Note-page support**: a module kind with a custom React page and no `generate` (Big-O chart, memory model, greedy-vs-DP counter-example, stability, built-in sorts, cheat sheet). Suggested: `kind: "note"` in meta + `Page` component export; update the registry, tests and `AlgorithmPage`.

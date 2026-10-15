@@ -3077,3 +3077,70 @@ kbd,
   text-anchor: middle;
   pointer-events: none;
 }
+
+/* ---------- DP table renderer ---------- */
+.dp-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dp-formula {
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  text-align: center;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.dp-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dp-table-wrap {
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 26px 4px 30px; /* room for arcs over the first row and under the last */
+}
+
+.dp-table .dp-rowlabel {
+  text-align: right;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+.dp-arrows {
+  position: absolute;
+  inset: 0 auto auto 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.dp-arrow {
+  fill: none;
+  stroke: var(--hl-compare);
+  stroke-width: 2.4;
+  opacity: 0.9;
+}
+
+.dp-arrowhead {
+  fill: var(--hl-compare);
+}
+
+.mx-table.dp-table {
+  border-spacing: 4px 14px;
+  margin: -10px 0;
+}

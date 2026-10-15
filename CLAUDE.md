@@ -8,10 +8,12 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **136 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (9).
-- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`.
-- Last completed: `decisiontree` renderer + Tab 11 Backtracking, 9 pages (2026-10-15, closes issue #8). Earlier the same day: `graph` renderer + 22 Graphs pages (#7; advanced graph pages parked in #19).
-- **Next up:** issue #9 — Tab 12 DP. The user asked for the meaningful core only, with the rest split into its own issue.
+- **146 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (9), DP (10).
+- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`, `dptable`.
+- Last completed (2026-10-15): `dptable` renderer + DP core, 10 pages (closes #9; rest parked in #20). Earlier the same
+  day: `decisiontree` + Backtracking (9, #8) and `graph` + Graphs (22, #7; advanced pages parked in #19).
+- **Next up:** pick from the open issues — #10 note pages (+ cheat sheet), #11 Fundamentals, #12 Greedy & Intervals,
+  #13 Strings, #14 Bits, #15 Math, #16 Design, #17 compare/quiz, #18 polish; parked: #19 graphs advanced, #20 DP rest.
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -24,9 +26,9 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `src/engine/` — types (`AlgorithmModule`, `Step`, `InputField`…), `Tracer` (deep-copied immutable steps,
   cumulative counters), `buildTrace` (10 000-step cap), `@mark` line-marker parser, input parse/validate, seeded RNG.
 - `src/algorithms/<category>/<id>/` — one folder per page (`meta.ts`, `index.ts`, `code.py.txt`, `code.js.txt`,
-  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated, graph, decision).
+  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated, graph, decision, dp).
 - `src/registry.ts` — auto-collects folders with `import.meta.glob` (meta eager, module lazy).
-- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`. Registered in `renderers/index.ts`.
+- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`, `dptable`. Registered in `renderers/index.ts`.
 - `src/engine/graph.ts` — the `graph` input value (`{ n, edges, directed, pos?, labels? }`), its text form and validation.
 - `src/pages/AlgorithmPage.tsx` — wires input bar, renderer, narration, player, code panel, watch/aux, counters, legend, info tabs; syncs `?input=` / `?step=` in the URL.
 - `src/store/prefs.ts` — zustand + localStorage (`steplore-prefs`): theme, language, speed, progress, popup geometry.
@@ -77,5 +79,9 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
   (full suite went from 6.5 min to 40 s after the fix). Keep hot paths in the engine free of `import.meta` reads.
 - `decisiontree`: `DecisionTree.finish("done")` never downgrades a node already marked `found`. Keep presets small
   (n ≤ 4–6): every choice is at least one step. Matrix cells: `null` draws an empty box with a faint dot, `""` draws nothing.
+- `dptable`: arrows are positioned by measuring cells after render (ResizeObserver); keep markers in user space units
+  (marker size scales with stroke width otherwise). 1D DP = table with an input row above the dp row.
+- When writing presets, never compute them with expressions — plain literals only (three garbled ternary presets
+  slipped in this session and were caught by review, not tests).
 - Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
   generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).

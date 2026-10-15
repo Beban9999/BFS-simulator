@@ -1,0 +1,29 @@
+function lcs(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));  // @mark init
+  // dp[i][j] = LCS length of a.slice(0, i) and b.slice(0, j)
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;    // @mark match
+      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);         // @mark skip
+    }
+  }
+  return dp[m][n];                              // @mark done
+}
+
+// walk back from the corner
+function lcsString(a, b, dp) {
+  let i = a.length, j = b.length;
+  const out = [];
+  while (i > 0 && j > 0) {
+    if (a[i - 1] === b[j - 1]) {
+      out.push(a[i - 1]);                       // @mark take
+      i--; j--;
+    } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+      i--;                                      // @mark up
+    } else {
+      j--;                                      // @mark left
+    }
+  }
+  return out.reverse().join('');
+}

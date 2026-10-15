@@ -21,7 +21,7 @@ function build(t: DTreeView): Datum {
   return make(t.root);
 }
 
-function TreeSvg({ t, highlights }: { t: DTreeView; highlights: Map<string, HighlightKind> }) {
+export function TreeSvg({ t, highlights }: { t: DTreeView; highlights: Map<string, HighlightKind> }) {
   const [boxRef, boxW] = useWidth<HTMLDivElement>();
   const layout = useMemo(() => {
     const root = d3tree<Datum>()

@@ -1,0 +1,25 @@
+function minPathSum(grid) {
+  const m = grid.length, n = grid[0].length;
+  const dp = Array.from({ length: m }, () => Array(n).fill(0));  // cheapest sum to (r, c)
+  for (let r = 0; r < m; r++) {
+    for (let c = 0; c < n; c++) {
+      if (r === 0 && c === 0) dp[r][c] = grid[0][0];                    // @mark start
+      else if (r === 0) dp[r][c] = dp[r][c - 1] + grid[r][c];           // @mark top
+      else if (c === 0) dp[r][c] = dp[r - 1][c] + grid[r][c];           // @mark left
+      else dp[r][c] = Math.min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c];  // @mark fill
+    }
+  }
+  return dp[m - 1][n - 1];                      // @mark done
+}
+
+// walk back from the end
+function bestPath(dp) {
+  let r = dp.length - 1, c = dp[0].length - 1;
+  const path = [[r, c]];
+  while (r > 0 || c > 0) {
+    if (c === 0 || (r > 0 && dp[r - 1][c] <= dp[r][c - 1])) r--;  // @mark trace
+    else c--;
+    path.push([r, c]);
+  }
+  return path.reverse();
+}

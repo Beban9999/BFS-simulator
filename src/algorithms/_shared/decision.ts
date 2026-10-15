@@ -96,6 +96,12 @@ export class DecisionTree {
     this.nodes[id].status = "found";
   }
 
+  /** Change a node's text, e.g. to show the value a call returned. */
+  relabel(id: number, label: string, title?: string): void {
+    this.nodes[id].label = label;
+    if (title !== undefined) this.nodes[id].title = title;
+  }
+
   parentOf(id: number): number | null {
     return this.nodes[id].parent;
   }

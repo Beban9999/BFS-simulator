@@ -262,6 +262,7 @@ export type RendererId =
   | "tree"
   | "graph"
   | "decisiontree"
+  | "dptable"
   | "matrix";
 
 export interface CodeSet {

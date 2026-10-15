@@ -35,6 +35,7 @@ src/algorithms/<category>/<id>/
 | Graph (nodes/edges, distances, queue/heap) | `graphs/bfs-graph`, `graphs/dijkstra`; recursion: `graphs/dfs-graph`; forest beside it: `graphs/union-find`; matrix beside it: `graphs/floyd-warshall` |
 | Grid puzzle on the `grid` renderer (own alphabet + paint tools) | `graphs/number-of-islands`, `graphs/rotting-oranges` |
 | Backtracking with a decision tree (+ array or board) | `backtracking/subsets`, `backtracking/permutations`; board: `backtracking/n-queens`, `backtracking/sudoku` |
+| DP table with dependency arrows + walk-back | 1D: `dp/house-robber`, `dp/coin-change`; 2D: `dp/lcs`, `dp/edit-distance`; recursion tree: `dp/climbing-stairs` |
 | Linked list re-wiring | `linked-lists/reverse-list`; several rows: `linked-lists/merge-two-lists`; recursion: `linked-lists/reverse-list-recursive` |
 
 ## 1. `meta.ts`
@@ -162,6 +163,7 @@ Highlight ids per renderer:
 | `tree` | `TreeState` (`_shared/tree.ts`; heaps via `heapView`) | `tn(node)`, `te(parent, child)`; the optional `array` uses `ai(i, row)` |
 | `graph` | `GraphState` (`_shared/graph.ts`) | `gn(node)`, `ge(u, v)` (undirected: either order); optional `trees` use `tn`/`te`, `matrix` uses `mi`, `array` uses `ai` |
 | `decisiontree` | `DecisionState` (`_shared/decision.ts`, build it with `DecisionTree`) | `dn(node)`, `de(parent, child)`; `array` uses `ai`, `matrix` uses `mi` |
+| `dptable` | `DPState` (`_shared/dp.ts`) | `tc(r, c)` table cells; `arrows` use table coordinates; optional `tree` uses `dn`/`de`, `array` uses `ai` |
 | `linkedlist` | `ListState` (`_shared/list.ts`, build it with `ListModel`) | `nid(node)`, `eid(from, to)` next edge, `pid` prev edge, `rid` random edge |
 
 `ArrayState` extras: `rows[].bars` (draw heights), `rows[].ids` (stable identities → swaps animate),

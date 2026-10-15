@@ -1,0 +1,30 @@
+# ways(n) = ways(n-1) + ways(n-2): the last move was 1 step or 2 steps
+
+# 1) Plain recursion — exponential: the same n is solved again and again
+def climb_rec(n):
+    if n <= 1:
+        return 1                                # @mark r-base
+    return climb_rec(n - 1) + climb_rec(n - 2)  # @mark r-call
+
+# 2) Memoisation (top-down) — each n is solved once, then looked up
+def climb_memo(n, memo):
+    if n <= 1:
+        return 1                                # @mark m-base
+    if n in memo:
+        return memo[n]                          # @mark m-hit
+    memo[n] = climb_memo(n - 1, memo) + climb_memo(n - 2, memo)  # @mark m-store
+    return memo[n]
+
+# 3) Tabulation (bottom-up) — fill the table from the base cases up
+def climb_table(n):
+    dp = [1] * (n + 1)                          # @mark t-init
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]           # @mark t-fill
+    return dp[n]                                # @mark t-done
+
+# 4) Two variables — only the last two entries are ever read
+def climb_vars(n):
+    a, b = 1, 1                                 # @mark v-init
+    for i in range(2, n + 1):
+        a, b = b, a + b                         # @mark v-step
+    return b                                    # @mark v-done

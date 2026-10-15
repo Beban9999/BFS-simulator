@@ -1,0 +1,16 @@
+def coin_change(coins, amount):
+    INF = float('inf')
+    dp = [0] + [INF] * amount                   # @mark init
+    for a in range(1, amount + 1):              # dp[a] = fewest coins for amount a
+        for c in coins:
+            if c <= a and dp[a - c] + 1 < dp[a]:    # @mark try
+                dp[a] = dp[a - c] + 1           # @mark improve
+    return dp[amount] if dp[amount] != INF else -1  # @mark done
+
+def coins_used(coins, dp, amount):              # walk back through the table
+    used = []
+    while amount > 0:
+        c = next(c for c in coins if c <= amount and dp[amount - c] == dp[amount] - 1)
+        used.append(c)                          # @mark trace
+        amount -= c
+    return used

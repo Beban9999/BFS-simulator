@@ -1,0 +1,15 @@
+function wordBreak(s, wordDict) {
+  const words = new Set(wordDict);
+  const n = s.length;
+  const dp = [true, ...Array(n).fill(false)];   // @mark init
+  // dp[i]: the prefix s.slice(0, i) can be split into dictionary words
+  for (let i = 1; i <= n; i++) {
+    for (let j = 0; j < i; j++) {               // last word is s.slice(j, i)
+      if (dp[j] && words.has(s.slice(j, i))) {  // @mark check
+        dp[i] = true;                           // @mark set
+        break;
+      }
+    }
+  }
+  return dp[n];                                 // @mark done
+}

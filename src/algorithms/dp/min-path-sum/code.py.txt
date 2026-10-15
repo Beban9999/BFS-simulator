@@ -1,0 +1,25 @@
+def min_path_sum(grid):
+    m, n = len(grid), len(grid[0])
+    dp = [[0] * n for _ in range(m)]            # dp[r][c] = cheapest path sum to (r, c)
+    for r in range(m):
+        for c in range(n):
+            if r == 0 and c == 0:
+                dp[r][c] = grid[0][0]           # @mark start
+            elif r == 0:
+                dp[r][c] = dp[r][c - 1] + grid[r][c]    # @mark top
+            elif c == 0:
+                dp[r][c] = dp[r - 1][c] + grid[r][c]    # @mark left
+            else:
+                dp[r][c] = min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c]  # @mark fill
+    return dp[m - 1][n - 1]                     # @mark done
+
+def best_path(dp):                              # walk back from the end
+    r, c = len(dp) - 1, len(dp[0]) - 1
+    path = [(r, c)]
+    while (r, c) != (0, 0):
+        if c == 0 or (r > 0 and dp[r - 1][c] <= dp[r][c - 1]):
+            r -= 1                              # @mark trace
+        else:
+            c -= 1
+        path.append((r, c))
+    return path[::-1]

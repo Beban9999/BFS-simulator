@@ -1,0 +1,37 @@
+// turn a into b
+function minDistance(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;    // @mark base-col
+  for (let j = 0; j <= n; j++) dp[0][j] = j;    // @mark base-row
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];            // @mark same
+      } else {
+        dp[i][j] = 1 + Math.min(dp[i - 1][j - 1],  // replace   // @mark edit
+                                dp[i - 1][j],      // delete a[i-1]
+                                dp[i][j - 1]);     // insert b[j-1]
+      }
+    }
+  }
+  return dp[m][n];                              // @mark done
+}
+
+// walk back, newest operation first
+function alignment(a, b, dp) {
+  let i = a.length, j = b.length;
+  const ops = [];
+  while (i > 0 || j > 0) {                      // @mark align
+    if (i > 0 && j > 0 && a[i - 1] === b[j - 1] && dp[i][j] === dp[i - 1][j - 1]) {
+      ops.push(['=', a[i - 1], b[j - 1]]); i--; j--;
+    } else if (i > 0 && j > 0 && dp[i][j] === dp[i - 1][j - 1] + 1) {
+      ops.push(['R', a[i - 1], b[j - 1]]); i--; j--;
+    } else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
+      ops.push(['D', a[i - 1], '-']); i--;
+    } else {
+      ops.push(['I', '-', b[j - 1]]); j--;
+    }
+  }
+  return ops.reverse();
+}

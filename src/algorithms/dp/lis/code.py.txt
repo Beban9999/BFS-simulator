@@ -1,0 +1,27 @@
+from bisect import bisect_left
+
+# O(n²): dp[i] = length of the longest increasing subsequence ending at i
+def lis_quadratic(nums):
+    n = len(nums)
+    dp, prev = [1] * n, [-1] * n                # @mark q-init
+    for i in range(n):
+        for j in range(i):
+            if nums[j] < nums[i] and dp[j] + 1 > dp[i]:   # @mark q-try
+                dp[i], prev[i] = dp[j] + 1, j   # @mark q-take
+    end = max(range(n), key=lambda i: dp[i])    # @mark q-best
+    seq = []
+    while end != -1:
+        seq.append(nums[end])                   # @mark q-trace
+        end = prev[end]
+    return seq[::-1]
+
+# O(n log n): tails[k] = smallest possible tail of an increasing subsequence of length k+1
+def lis_length(nums):
+    tails = []                                  # @mark b-init
+    for x in nums:
+        k = bisect_left(tails, x)               # @mark b-search
+        if k == len(tails):
+            tails.append(x)                     # @mark b-append
+        else:
+            tails[k] = x                        # @mark b-replace
+    return len(tails)                           # @mark b-done

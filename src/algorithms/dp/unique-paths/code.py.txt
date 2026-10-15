@@ -1,0 +1,14 @@
+def unique_paths(grid):                         # grid[r][c] == 1 is an obstacle
+    m, n = len(grid), len(grid[0])
+    dp = [[0] * n for _ in range(m)]            # dp[r][c] = paths from (0,0) to (r,c)
+    for r in range(m):
+        for c in range(n):
+            if grid[r][c] == 1:
+                dp[r][c] = 0                    # @mark blocked
+            elif r == 0 and c == 0:
+                dp[r][c] = 1                    # @mark start
+            else:
+                up = dp[r - 1][c] if r > 0 else 0
+                left = dp[r][c - 1] if c > 0 else 0
+                dp[r][c] = up + left            # @mark fill
+    return dp[m - 1][n - 1]                     # @mark done

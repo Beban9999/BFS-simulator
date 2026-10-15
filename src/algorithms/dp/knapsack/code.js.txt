@@ -1,0 +1,37 @@
+function knapsack(weights, values, W) {
+  const n = weights.length;
+  // dp[i][w] = best value using only the first i items with capacity w
+  const dp = Array.from({ length: n + 1 }, () => Array(W + 1).fill(0));  // @mark init
+  for (let i = 1; i <= n; i++) {
+    const wt = weights[i - 1], val = values[i - 1];
+    for (let w = 0; w <= W; w++) {
+      dp[i][w] = dp[i - 1][w];                  // @mark skip
+      if (wt <= w && dp[i - 1][w - wt] + val > dp[i][w]) {
+        dp[i][w] = dp[i - 1][w - wt] + val;     // @mark take
+      }
+    }
+  }
+  return dp[n][W];                              // @mark done
+}
+
+// walk back from dp[n][W]
+function chosen(weights, dp, W) {
+  const items = [];
+  let w = W;
+  for (let i = weights.length; i > 0; i--) {
+    if (dp[i][w] !== dp[i - 1][w]) {            // @mark pick
+      items.push(i - 1);
+      w -= weights[i - 1];
+    }
+  }
+  return items.reverse();
+}
+
+// Same answer in O(W) memory: go DOWN in w so each item is counted once
+function knapsack1D(weights, values, W) {
+  const dp = Array(W + 1).fill(0);
+  weights.forEach((wt, k) => {
+    for (let w = W; w >= wt; w--) dp[w] = Math.max(dp[w], dp[w - wt] + values[k]);
+  });
+  return dp[W];
+}

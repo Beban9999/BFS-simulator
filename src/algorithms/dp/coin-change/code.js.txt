@@ -1,0 +1,22 @@
+function coinChange(coins, amount) {
+  const dp = [0, ...Array(amount).fill(Infinity)];  // @mark init
+  for (let a = 1; a <= amount; a++) {               // dp[a] = fewest coins for amount a
+    for (const c of coins) {
+      if (c <= a && dp[a - c] + 1 < dp[a]) {        // @mark try
+        dp[a] = dp[a - c] + 1;                      // @mark improve
+      }
+    }
+  }
+  return dp[amount] === Infinity ? -1 : dp[amount];  // @mark done
+}
+
+// walk back through the table
+function coinsUsed(coins, dp, amount) {
+  const used = [];
+  while (amount > 0) {
+    const c = coins.find((c) => c <= amount && dp[amount - c] === dp[amount] - 1);
+    used.push(c);                                   // @mark trace
+    amount -= c;
+  }
+  return used;
+}
