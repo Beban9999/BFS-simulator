@@ -1,0 +1,11 @@
+def is_valid(s):
+    pairs = {")": "(", "]": "[", "}": "{"}      # closer -> its opener
+    stack = []                                  # @mark init
+    for ch in s:                                # @mark loop
+        if ch not in pairs:                     # an opener: wait for its partner
+            stack.append(ch)                    # @mark push
+        elif not stack or stack[-1] != pairs[ch]:   # @mark check
+            return False                        # wrong or missing opener   # @mark mismatch
+        else:
+            stack.pop()                         # the most recent opener is matched   # @mark pop
+    return not stack                            # leftovers were never closed   # @mark done

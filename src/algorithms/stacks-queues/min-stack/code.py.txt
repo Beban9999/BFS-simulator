@@ -1,0 +1,20 @@
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.mins = []                          # mins[-1] is always the current minimum   # @mark init
+
+    def push(self, x):
+        self.stack.append(x)                    # @mark push
+        if not self.mins or x <= self.mins[-1]: # <= keeps duplicates of the minimum   # @mark push-min
+            self.mins.append(x)
+
+    def pop(self):
+        x = self.stack.pop()                    # @mark pop
+        if x == self.mins[-1]:                  # the current minimum is leaving   # @mark pop-min
+            self.mins.pop()
+
+    def top(self):
+        return self.stack[-1]                   # @mark top
+
+    def getMin(self):
+        return self.mins[-1]                    # O(1): no scan needed   # @mark get-min

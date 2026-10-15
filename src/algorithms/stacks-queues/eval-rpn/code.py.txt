@@ -1,0 +1,14 @@
+def eval_rpn(tokens):
+    stack = []                                  # operands waiting for an operator   # @mark init
+    for tok in tokens:                          # @mark loop
+        if tok not in "+-*/":
+            stack.append(int(tok))              # @mark push
+            continue
+        b = stack.pop()                         # right operand is on top   # @mark pop2
+        a = stack.pop()
+        if tok == "+": r = a + b
+        elif tok == "-": r = a - b
+        elif tok == "*": r = a * b
+        else: r = int(a / b)                    # truncate toward zero (not //)
+        stack.append(r)                         # the result is an operand again   # @mark apply
+    return stack[0]                             # @mark done

@@ -1,0 +1,15 @@
+function largestRectangleArea(heights) {
+  const stack = [];                             // indexes of bars with increasing heights   // @mark init
+  let best = 0;
+  for (let i = 0; i <= heights.length; i++) {   // i == n is a height-0 sentinel that flushes the stack   // @mark loop
+    const h = i < heights.length ? heights[i] : 0;
+    while (stack.length && heights[stack.at(-1)] >= h) {   // the top bar can't extend past i   // @mark compare
+      const top = stack.pop();
+      const left = stack.length ? stack.at(-1) : -1;   // first lower bar on the left
+      const area = heights[top] * (i - left - 1);   // widest rectangle at that height   // @mark area
+      best = Math.max(best, area);
+    }
+    stack.push(i);                              // @mark push
+  }
+  return best;                                  // @mark done
+}

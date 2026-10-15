@@ -1,0 +1,28 @@
+class MinStack {
+  constructor() {
+    this.stack = [];
+    this.mins = [];                             // mins.at(-1) is always the current minimum   // @mark init
+  }
+
+  push(x) {
+    this.stack.push(x);                         // @mark push
+    if (this.mins.length === 0 || x <= this.mins.at(-1)) {   // <= keeps duplicates of the minimum   // @mark push-min
+      this.mins.push(x);
+    }
+  }
+
+  pop() {
+    const x = this.stack.pop();                 // @mark pop
+    if (x === this.mins.at(-1)) {               // the current minimum is leaving   // @mark pop-min
+      this.mins.pop();
+    }
+  }
+
+  top() {
+    return this.stack.at(-1);                   // @mark top
+  }
+
+  getMin() {
+    return this.mins.at(-1);                    // O(1): no scan needed   // @mark get-min
+  }
+}

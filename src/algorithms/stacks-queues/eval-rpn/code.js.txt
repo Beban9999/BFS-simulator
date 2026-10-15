@@ -1,0 +1,18 @@
+function evalRPN(tokens) {
+  const stack = [];                             // operands waiting for an operator   // @mark init
+  for (const tok of tokens) {                   // @mark loop
+    if (!"+-*/".includes(tok)) {
+      stack.push(Number(tok));                  // @mark push
+      continue;
+    }
+    const b = stack.pop();                      // right operand is on top   // @mark pop2
+    const a = stack.pop();
+    let r;
+    if (tok === "+") r = a + b;
+    else if (tok === "-") r = a - b;
+    else if (tok === "*") r = a * b;
+    else r = Math.trunc(a / b);                 // truncate toward zero
+    stack.push(r);                              // the result is an operand again   // @mark apply
+  }
+  return stack[0];                              // @mark done
+}

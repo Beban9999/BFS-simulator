@@ -1,0 +1,26 @@
+class MyCircularQueue:
+    def __init__(self, k):
+        self.buf = [None] * k                   # fixed-size array, reused forever
+        self.head = 0                           # index of the front item
+        self.count = 0                          # @mark init
+
+    def enQueue(self, value):
+        if self.count == len(self.buf):         # @mark enq-full
+            return False
+        tail = (self.head + self.count) % len(self.buf)   # wraps past the end   # @mark enq-tail
+        self.buf[tail] = value                  # @mark enq-write
+        self.count += 1
+        return True
+
+    def deQueue(self):
+        if self.count == 0:                     # @mark deq-empty
+            return False
+        self.head = (self.head + 1) % len(self.buf)   # the old slot is simply abandoned   # @mark deq-move
+        self.count -= 1
+        return True
+
+    def Front(self):
+        return -1 if self.count == 0 else self.buf[self.head]   # @mark front
+
+    def Rear(self):
+        return -1 if self.count == 0 else self.buf[(self.head + self.count - 1) % len(self.buf)]   # @mark rear

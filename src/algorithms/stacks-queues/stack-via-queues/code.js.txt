@@ -1,0 +1,25 @@
+// Only queue operations are allowed: push to the back, shift from the front, read the front, size.
+class MyStack {
+  constructor() {
+    this.q = [];                                // front of the queue = top of the stack   // @mark init
+  }
+
+  push(x) {
+    this.q.push(x);                             // @mark push
+    for (let i = 0; i < this.q.length - 1; i++) {   // rotate the older items behind x
+      this.q.push(this.q.shift());              // @mark rotate
+    }
+  }
+
+  pop() {
+    return this.q.shift();                      // @mark pop
+  }
+
+  top() {
+    return this.q[0];                           // @mark top
+  }
+
+  empty() {
+    return this.q.length === 0;                 // @mark empty
+  }
+}

@@ -1,0 +1,31 @@
+class MyQueue {
+  constructor() {
+    this.inbox = []; this.outbox = [];          // new items go in; old items come out   // @mark init
+  }
+
+  push(x) {
+    this.inbox.push(x);                         // O(1)   // @mark push
+  }
+
+  refill() {
+    if (this.outbox.length === 0) {             // only when outbox is empty!   // @mark check-out
+      while (this.inbox.length) {
+        this.outbox.push(this.inbox.pop());     // reversing puts the oldest on top   // @mark move
+      }
+    }
+  }
+
+  pop() {
+    this.refill();
+    return this.outbox.pop();                   // @mark pop
+  }
+
+  peek() {
+    this.refill();
+    return this.outbox.at(-1);                  // @mark peek
+  }
+
+  empty() {
+    return this.inbox.length === 0 && this.outbox.length === 0;   // @mark empty
+  }
+}

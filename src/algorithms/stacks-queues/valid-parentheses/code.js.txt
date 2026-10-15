@@ -1,0 +1,14 @@
+function isValid(s) {
+  const pairs = { ")": "(", "]": "[", "}": "{" };   // closer -> its opener
+  const stack = [];                             // @mark init
+  for (const ch of s) {                         // @mark loop
+    if (!(ch in pairs)) {                       // an opener: wait for its partner
+      stack.push(ch);                           // @mark push
+    } else if (stack.length === 0 || stack[stack.length - 1] !== pairs[ch]) {   // @mark check
+      return false;                             // wrong or missing opener   // @mark mismatch
+    } else {
+      stack.pop();                              // the most recent opener is matched   // @mark pop
+    }
+  }
+  return stack.length === 0;                    // leftovers were never closed   // @mark done
+}

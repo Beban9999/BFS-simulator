@@ -1,0 +1,40 @@
+const PREC = { "+": 1, "-": 1, "*": 2, "/": 2 };
+
+function calculate(s) {                         // shunting-yard: infix -> postfix, then evaluate
+  const output = [], ops = [];                  // postfix output queue, operator stack   // @mark init
+  for (const tok of s.match(/\d+|[-+*/()]/g) ?? []) {   // @mark loop
+    if (/\d/.test(tok)) {
+      output.push(Number(tok));                 // numbers go straight to the output   // @mark number
+    } else if (tok === "(") {
+      ops.push(tok);                            // @mark open
+    } else if (tok === ")") {
+      while (ops.at(-1) !== "(") {              // flush this group's operators
+        output.push(ops.pop());                 // @mark close
+      }
+      ops.pop();                                // discard the "("   // @mark drop-open
+    } else {                                    // first output operators that bind at least as tightly
+      while (ops.length && ops.at(-1) !== "(" && PREC[ops.at(-1)] >= PREC[tok]) {
+        output.push(ops.pop());                 // @mark pop-op
+      }
+      ops.push(tok);                            // @mark push-op
+    }
+  }
+  while (ops.length) {
+    output.push(ops.pop());                     // @mark flush
+  }
+  return evalPostfix(output);                   // @mark to-eval
+}
+
+function evalPostfix(tokens) {
+  const stack = [];                             // @mark eval-init
+  for (const tok of tokens) {
+    if (typeof tok === "number") {
+      stack.push(tok);                          // @mark eval-num
+    } else {
+      const b = stack.pop(), a = stack.pop();
+      const r = tok === "+" ? a + b : tok === "-" ? a - b : tok === "*" ? a * b : Math.trunc(a / b);
+      stack.push(r);                            // @mark eval-op
+    }
+  }
+  return stack[0];                              // @mark done
+}

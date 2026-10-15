@@ -1,0 +1,22 @@
+class MyQueue:
+    def __init__(self):
+        self.inbox, self.outbox = [], []        # new items go in; old items come out   # @mark init
+
+    def push(self, x):
+        self.inbox.append(x)                    # O(1)   # @mark push
+
+    def _refill(self):
+        if not self.outbox:                     # only when outbox is empty!   # @mark check-out
+            while self.inbox:
+                self.outbox.append(self.inbox.pop())   # reversing puts the oldest on top   # @mark move
+
+    def pop(self):
+        self._refill()
+        return self.outbox.pop()                # @mark pop
+
+    def peek(self):
+        self._refill()
+        return self.outbox[-1]                  # @mark peek
+
+    def empty(self):
+        return not self.inbox and not self.outbox   # @mark empty

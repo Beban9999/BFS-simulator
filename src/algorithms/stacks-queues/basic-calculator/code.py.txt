@@ -1,0 +1,32 @@
+import re
+PREC = {"+": 1, "-": 1, "*": 2, "/": 2}
+
+def calculate(s):                               # shunting-yard: infix -> postfix, then evaluate
+    output, ops = [], []                        # postfix output queue, operator stack   # @mark init
+    for tok in re.findall(r"\d+|[-+*/()]", s):  # @mark loop
+        if tok.isdigit():
+            output.append(int(tok))             # numbers go straight to the output   # @mark number
+        elif tok == "(":
+            ops.append(tok)                     # @mark open
+        elif tok == ")":
+            while ops[-1] != "(":               # flush this group's operators
+                output.append(ops.pop())        # @mark close
+            ops.pop()                           # discard the "("   # @mark drop-open
+        else:                                   # first output operators that bind at least as tightly
+            while ops and ops[-1] != "(" and PREC[ops[-1]] >= PREC[tok]:
+                output.append(ops.pop())        # @mark pop-op
+            ops.append(tok)                     # @mark push-op
+    while ops:
+        output.append(ops.pop())                # @mark flush
+    return eval_postfix(output)                 # @mark to-eval
+
+def eval_postfix(tokens):
+    stack = []                                  # @mark eval-init
+    for tok in tokens:
+        if isinstance(tok, int):
+            stack.append(tok)                   # @mark eval-num
+        else:
+            b, a = stack.pop(), stack.pop()
+            r = a + b if tok == "+" else a - b if tok == "-" else a * b if tok == "*" else int(a / b)
+            stack.append(r)                     # @mark eval-op
+    return stack[0]                             # @mark done

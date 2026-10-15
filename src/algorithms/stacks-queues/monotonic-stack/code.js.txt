@@ -1,0 +1,12 @@
+function dailyTemperatures(temps) {
+  const answer = new Array(temps.length).fill(0);   // 0 = no warmer day later
+  const stack = [];                             // indexes still waiting; temps decrease upward   // @mark init
+  for (let i = 0; i < temps.length; i++) {      // @mark loop
+    while (stack.length && temps[stack.at(-1)] < temps[i]) {   // today is the warmer day they waited for   // @mark compare
+      const j = stack.pop();
+      answer[j] = i - j;                        // @mark resolve
+    }
+    stack.push(i);                              // today waits for its own warmer day   // @mark push
+  }
+  return answer;                                // @mark done
+}

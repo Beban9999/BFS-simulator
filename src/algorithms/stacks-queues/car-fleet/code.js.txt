@@ -1,0 +1,12 @@
+function carFleet(target, position, speed) {
+  const cars = position.map((p, i) => [p, speed[i]]).sort((a, b) => b[0] - a[0]);   // closest to the target first   // @mark sort
+  const stack = [];                             // arrival time of each fleet, slowest on top   // @mark init
+  for (const [p, s] of cars) {
+    const t = (target - p) / s;                 // arrival time if this car drove alone   // @mark time
+    if (stack.length && t <= stack.at(-1)) {    // catches the fleet ahead before the target   // @mark merge
+      continue;                                 // ...and then moves at that fleet's speed
+    }
+    stack.push(t);                              // too slow to catch up: a new fleet   // @mark push
+  }
+  return stack.length;                          // @mark done
+}

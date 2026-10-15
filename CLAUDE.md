@@ -8,11 +8,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **67 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Graphs (2: grid BFS/DFS).
-- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`.
-- Last completed: Tab 6 Linked Lists + `linkedlist` renderer (2026-10-15, closes issue #3).
-- **Next up:** issue #4 — `stackqueue` renderer + Tab 7 Stacks & Queues (plan in `ROADMAP.md`).
-  After that: #5 (tree renderer + heaps).
+- **79 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Graphs (2: grid BFS/DFS).
+- Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`.
+- Last completed: Tab 7 Stacks & Queues + `stackqueue` renderer (2026-10-15, closes issue #4).
+- **Next up:** issue #5 — `tree` renderer + Tab 8 Heaps (plan in `ROADMAP.md`, Phase 2).
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -25,9 +24,9 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `src/engine/` — types (`AlgorithmModule`, `Step`, `InputField`…), `Tracer` (deep-copied immutable steps,
   cumulative counters), `buildTrace` (10 000-step cap), `@mark` line-marker parser, input parse/validate, seeded RNG.
 - `src/algorithms/<category>/<id>/` — one folder per page (`meta.ts`, `index.ts`, `code.py.txt`, `code.js.txt`,
-  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, sorting, rotated).
+  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, sorting, rotated).
 - `src/registry.ts` — auto-collects folders with `import.meta.glob` (meta eager, module lazy).
-- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`. Registered in `renderers/index.ts`.
+- `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`. Registered in `renderers/index.ts`.
 - `src/pages/AlgorithmPage.tsx` — wires input bar, renderer, narration, player, code panel, watch/aux, counters, legend, info tabs; syncs `?input=` / `?step=` in the URL.
 - `src/store/prefs.ts` — zustand + localStorage (`steplore-prefs`): theme, language, speed, progress, popup geometry.
 - Styling: `src/styles/app.css`, theme tokens on `:root` / `[data-theme="light"]`, highlight kinds use `.k-<kind>` and `[data-k]`.
@@ -57,6 +56,8 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `linkedlist` renderer: edges morph via CSS `d` transitions, so keep every edge a single `M … C …` cubic.
   Lay rows out so cross-row links stay short (e.g. `merge-two-lists` puts the merged row between the inputs);
   use distinct values in presets — narration names nodes by value.
+- `stackqueue` renderer: call `Box.resetIds()` at the top of every generator; class-style pages (MinStack, MyQueue…)
+  have no "done" line, so put `result` on every step instead of inventing a final step.
 - Heredocs failed again this session on a large multi-file write; prefer the Write tool for anything long.
 - Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
   generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).

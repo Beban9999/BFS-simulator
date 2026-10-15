@@ -4,6 +4,7 @@ import { ArrayRenderer } from "./ArrayView";
 import { MatrixRenderer } from "./MatrixView";
 import { HashTableRenderer } from "./HashTableView";
 import { LinkedListRenderer } from "./LinkedListView";
+import { StackQueueRenderer } from "./StackQueueView";
 
 /** Renderers are pure views of (state, highlights); algorithms pick one by id. */
 export const RENDERERS: Partial<Record<RendererId, Renderer>> = {
@@ -13,4 +14,5 @@ export const RENDERERS: Partial<Record<RendererId, Renderer>> = {
   matrix: MatrixRenderer as Renderer,
   hashtable: HashTableRenderer as Renderer,
   linkedlist: LinkedListRenderer as Renderer,
+  stackqueue: StackQueueRenderer as Renderer,
 };

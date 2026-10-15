@@ -1,0 +1,12 @@
+def largest_rectangle_area(heights):
+    stack = []                                  # indexes of bars with increasing heights   # @mark init
+    best = 0
+    for i in range(len(heights) + 1):           # i == n is a height-0 sentinel that flushes the stack   # @mark loop
+        h = heights[i] if i < len(heights) else 0
+        while stack and heights[stack[-1]] >= h:   # the top bar can't extend past i   # @mark compare
+            top = stack.pop()
+            left = stack[-1] if stack else -1   # first lower bar on the left
+            area = heights[top] * (i - left - 1)   # widest rectangle at that height   # @mark area
+            best = max(best, area)
+        stack.append(i)                         # @mark push
+    return best                                 # @mark done

@@ -33,7 +33,7 @@ landing page — so a tab goes live the moment its first algorithm folder is add
 
 ## Phase 1 — Core renderers & high-frequency topics
 
-Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [ ] `stackqueue` · [ ] `tree` (moved to Phase 2)
+Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [x] `stackqueue` · [ ] `tree` (moved to Phase 2)
 
 ### Tab 2 — Arrays & Hashing ✅ (16)
 - [x] Hash table internals — chaining vs linear probing, resize/rehash *(hash-table)*
@@ -82,14 +82,14 @@ Renderer: `src/renderers/LinkedListView.tsx` + `src/algorithms/_shared/list.ts`.
 - [x] Copy list with random pointer (hashmap + interleaving) *(copy-random-list)*
 - [x] Add two numbers *(add-two-numbers)*
 
-### Tab 7 — Stacks & Queues (0) — **needs:** `stackqueue` renderer
-Renderer plan: input token row (reuse array cells) + large vertical stack / horizontal queue/deque / circular buffer ring. Many pages can also use `array` + aux panel only.
-- [ ] Stack / queue / deque / circular buffer operations playground *(stack-queue-ops)*, *(circular-buffer)*
-- [ ] Valid Parentheses *(valid-parentheses)* · [ ] Min stack *(min-stack)* · [ ] Evaluate RPN *(eval-rpn)* · [ ] Generate parentheses (link to backtracking) *(generate-parentheses)*
-- [ ] Monotonic stack: next greater / Daily Temperatures *(monotonic-stack)* · [ ] Largest rectangle in histogram (bars) *(largest-rectangle)* · [ ] Car Fleet *(car-fleet)*
-- [ ] Monotonic queue → cross-link to `two-pointers/sliding-window-max`
-- [ ] Queue using stacks *(queue-via-stacks)* · [ ] Stack using queues *(stack-via-queues)*
-- [ ] Shunting-yard / basic calculator *(basic-calculator)*
+### Tab 7 — Stacks & Queues ✅ (12)
+Renderer: `src/renderers/StackQueueView.tsx` + `src/algorithms/_shared/stackqueue.ts`. Optional `array` (an `ArrayState` drawn with the array renderer: tokens, bars, answer rows — ids `ai(i, row)`) above any number of containers: vertical `stack`, horizontal `queue` / `deque`, or `ring` (circular buffer slots + pointers). Items carry stable ids so they glide; build them with `Box` (`push`, `pushFront`, `pop`, `shift`, `view`). Highlight ids `qid(container, itemId)`, ring slots `slotId(container, slot)`. Op-sequence pages show the operations in an aux list; class-style pages (no "done" line) carry `result` on every step.
+- [x] Stack / queue / deque operations playground *(stack-queue-ops)* · [x] Circular buffer *(circular-buffer)*
+- [x] Valid Parentheses *(valid-parentheses)* · [x] Min stack *(min-stack)* · [x] Evaluate RPN *(eval-rpn)* · [x] Generate parentheses (backtracking, call stack) *(generate-parentheses)*
+- [x] Monotonic stack: Daily Temperatures *(monotonic-stack)* · [x] Largest rectangle in histogram (bars) *(largest-rectangle)* · [x] Car Fleet *(car-fleet)*
+- [x] Monotonic queue → cross-linked from `monotonic-stack` to `two-pointers/sliding-window-max`
+- [x] Queue using stacks *(queue-via-stacks)* · [x] Stack using a queue *(stack-via-queues)*
+- [x] Shunting-yard / basic calculator *(basic-calculator)*
 
 ## Phase 2 — Trees, heaps, graphs
 

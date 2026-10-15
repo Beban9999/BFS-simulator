@@ -1,0 +1,19 @@
+from collections import deque
+
+def run(kind, ops):                             # kind: "stack" | "queue" | "deque"
+    box = [] if kind == "stack" else deque()    # @mark init
+    out = []                                    # what each pop / peek returns
+    for op, x in ops:                           # @mark loop
+        if op == "push":
+            box.append(x)                       # stack: top · queue / deque: back   # @mark push
+        elif op == "pushleft":
+            box.appendleft(x)                   # deque only: add at the front   # @mark pushleft
+        elif not box:
+            out.append(None)                    # nothing to remove or look at   # @mark empty
+        elif op == "pop":                       # stack: top · queue: FRONT · deque: back
+            out.append(box.popleft() if kind == "queue" else box.pop())   # @mark pop
+        elif op == "popleft":
+            out.append(box.popleft())           # deque only: remove the front   # @mark popleft
+        else:                                   # peek: look without removing
+            out.append(box[-1] if kind == "stack" else box[0])   # @mark peek
+    return out                                  # @mark done

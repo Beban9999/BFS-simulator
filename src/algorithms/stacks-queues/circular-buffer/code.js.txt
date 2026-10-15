@@ -1,0 +1,34 @@
+class MyCircularQueue {
+  constructor(k) {
+    this.buf = new Array(k).fill(null);         // fixed-size array, reused forever
+    this.head = 0;                              // index of the front item
+    this.count = 0;                             // @mark init
+  }
+
+  enQueue(value) {
+    if (this.count === this.buf.length) {       // @mark enq-full
+      return false;
+    }
+    const tail = (this.head + this.count) % this.buf.length;   // wraps past the end   // @mark enq-tail
+    this.buf[tail] = value;                     // @mark enq-write
+    this.count++;
+    return true;
+  }
+
+  deQueue() {
+    if (this.count === 0) {                     // @mark deq-empty
+      return false;
+    }
+    this.head = (this.head + 1) % this.buf.length;   // the old slot is simply abandoned   // @mark deq-move
+    this.count--;
+    return true;
+  }
+
+  Front() {
+    return this.count === 0 ? -1 : this.buf[this.head];   // @mark front
+  }
+
+  Rear() {
+    return this.count === 0 ? -1 : this.buf[(this.head + this.count - 1) % this.buf.length];   // @mark rear
+  }
+}

@@ -1,0 +1,22 @@
+// Plain arrays: push/pop at the end are O(1); shift/unshift at the front are O(n)
+// in JS, so real queues use a head index or a ring buffer (see circular-buffer).
+function run(kind, ops) {                       // kind: "stack" | "queue" | "deque"
+  const box = [];                               // @mark init
+  const out = [];                               // what each pop / peek returns
+  for (const [op, x] of ops) {                  // @mark loop
+    if (op === "push") {
+      box.push(x);                              // stack: top · queue / deque: back   // @mark push
+    } else if (op === "pushleft") {
+      box.unshift(x);                           // deque only: add at the front   // @mark pushleft
+    } else if (box.length === 0) {
+      out.push(null);                           // nothing to remove or look at   // @mark empty
+    } else if (op === "pop") {                  // stack: top · queue: FRONT · deque: back
+      out.push(kind === "queue" ? box.shift() : box.pop());   // @mark pop
+    } else if (op === "popleft") {
+      out.push(box.shift());                    // deque only: remove the front   // @mark popleft
+    } else {                                    // peek: look without removing
+      out.push(kind === "stack" ? box[box.length - 1] : box[0]);   // @mark peek
+    }
+  }
+  return out;                                   // @mark done
+}

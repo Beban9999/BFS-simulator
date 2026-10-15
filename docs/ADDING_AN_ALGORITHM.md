@@ -28,6 +28,7 @@ src/algorithms/<category>/<id>/
 | Recursion with a call-stack panel | `sorting/merge-sort`, `sorting/quick-sort-lomuto` (frames array pushed/popped around `yield*`) |
 | Extra rows under bars (buffer, levels) | `sorting/merge-sort`, `sorting/heap-sort` |
 | Select-field option that changes behaviour | `sorting/quick-sort-lomuto` (pivot rule), `linked-lists/copy-random-list` (approach) |
+| Stack / queue containers (+ token row) | `stacks-queues/valid-parentheses`; op sequences: `stacks-queues/min-stack`; bars + stack: `stacks-queues/largest-rectangle` |
 | Linked list re-wiring | `linked-lists/reverse-list`; several rows: `linked-lists/merge-two-lists`; recursion: `linked-lists/reverse-list-recursive` |
 
 ## 1. `meta.ts`
@@ -151,6 +152,7 @@ Highlight ids per renderer:
 | `matrix` | `MatrixState` (`_shared/matrix.ts`) | `mi(r, c)` → `"m:r,c"`; nested `arrays` use `ai` |
 | `grid` | `GridState` (`_shared/grid.ts`) | `cellId(r, c)`; bulk status via `state.marks` string (`Marks` helper) |
 | `hashtable` | `HashState` (`_shared/hash.ts`) | `bi(bucket)`, `ei(bucket, entry)` |
+| `stackqueue` | `SQState` (`_shared/stackqueue.ts`, items via `Box`) | `qid(container, itemId)`, ring slots `slotId(container, slot)`; the optional `array` uses `ai(i, row)` |
 | `linkedlist` | `ListState` (`_shared/list.ts`, build it with `ListModel`) | `nid(node)`, `eid(from, to)` next edge, `pid` prev edge, `rid` random edge |
 
 `ArrayState` extras: `rows[].bars` (draw heights), `rows[].ids` (stable identities → swaps animate),

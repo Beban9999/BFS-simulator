@@ -1,0 +1,16 @@
+def generate_parenthesis(n):
+    res, path = [], []                          # path is used like a stack
+    def backtrack(opened, closed):              # @mark call
+        if len(path) == 2 * n:                  # @mark full
+            res.append("".join(path))           # @mark record
+            return
+        if opened < n:                          # still allowed to open   # @mark try-open
+            path.append("(")
+            backtrack(opened + 1, closed)
+            path.pop()                          # undo the choice   # @mark undo-open
+        if closed < opened:                     # only close what is open   # @mark try-close
+            path.append(")")
+            backtrack(opened, closed + 1)
+            path.pop()                          # @mark undo-close
+    backtrack(0, 0)
+    return res                                  # @mark done

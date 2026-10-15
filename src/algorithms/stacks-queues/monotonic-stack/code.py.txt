@@ -1,0 +1,9 @@
+def daily_temperatures(temps):
+    answer = [0] * len(temps)                   # 0 = no warmer day later
+    stack = []                                  # indexes still waiting; temps decrease upward   # @mark init
+    for i, t in enumerate(temps):               # @mark loop
+        while stack and temps[stack[-1]] < t:   # today is the warmer day they waited for   # @mark compare
+            j = stack.pop()
+            answer[j] = i - j                   # @mark resolve
+        stack.append(i)                         # today waits for its own warmer day   # @mark push
+    return answer                               # @mark done

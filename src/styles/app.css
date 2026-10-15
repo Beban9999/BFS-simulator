@@ -2405,3 +2405,213 @@ kbd,
 .ll-nulls b {
   color: var(--accent-text);
 }
+
+/* ---------- Stack / queue renderer ---------- */
+.sq-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.sq-containers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 40px;
+  justify-content: center;
+  align-items: flex-end;
+  max-width: 100%;
+}
+
+.sq-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sq-box .sub-label {
+  margin: 0;
+}
+
+.sq-stack {
+  position: relative;
+  border: 2px solid var(--border-strong);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  margin-right: 52px;
+}
+
+.sq-line-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.sq-line {
+  position: relative;
+  flex-shrink: 0;
+  border: 2px solid var(--border-strong);
+  border-left-style: dashed;
+  border-right-style: dashed;
+  border-radius: 8px;
+}
+
+.sq-end {
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.sq-pos {
+  position: absolute;
+  left: 4px;
+  transition: transform 0.3s ease;
+}
+
+.sq-stack .sq-pos {
+  bottom: 4px;
+}
+
+.sq-line .sq-pos {
+  top: 4px;
+}
+
+.sq-item {
+  position: relative;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 600;
+  line-height: 1.1;
+  background: var(--surface-2);
+  border: 2px solid var(--border-strong);
+  border-radius: 7px;
+  animation: sq-in 0.25s ease;
+  transition: background-color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sq-item[data-k] {
+  border-color: var(--k);
+  background: color-mix(in srgb, var(--k) 24%, var(--surface));
+}
+
+.sq-item[data-k="removed"],
+.sq-item[data-k="pruned"] {
+  color: var(--faint);
+  text-decoration: line-through;
+}
+
+.sq-sub {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+@keyframes sq-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sq-item {
+    animation: none;
+  }
+}
+
+.sq-top {
+  position: absolute;
+  left: calc(100% + 6px);
+  bottom: 15px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-text);
+  white-space: nowrap;
+  transition: transform 0.3s ease;
+}
+
+.sq-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  color: var(--faint);
+}
+
+.sq-note {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.sq-ring {
+  display: block;
+  height: auto;
+  font-family: var(--mono);
+}
+
+.sq-ring-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+}
+
+.sq-slot rect {
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.sq-slot rect.full {
+  fill: var(--surface-2);
+}
+
+.sq-slot rect.free {
+  fill: transparent;
+  stroke-dasharray: 4 3;
+}
+
+.sq-slot[data-k] rect {
+  stroke: var(--k);
+  fill: color-mix(in srgb, var(--k) 24%, var(--surface));
+}
+
+.sq-slot-val {
+  fill: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.sq-slot-idx {
+  fill: var(--faint);
+  font-size: 9px;
+  text-anchor: middle;
+}
+
+.sq-ring-ptr {
+  fill: var(--accent-text);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+}
