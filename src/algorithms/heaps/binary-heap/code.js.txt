@@ -1,0 +1,40 @@
+// Min-heap in an array: children of i are 2i+1 and 2i+2, parent is (i-1)>>1.
+
+function siftUp(h, i) {
+  while (i > 0) {
+    const parent = (i - 1) >> 1;                // @mark up-parent
+    if (h[parent] <= h[i]) break;               // heap order holds: stop   // @mark up-check
+    [h[parent], h[i]] = [h[i], h[parent]];      // @mark up-swap
+    i = parent;
+  }
+}
+
+function siftDown(h, i) {
+  const n = h.length;
+  while (true) {
+    let smallest = i; const l = 2 * i + 1, r = 2 * i + 2;   // @mark down-kids
+    if (l < n && h[l] < h[smallest]) smallest = l;
+    if (r < n && h[r] < h[smallest]) smallest = r;   // @mark down-pick
+    if (smallest === i) break;                  // no child is smaller: stop   // @mark down-check
+    [h[i], h[smallest]] = [h[smallest], h[i]];  // @mark down-swap
+    i = smallest;
+  }
+}
+
+function buildHeap(h) {                         // O(n): fix subtrees bottom-up   // @mark build-start
+  for (let i = (h.length >> 1) - 1; i >= 0; i--) {   // leaves are already heaps   // @mark build
+    siftDown(h, i);
+  }
+}
+
+function push(h, x) {
+  h.push(x);                                    // new leaf at the end   // @mark push
+  siftUp(h, h.length - 1);
+}
+
+function pop(h) {
+  [h[0], h[h.length - 1]] = [h[h.length - 1], h[0]];   // move the min to the end   // @mark pop-swap
+  const smallest = h.pop();                     // @mark pop-remove
+  if (h.length) siftDown(h, 0);                 // the new root sinks to its place
+  return smallest;
+}

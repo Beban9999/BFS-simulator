@@ -1,0 +1,12 @@
+import heapq
+
+def merge_k_sorted(arrays):
+    heap = [(a[0], i, 0) for i, a in enumerate(arrays) if a]   # (value, which array, index in it)
+    heapq.heapify(heap)                         # one front value per array   # @mark init
+    out = []
+    while heap:                                 # @mark loop
+        v, i, j = heapq.heappop(heap)           # smallest front overall   # @mark pop
+        out.append(v)                           # @mark emit
+        if j + 1 < len(arrays[i]):              # that array has a next value
+            heapq.heappush(heap, (arrays[i][j + 1], i, j + 1))   # @mark push
+    return out                                  # @mark done

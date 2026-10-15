@@ -1,0 +1,35 @@
+# Min-heap in a list: children of i are 2i+1 and 2i+2, parent is (i-1)//2.
+
+def sift_up(h, i):
+    while i > 0:
+        parent = (i - 1) // 2                   # @mark up-parent
+        if h[parent] <= h[i]:                   # heap order holds: stop   # @mark up-check
+            break
+        h[parent], h[i] = h[i], h[parent]       # @mark up-swap
+        i = parent
+
+def sift_down(h, i):
+    n = len(h)
+    while True:
+        smallest, l, r = i, 2 * i + 1, 2 * i + 2   # @mark down-kids
+        if l < n and h[l] < h[smallest]: smallest = l
+        if r < n and h[r] < h[smallest]: smallest = r   # @mark down-pick
+        if smallest == i:                       # no child is smaller: stop   # @mark down-check
+            break
+        h[i], h[smallest] = h[smallest], h[i]   # @mark down-swap
+        i = smallest
+
+def build_heap(h):                              # O(n): fix subtrees bottom-up   # @mark build-start
+    for i in range(len(h) // 2 - 1, -1, -1):    # leaves are already heaps   # @mark build
+        sift_down(h, i)
+
+def push(h, x):
+    h.append(x)                                 # new leaf at the end   # @mark push
+    sift_up(h, len(h) - 1)
+
+def pop(h):
+    h[0], h[-1] = h[-1], h[0]                   # move the min to the end   # @mark pop-swap
+    smallest = h.pop()                          # @mark pop-remove
+    if h:
+        sift_down(h, 0)                         # the new root sinks to its place
+    return smallest

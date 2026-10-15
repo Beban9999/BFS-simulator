@@ -1,0 +1,23 @@
+// MaxHeap / MinHeap = binary heaps with push / pop / peek / size
+// (on LeetCode: MaxPriorityQueue / MinPriorityQueue from @datastructures-js/priority-queue).
+class MedianFinder {
+  constructor() {
+    this.low = new MaxHeap();                   // the smaller half   // @mark init
+    this.high = new MinHeap();                  // the larger half
+  }
+
+  addNum(x) {
+    this.low.push(x);                           // 1) x enters the small half...   // @mark add-low
+    this.high.push(this.low.pop());             // 2) ...whose max moves to the big half   // @mark move-high
+    if (this.high.size > this.low.size) {       // 3) low must be equal or one bigger   // @mark rebalance
+      this.low.push(this.high.pop());           // @mark move-low
+    }
+  }
+
+  findMedian() {
+    if (this.low.size > this.high.size) {       // odd count: the middle is low's max   // @mark median
+      return this.low.peek();
+    }
+    return (this.low.peek() + this.high.peek()) / 2;   // even count: average the two middles   // @mark median-even
+  }
+}

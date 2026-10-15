@@ -1,5 +1,5 @@
 ## Explanation
-A **binary max-heap** stored in an array is a complete binary tree where index `i` has children `2i + 1` and `2i + 2`, and every parent is ≥ its children — so the maximum is always at index 0. The "level" row under the bars shows each index's depth in that implicit tree.
+A **binary max-heap** stored in an array is a complete binary tree where index `i` has children `2i + 1` and `2i + 2`, and every parent is ≥ its children — so the maximum is always at index 0. The tree view above the bars draws that implicit tree for the part of the array that is still a heap.
 
 Heap sort has two phases:
 1. **Build the heap.** Sift down every non-leaf, from the last parent (`n // 2 − 1`) back to the root. Sifting down swaps a value with its larger child until it is ≥ both children. Doing this bottom-up costs only O(n) in total, because most nodes are near the bottom and sift only a little.

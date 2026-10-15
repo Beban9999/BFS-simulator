@@ -1,0 +1,10 @@
+import heapq
+
+def find_kth_largest(nums, k):
+    heap = []                                   # min-heap holding the k largest seen so far   # @mark init
+    for x in nums:                              # @mark loop
+        if len(heap) < k:
+            heapq.heappush(heap, x)             # still filling up   # @mark push
+        elif x > heap[0]:                       # beats the weakest of the current top k?   # @mark compare
+            heapq.heapreplace(heap, x)          # pop the root and push x in one sift-down   # @mark replace
+    return heap[0]                              # the weakest of the top k = k-th largest   # @mark done

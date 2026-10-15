@@ -26,7 +26,8 @@ src/algorithms/<category>/<id>/
 | Custom renderer | `arrays-hashing/hash-table` + `src/renderers/HashTableView.tsx` |
 | Nested helper generators (`yield*`) | `searching/bounds`, `arrays-hashing/hash-table` |
 | Recursion with a call-stack panel | `sorting/merge-sort`, `sorting/quick-sort-lomuto` (frames array pushed/popped around `yield*`) |
-| Extra rows under bars (buffer, levels) | `sorting/merge-sort`, `sorting/heap-sort` |
+| Extra rows under bars (buffer) | `sorting/merge-sort` |
+| Heap as tree + array (bars) in sync | `heaps/binary-heap`, `sorting/heap-sort` (tree renderer with `array`) |
 | Select-field option that changes behaviour | `sorting/quick-sort-lomuto` (pivot rule), `linked-lists/copy-random-list` (approach) |
 | Stack / queue containers (+ token row) | `stacks-queues/valid-parentheses`; op sequences: `stacks-queues/min-stack`; bars + stack: `stacks-queues/largest-rectangle` |
 | Linked list re-wiring | `linked-lists/reverse-list`; several rows: `linked-lists/merge-two-lists`; recursion: `linked-lists/reverse-list-recursive` |
@@ -153,6 +154,7 @@ Highlight ids per renderer:
 | `grid` | `GridState` (`_shared/grid.ts`) | `cellId(r, c)`; bulk status via `state.marks` string (`Marks` helper) |
 | `hashtable` | `HashState` (`_shared/hash.ts`) | `bi(bucket)`, `ei(bucket, entry)` |
 | `stackqueue` | `SQState` (`_shared/stackqueue.ts`, items via `Box`) | `qid(container, itemId)`, ring slots `slotId(container, slot)`; the optional `array` uses `ai(i, row)` |
+| `tree` | `TreeState` (`_shared/tree.ts`; heaps via `heapView`) | `tn(node)`, `te(parent, child)`; the optional `array` uses `ai(i, row)` |
 | `linkedlist` | `ListState` (`_shared/list.ts`, build it with `ListModel`) | `nid(node)`, `eid(from, to)` next edge, `pid` prev edge, `rid` random edge |
 
 `ArrayState` extras: `rows[].bars` (draw heights), `rows[].ids` (stable identities → swaps animate),

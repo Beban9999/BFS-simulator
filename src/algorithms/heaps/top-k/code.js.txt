@@ -1,0 +1,13 @@
+// MinHeap = any binary min-heap with push / replaceTop / peek / size
+// (on LeetCode: MinPriorityQueue from @datastructures-js/priority-queue).
+function findKthLargest(nums, k) {
+  const heap = new MinHeap();                   // holds the k largest seen so far   // @mark init
+  for (const x of nums) {                       // @mark loop
+    if (heap.size < k) {
+      heap.push(x);                             // still filling up   // @mark push
+    } else if (x > heap.peek()) {               // beats the weakest of the current top k?   // @mark compare
+      heap.replaceTop(x);                       // pop the root and push x in one sift-down   // @mark replace
+    }
+  }
+  return heap.peek();                           // the weakest of the top k = k-th largest   // @mark done
+}

@@ -1,0 +1,10 @@
+import heapq
+
+def min_meeting_rooms(intervals):
+    intervals.sort()                            # by start time   # @mark sort
+    ends = []                                   # min-heap: end time of every busy room   # @mark init
+    for start, end in intervals:                # @mark loop
+        if ends and ends[0] <= start:           # the room that frees up first is free by now   # @mark check
+            heapq.heappop(ends)                 # reuse that room   # @mark free
+        heapq.heappush(ends, end)               # this meeting occupies a room until `end`   # @mark book
+    return len(ends)                            # rooms in use at the busiest moment   # @mark done

@@ -33,7 +33,7 @@ landing page — so a tab goes live the moment its first algorithm folder is add
 
 ## Phase 1 — Core renderers & high-frequency topics
 
-Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [x] `stackqueue` · [ ] `tree` (moved to Phase 2)
+Renderers: [x] `array` (cells) · [x] `bars` · [x] `matrix` · [x] `hashtable` · [x] `linkedlist` · [x] `stackqueue` · [x] `tree`
 
 ### Tab 2 — Arrays & Hashing ✅ (16)
 - [x] Hash table internals — chaining vs linear probing, resize/rehash *(hash-table)*
@@ -65,7 +65,7 @@ Recursive pages (`merge-sort`, `quick-sort-lomuto`, `quick-sort-hoare`) show the
 - [x] Merge sort — buffer row + call stack *(merge-sort)*
 - [x] Quick sort Lomuto — pivot rule select (last / middle / median-of-three) + sorted worst-case presets *(quick-sort-lomuto)*
 - [x] Quick sort Hoare *(quick-sort-hoare)*
-- [x] Heap sort — bars + "level" row; add a tree view once the `tree` renderer exists *(heap-sort)*
+- [x] Heap sort — tree view + bars *(heap-sort)*
 - [x] Counting sort (stable, prefix sums) *(counting-sort)* · [x] Radix LSD (buckets in the aux panel) *(radix-sort)* · [x] Bucket sort *(bucket-sort)*
 - [x] Quickselect / Kth Largest *(quickselect)*
 - [ ] Note page: stability demo (records with equal keys) — **needs:** note-page support (issue #10)
@@ -94,13 +94,13 @@ Renderer: `src/renderers/StackQueueView.tsx` + `src/algorithms/_shared/stackqueu
 ## Phase 2 — Trees, heaps, graphs
 
 ### Renderers
-- [ ] `tree` — binary + n-ary, layout via `d3-hierarchy` (already a dependency), optional array view for heaps (tree and array in sync), highlight ids `n:<id>` / `e:<parent>-<child>`. Input field kind `tree` (level order with nulls) already exists in `src/engine/input.ts`.
+- [x] `tree` — `src/renderers/TreeView.tsx` + `src/algorithms/_shared/tree.ts`. Binary + n-ary via `d3-hierarchy` (null children keep left/right positions), several trees per state (`trees: TreeView[]`), optional `array` (ArrayState, drawn below with the array renderer) in sync. Highlight ids `tn(id)` → `n:<id>`, `te(p, c)` → `e:<p>-<c>`; node ids must be unique across trees. Heaps: `heapView(items)` + `siftUpEvents` / `siftDownEvents` (yield compare/swap/stop so pages choose their own lines). Input field kind `tree` (level order with nulls) already exists in `src/engine/input.ts` — not used yet (Tab 9).
 - [ ] `graph` — SVG nodes/edges, directed/undirected, weights, fixed layout + drag; graph builder input (click to add nodes/edges) + JSON edge-list field. Show distance table / heap in aux.
 
-### Tab 8 — Heaps
-- [ ] Binary heap insert/sift-up, extract/sift-down, build-heap O(n) *(binary-heap)*
-- [ ] Top-K *(top-k)* · [ ] Two heaps — median of stream *(two-heaps-median)* · [ ] K-way merge *(k-way-merge)* · [ ] Scheduling (Task Scheduler / Meeting Rooms II) *(heap-scheduling)*
-- [ ] Go back and add tree view to `sorting/heap-sort`
+### Tab 8 — Heaps ✅ (5)
+- [x] Binary heap: build-heap O(n), push/sift-up, pop/sift-down — tree + array *(binary-heap)*
+- [x] Top-K / k-th largest *(top-k)* · [x] Two heaps — median of stream *(two-heaps-median)* · [x] K-way merge *(k-way-merge)* · [x] Scheduling: Meeting Rooms II *(heap-scheduling)*
+- [x] Tree view added to `sorting/heap-sort` (now `renderer: "tree"` with the bars as its `array`)
 
 ### Tab 9 — Trees
 - [ ] Traversals: pre/in/post recursive (call stack) and iterative (explicit stack), level order, zigzag, Morris (advanced)

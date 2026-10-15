@@ -1,0 +1,17 @@
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.low = []                           # max-heap (values negated): the smaller half   # @mark init
+        self.high = []                          # min-heap: the larger half
+
+    def addNum(self, x):
+        heapq.heappush(self.low, -x)            # 1) x enters the small half...   # @mark add-low
+        heapq.heappush(self.high, -heapq.heappop(self.low))   # 2) ...whose max moves to the big half   # @mark move-high
+        if len(self.high) > len(self.low):      # 3) low must be equal or one bigger   # @mark rebalance
+            heapq.heappush(self.low, -heapq.heappop(self.high))   # @mark move-low
+
+    def findMedian(self):
+        if len(self.low) > len(self.high):      # odd count: the middle is low's max   # @mark median
+            return -self.low[0]
+        return (-self.low[0] + self.high[0]) / 2   # even count: average the two middles   # @mark median-even

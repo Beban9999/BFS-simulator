@@ -1,26 +1,37 @@
 import type { AlgorithmModule, Highlight } from "../../../engine/types";
 import { Tracer, hl } from "../../../engine/trace";
-import { ai, range, type ArrayRow, type ArrayState, type Pointer, type Range } from "../../_shared/array";
+import { ai, range, type Pointer, type Range } from "../../_shared/array";
 import { Sortable, randomSortInput, sortField, sortPresets, sortedCopy, type SortInput } from "../../_shared/sorting";
+import { heapView, tn, type TreeState } from "../../_shared/tree";
 import meta from "./meta";
 import python from "./code.py.txt?raw";
 import javascript from "./code.js.txt?raw";
 import info from "./info.md?raw";
 
 function* generate({ nums }: SortInput) {
-  const t = new Tracer<ArrayState>();
+  const t = new Tracer<TreeState>();
   const s = new Sortable(nums);
   const n = nums.length;
   let size = n;
   let phase = "build";
-  const levels: ArrayRow = { label: "level", values: range(n).map((k) => Math.floor(Math.log2(k + 1))), hideIndex: true };
 
   const snap = (pointers: Pointer[], highlights: Highlight[], vars: Record<string, unknown>) => {
     const ranges: Range[] = [
       ...(size > 0 ? [{ from: 0, to: size - 1, kind: "active" as const, label: phase === "build" ? "building heap" : "max-heap" }] : []),
       ...(size < n ? [{ from: size, to: n - 1, kind: "sorted" as const, label: "sorted" }] : []),
     ];
-    return { state: s.state(pointers, ranges, [levels]), vars: { ...vars, "heap size": size }, highlights: [...s.sortedHl(), ...highlights] };
+    // Tree view of the heap part (indexes 0..size-1); every bar highlight is mirrored onto its node.
+    const items = range(size).map((k) => ({ id: s.ids[k], v: s.a[k] }));
+    const all = [...s.sortedHl(), ...highlights];
+    const mirrored = all.flatMap((h) => {
+      const k = Number(h.id.split(":")[1]);
+      return h.id.startsWith("0:") && k < size ? [{ id: tn(s.ids[k]), kind: h.kind }] : [];
+    });
+    const state: TreeState = {
+      trees: [heapView(items, `max-heap (tree view of nums[0..${size - 1}])`, { pointers: pointers.filter((p) => p.index < size) })],
+      array: s.state(pointers, ranges),
+    };
+    return { state, vars: { ...vars, "heap size": size }, highlights: [...all, ...mirrored] };
   };
 
   function* siftDown(start: number): Generator<ReturnType<typeof t.step>, void> {
@@ -72,12 +83,15 @@ function* generate({ nums }: SortInput) {
 
   size = 0;
   s.markAll();
-  yield t.step("done", `Sorted: [${s.a.join(", ")}].`, { state: s.state([], [], [levels], s.a.slice()), highlights: s.sortedHl() });
+  yield t.step("done", `Sorted: [${s.a.join(", ")}].`, {
+    state: { trees: [heapView([], "max-heap (empty)")], array: s.state([], [], [], s.a.slice()), result: s.a.slice() },
+    highlights: s.sortedHl(),
+  });
 }
 
-const algorithm: AlgorithmModule<SortInput, ArrayState> = {
+const algorithm: AlgorithmModule<SortInput, TreeState> = {
   ...meta,
-  renderer: "bars",
+  renderer: "tree",
   inputSchema: { fields: [sortField({ maxLength: 16 })] },
   presets: sortPresets([{ name: "Already a max-heap", input: { nums: [9, 7, 8, 3, 6, 5, 4, 1, 2] } }]),
   randomInput: (size, rng) => randomSortInput(Math.min(size, 12), rng),

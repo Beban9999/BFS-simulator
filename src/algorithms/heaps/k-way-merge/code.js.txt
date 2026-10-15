@@ -1,0 +1,14 @@
+// MinHeap = a binary heap ordered by the compare function, with push / pop / size.
+function mergeKSorted(arrays) {
+  const heap = new MinHeap((a, b) => a[0] - b[0] || a[1] - b[1]);   // [value, which array, index in it]
+  arrays.forEach((a, i) => { if (a.length) heap.push([a[0], i, 0]); });   // one front per array   // @mark init
+  const out = [];
+  while (heap.size > 0) {                       // @mark loop
+    const [v, i, j] = heap.pop();               // smallest front overall   // @mark pop
+    out.push(v);                                // @mark emit
+    if (j + 1 < arrays[i].length) {             // that array has a next value
+      heap.push([arrays[i][j + 1], i, j + 1]);  // @mark push
+    }
+  }
+  return out;                                   // @mark done
+}

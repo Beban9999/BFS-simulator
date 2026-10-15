@@ -2615,3 +2615,108 @@ kbd,
   font-weight: 700;
   text-anchor: middle;
 }
+
+/* ---------- Tree renderer ---------- */
+.tv-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.tv-trees {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 36px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.tv-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+  flex: 1 1 0;
+  max-width: 100%;
+}
+
+.tv-box .sub-label {
+  margin: 0;
+}
+
+.tv-one {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tv {
+  display: block;
+  height: auto;
+  overflow: visible;
+  font-family: var(--mono);
+}
+
+.tv-empty {
+  padding: 24px 0;
+  font-size: 0.85rem;
+  color: var(--faint);
+  text-align: center;
+}
+
+.tv-edge {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: d 0.3s ease, stroke 0.2s;
+}
+
+.tv-edge[data-k] {
+  stroke: var(--k);
+  stroke-width: 3;
+}
+
+.tv-node {
+  transition: transform 0.3s ease;
+}
+
+.tv-node circle {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  transition: fill 0.2s, stroke 0.2s;
+}
+
+.tv-node[data-k] circle {
+  stroke: var(--k);
+  fill: color-mix(in srgb, var(--k) 28%, var(--surface));
+}
+
+.tv-node[data-k="pruned"],
+.tv-node[data-k="removed"] {
+  opacity: 0.5;
+}
+
+.tv-label {
+  fill: var(--text);
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.tv-sub {
+  fill: var(--faint);
+  font-size: 9px;
+  text-anchor: middle;
+}
+
+.tv-glyph {
+  fill: var(--text);
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+}

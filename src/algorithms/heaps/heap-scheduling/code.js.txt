@@ -1,0 +1,12 @@
+// MinHeap = a binary min-heap with push / pop / peek / size.
+function minMeetingRooms(intervals) {
+  intervals.sort((a, b) => a[0] - b[0]);        // by start time   // @mark sort
+  const ends = new MinHeap();                   // end time of every busy room   // @mark init
+  for (const [start, end] of intervals) {       // @mark loop
+    if (ends.size && ends.peek() <= start) {    // the room that frees up first is free by now   // @mark check
+      ends.pop();                               // reuse that room   // @mark free
+    }
+    ends.push(end);                             // this meeting occupies a room until `end`   // @mark book
+  }
+  return ends.size;                             // rooms in use at the busiest moment   // @mark done
+}
