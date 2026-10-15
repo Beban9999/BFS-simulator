@@ -181,7 +181,30 @@ rendered by `src/components/InputEditor.tsx`. A `grid` field with `tools` + `ren
 3. Add the id to `RendererId` in `src/engine/types.ts` and register it in `src/renderers/index.ts`.
 4. CSS goes in `src/styles/app.css`; define colours only through the existing theme variables so dark/light both work.
 
-## 6. Checklist before committing (Definition of Done, spec §5)
+## 6. Note pages (no simulation)
+For explanation pages (templates, comparisons, charts) use a **note**: same folder layout, but no generator.
+
+```
+src/algorithms/<category>/<id>/
+  meta.ts      # as above, plus kind: "note"
+  index.ts     # const note: NoteModule = { ...meta, kind: "note", Page, info }; export default note;
+  Page.tsx     # default-exported React component (lazy-loaded with index.ts)
+  info.md      # optional tabs under the page ("" for none); practice problems still come from meta
+```
+
+- Notes appear in the sidebar, tab counts, progress bar and Ctrl+K like any page; `AlgorithmPage` renders
+  header → `Page` → info tabs (no player, code panel or watch panel).
+- Building blocks: `NoteCard`, `NoteGrid`, `PageLink` (link by page id, falls back to text), `Choice` (segmented
+  control) in `src/components/note/Note.tsx`; `CodeBlock` from `src/components/CodePanel.tsx` shows Python/JS with
+  the usual highlighting (`marker` highlights one `@mark` line — see `backtracking/backtracking-template`).
+  Tables use `.note-table` inside `.note-table-wrap`.
+- Keep the logic of interactive notes in a plain `.ts` file next to `Page.tsx` and test it with a `*.test.ts`
+  (e.g. `sorting/sort-stability/sorts.ts`, `dp/greedy-vs-dp/coins.ts`). The main suite checks folder/id, meta,
+  problem shape and that `Page` exists; it skips trace checks for notes.
+- Examples: `backtracking/backtracking-template`, `sorting/sort-stability`, `sorting/built-in-sorts`, `dp/greedy-vs-dp`.
+- New page? Consider adding a row to the cheat sheet (`src/catalog/cheatsheet.ts`); its test checks every link.
+
+## 7. Checklist before committing (Definition of Done, spec §5)
 - [ ] `npm test` passes (property test vs reference, markers, presets, info sections).
 - [ ] `npx tsc -b` clean.
 - [ ] Opened in the browser: plays to the end, every step's message makes sense, the highlighted code

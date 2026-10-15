@@ -1,0 +1,19 @@
+function solve(data) {
+  const res = [], path = [];
+
+  function backtrack(state) {
+    if (isGoal(state)) {                        // @mark goal
+      res.push([...path]);                      // @mark record
+      return;
+    }
+    for (const choice of choices(state)) {      // @mark loop
+      if (!isValid(choice, state)) continue;    // @mark prune
+      path.push(choice);                        // @mark choose
+      backtrack(apply(state, choice));          // @mark explore
+      path.pop();                               // @mark unchoose
+    }
+  }
+
+  backtrack(start(data));                       // @mark start
+  return res;
+}

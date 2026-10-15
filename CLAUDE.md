@@ -8,12 +8,12 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **146 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (9), DP (10).
+- **150 pages live** (146 simulations + 4 notes): Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (14), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (10), DP (11) + the Pattern Cheat Sheet tab.
 - Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`, `dptable`.
-- Last completed (2026-10-15): `dptable` renderer + DP core, 10 pages (closes #9; rest parked in #20). Earlier the same
-  day: `decisiontree` + Backtracking (9, #8) and `graph` + Graphs (22, #7; advanced pages parked in #19).
-- **Next up:** #10 note-page support (module kind with a custom React page, no `generate`) + Tab 18 cheat sheet, then
-  #11 Tab 1 Fundamentals. The skipped algorithms stay parked for later: #19 (graphs advanced), #20 (DP rest).
+- Last completed (2026-10-15): note-page support (`kind: "note"`) + 4 notes (backtracking template, sort stability,
+  built-in sorts, greedy vs DP) + the cheat sheet tab (closes #10). Earlier the same day: `dptable` + DP core (#9),
+  `decisiontree` + Backtracking (#8), `graph` + Graphs (#7).
+- **Next up:** #11 Tab 1 Fundamentals, then #12 Greedy & Intervals. The skipped algorithms stay parked for later: #19 (graphs advanced), #20 (DP rest).
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -30,6 +30,8 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `src/registry.ts` — auto-collects folders with `import.meta.glob` (meta eager, module lazy).
 - `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`, `dptable`. Registered in `renderers/index.ts`.
 - `src/engine/graph.ts` — the `graph` input value (`{ n, edges, directed, pos?, labels? }`), its text form and validation.
+- Note pages: `meta.kind = "note"`, index.ts exports a `NoteModule` with a React `Page` (see docs §6); `AlgorithmPage`
+  renders header → Page → info tabs. Cheat sheet = `src/pages/CheatSheet.tsx` + data in `src/catalog/cheatsheet.ts`.
 - `src/pages/AlgorithmPage.tsx` — wires input bar, renderer, narration, player, code panel, watch/aux, counters, legend, info tabs; syncs `?input=` / `?step=` in the URL.
 - `src/store/prefs.ts` — zustand + localStorage (`steplore-prefs`): theme, language, speed, progress, popup geometry.
 - Styling: `src/styles/app.css`, theme tokens on `:root` / `[data-theme="light"]`, highlight kinds use `.k-<kind>` and `[data-k]`.
@@ -85,3 +87,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
   slipped in this session and were caught by review, not tests).
 - Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
   generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).
+- Note pages are checked by `algorithms.test.ts` only for folder/meta/problems/Page; put their logic in a `.ts` file with
+  its own `*.test.ts`. Cheat-sheet links are checked by `src/catalog/cheatsheet.test.ts` (ids must exist).
+- Inline `<code>` styles leak into `<pre><code>` inside `.note-body`; use `.note-pre` (resets them). Icons inside new
+  containers need explicit svg sizing + `fill: none; stroke: currentColor` (only `.btn`/`.icon-btn`/`.search-btn` get it).
+- In Git Bash, arguments starting with `/` are rewritten to Windows paths (`/cheatsheet` → `C:/Program Files/Git/cheatsheet`);
+  pass routes without the leading slash to Node scripts. Playwright fallback script: scratchpad `check.cjs` run with
+  `NODE_PATH=$PWD/node_modules`.

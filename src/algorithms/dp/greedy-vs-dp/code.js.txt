@@ -1,0 +1,18 @@
+function greedy(coins, amount) {
+  let count = 0;
+  for (const c of [...coins].sort((a, b) => b - a)) { // @mark greedy
+    count += Math.floor(amount / c);            // take all that fit
+    amount %= c;
+  }
+  return amount === 0 ? count : -1;             // may be wrong!
+}
+
+function fewest(coins, amount) {
+  const dp = [0, ...Array(amount).fill(Infinity)];
+  for (let a = 1; a <= amount; a++) {           // @mark dp
+    for (const c of coins) {                    // try each last coin
+      if (c <= a) dp[a] = Math.min(dp[a], dp[a - c] + 1);
+    }
+  }
+  return dp[amount] === Infinity ? -1 : dp[amount];
+}

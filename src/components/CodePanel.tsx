@@ -147,6 +147,22 @@ export function CodePanel({ code, marker }: CodeViewProps) {
   );
 }
 
+/** Static code box for note pages: same highlighting and language tabs; `marker` highlights one `@mark` line. */
+export function CodeBlock({ code, marker = "", title = "Code" }: { code: CodeSet; marker?: string; title?: string }) {
+  const language = usePrefs((s) => s.language);
+  const setLanguage = usePrefs((s) => s.setLanguage);
+  const lang = code[language] ? language : "python";
+  return (
+    <section className="panel code-panel note-code" aria-label={title}>
+      <div className="panel-head">
+        <h2 className="panel-title">{title}</h2>
+        <LanguageTabs code={code} language={lang} onChange={setLanguage} />
+      </div>
+      <CodeBody code={code} marker={marker} language={lang} />
+    </section>
+  );
+}
+
 function clampGeometry(g: PopupGeometry): PopupGeometry {
   const vw = window.innerWidth;
   const vh = window.innerHeight;

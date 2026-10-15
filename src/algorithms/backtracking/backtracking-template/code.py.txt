@@ -1,0 +1,16 @@
+def solve(data):
+    res, path = [], []
+
+    def backtrack(state):
+        if is_goal(state):                      # @mark goal
+            res.append(path[:])                 # @mark record
+            return
+        for choice in choices(state):           # @mark loop
+            if not is_valid(choice, state):     # @mark prune
+                continue
+            path.append(choice)                 # @mark choose
+            backtrack(apply(state, choice))     # @mark explore
+            path.pop()                          # @mark unchoose
+
+    backtrack(start(data))                      # @mark start
+    return res

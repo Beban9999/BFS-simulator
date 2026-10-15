@@ -1,21 +1,51 @@
 import { describe, expect, it } from "vitest";
-import type { AlgorithmMeta, AlgorithmModule } from "../engine/types";
+import { isNote, type AlgorithmMeta, type PageModule, type Problem } from "../engine/types";
 import { parseCode } from "../engine/markers";
 import { buildTrace, MAX_STEPS } from "../engine/trace";
 import { validateInput } from "../engine/input";
 import { seeded } from "../engine/random";
 
-const modules = import.meta.glob<AlgorithmModule>("./*/*/index.ts", { eager: true, import: "default" });
+const modules = import.meta.glob<PageModule>("./*/*/index.ts", { eager: true, import: "default" });
 const metas = import.meta.glob<AlgorithmMeta>("./*/*/meta.ts", { eager: true, import: "default" });
 
 const RANDOM_RUNS = 200;
 
+function checkProblems(problems: Problem[] | undefined) {
+  const ids = (problems ?? []).map((p) => p.id);
+  expect(new Set(ids).size, "duplicate problem numbers").toBe(ids.length);
+  for (const p of problems ?? []) {
+    expect(Number.isInteger(p.id) && p.id > 0, `problem id ${p.id}`).toBe(true);
+    expect(p.title.trim().length, `#${p.id} title`).toBeGreaterThan(0);
+    expect(p.slug, `#${p.id} slug`).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+    expect(["Easy", "Medium", "Hard"], `#${p.id} difficulty`).toContain(p.difficulty);
+    expect(p.note.trim().length, `#${p.id} note`).toBeGreaterThan(0);
+  }
+}
+
 for (const [path, mod] of Object.entries(modules)) {
   describe(mod.id, () => {
+    const meta = metas[path.replace("index.ts", "meta.ts")];
+
     it("folder matches category and id, and has meta.ts", () => {
       expect(path).toBe(`./${mod.category}/${mod.id}/index.ts`);
-      expect(metas[path.replace("index.ts", "meta.ts")]?.id).toBe(mod.id);
+      expect(meta?.id).toBe(mod.id);
+      expect(meta?.kind ?? "simulation", "meta.kind and the module kind differ").toBe(mod.kind ?? "simulation");
+      expect(meta?.summary.trim().length).toBeGreaterThan(0);
     });
+
+    it("practice problems are well-formed", () => checkProblems(mod.problems));
+
+    if (isNote(mod)) {
+      // Note pages have no simulation: only their component and optional info tabs are checked.
+      it("note page exports a Page component and non-empty info sections", () => {
+        expect(typeof mod.Page).toBe("function");
+        for (const section of mod.info.replace(/\r\n/g, "\n").split(/^## /m).slice(1)) {
+          const [title, ...body] = section.split("\n");
+          expect(body.join("\n").trim().length, `empty section "${title}"`).toBeGreaterThan(0);
+        }
+      });
+      return;
+    }
 
     it("has at least 3 valid presets", () => {
       expect(mod.presets.length).toBeGreaterThanOrEqual(3);

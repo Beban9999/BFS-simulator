@@ -68,8 +68,8 @@ Recursive pages (`merge-sort`, `quick-sort-lomuto`, `quick-sort-hoare`) show the
 - [x] Heap sort — tree view + bars *(heap-sort)*
 - [x] Counting sort (stable, prefix sums) *(counting-sort)* · [x] Radix LSD (buckets in the aux panel) *(radix-sort)* · [x] Bucket sort *(bucket-sort)*
 - [x] Quickselect / Kth Largest *(quickselect)*
-- [ ] Note page: stability demo (records with equal keys) — **needs:** note-page support (issue #10)
-- [ ] Note page: built-in sorts (Timsort / introsort / pdqsort…) — verify current facts from docs before writing (issue #10)
+- [x] Note page: stability demo — stable vs unstable sort on records, two-key sorting *(sort-stability)*
+- [x] Note page: built-in sorts per language (Timsort/powersort, introsort, pdqsort, dual-pivot, driftsort/ipnsort; facts checked 2026-10-15) *(built-in-sorts)*
 - [ ] Sorting race / compare mode + complexity table — **needs:** compare mode (issue #17)
 
 ### Tab 6 — Linked Lists ✅ (13)
@@ -129,19 +129,19 @@ Shared: `_shared/graph.ts` (sample graphs `SAMPLE_UNDIRECTED`, `SAMPLE_DIRECTED`
 - [x] `decisiontree` — `src/renderers/DecisionTreeView.tsx` + `src/algorithms/_shared/decision.ts`. Generators drive a `DecisionTree` builder (`child` = choose, `enter` = explore, `finish` = return / un-choose, `prune` = branch cut without exploring, `found`) and put `view()` in `state.tree`, `marks()` in the highlights (current path, solutions, pruned, finished). Concrete view beside the tree: `array` (ids `ai`) and/or `matrix` board (ids `mi`). Big trees fold finished subtrees off the current path into `+k` nodes (limit per tree, default 70); the box scrolls to keep the current node visible. Highlight ids `dn(node)`, `de(parent, child)`.
 - [x] `dptable` — `src/renderers/DPTableView.tsx` + `src/algorithms/_shared/dp.ts` (`DPState`). A table (1D DP = a table with an input row and a dp row; 2D DP = the full grid, optionally with the input stacked above) with the recurrence (`formula`) above it, measured SVG **dependency arrows** (`arrows: [{ from: [r, c], to: [r, c] }]`; same-row arrows arc under the last row / over others), optional recursion `tree` (decision-tree drawing, ids `dn`) and `array` rows below (e.g. edit-distance alignment). Highlight ids `tc(r, c)`; walk-back paths use the `path` kind.
 - [x] Tab 11 Backtracking ✅ (9): *(subsets)* ± dups · *(permutations)* ± dups · *(combinations)* · *(combination-sum)* I/II · *(n-queens)* · *(sudoku)* 4×4 / 9×9 · *(word-search)* · *(palindrome-partitioning)* · *(letter-combinations)*. Generate parentheses already lives in Stacks & Queues (`stacks-queues/generate-parentheses`, listed in the problems of the backtracking pages). Copy `backtracking/subsets` for a new page.
-- [ ] Note page: universal backtracking template — **needs:** note-page support (issue #10)
-- [x] Tab 12 DP core (10): "From recursion to DP" on climbing stairs, 4 views *(climbing-stairs)* · *(house-robber)* · *(coin-change)* · *(word-break)* · LIS n² + n log n *(lis)* · *(unique-paths)* with obstacles · *(min-path-sum)* · *(lcs)* · *(edit-distance)* + alignment · 0/1 *(knapsack)* + 1D trick. Copy `dp/house-robber` (1D) or `dp/lcs` (2D).
+- [x] Note page: universal backtracking template (click a part → highlighted line, "fill the blanks" table) *(backtracking-template)*
+- [x] Tab 12 DP core (10 + greedy-vs-DP note): "From recursion to DP" on climbing stairs, 4 views *(climbing-stairs)* · *(house-robber)* · *(coin-change)* · *(word-break)* · LIS n² + n log n *(lis)* · *(unique-paths)* with obstacles · *(min-path-sum)* · *(lcs)* · *(edit-distance)* + alignment · 0/1 *(knapsack)* + 1D trick. Copy `dp/house-robber` (1D) or `dp/lcs` (2D).
 - [ ] Later (issue #20): House Robber II, decode ways, min cost stairs, longest palindromic substring, distinct subsequences, unbounded knapsack / partition / target sum, interval DP (burst balloons, matrix chain), state-machine stock variants, House Robber III, bitmask TSP
 
 ## Phase 4 — The rest + platform features
-- [ ] **Note-page support**: a module kind with a custom React page and no `generate` (Big-O chart, memory model, greedy-vs-DP counter-example, stability, built-in sorts, cheat sheet). Suggested: `kind: "note"` in meta + `Page` component export; update the registry, tests and `AlgorithmPage`.
+- [x] **Note-page support**: `kind: "note"` in meta + `index.ts` exporting a `NoteModule` (`Page` component from `Page.tsx`, optional `info`). Building blocks in `src/components/note/Note.tsx` (`NoteCard`, `NoteGrid`, `PageLink`, `Choice`) and `CodeBlock` from `CodePanel.tsx`. Notes: *(backtracking-template)*, *(sort-stability)*, *(built-in-sorts)*, greedy-vs-DP counter-example *(dp/greedy-vs-dp — moves/cross-links to Greedy when Tab 13 exists)*
 - [ ] Tab 1 Fundamentals: Big-O growth chart + amortized doubling, recursion call stack/recursion tree (factorial, fib, power, overflow), memory model note
-- [ ] Tab 13 Greedy & Intervals (`intervals` renderer: timeline bars + sweep line): merge/insert/non-overlapping intervals, meeting rooms I/II, min arrows, jump game I/II, gas station, partition labels, hand of straights, activity selection, Huffman, greedy-vs-DP note
+- [ ] Tab 13 Greedy & Intervals (`intervals` renderer: timeline bars + sweep line): merge/insert/non-overlapping intervals, meeting rooms I/II, min arrows, jump game I/II, gas station, partition labels, hand of straights, activity selection, Huffman (greedy-vs-DP note already lives at `dp/greedy-vs-dp`: link it from the tab)
 - [ ] Tab 14 Strings (`stringmatch` renderer): naive, KMP (LPS table), Rabin-Karp (rolling hash), Z-algorithm, expand-around-centre, Manacher, encode/decode strings
 - [ ] Tab 15 Bits (`bits` renderer): playground (AND/OR/XOR/NOT/shifts, two's complement), tricks, Single Number, Number of 1 Bits, Counting Bits, Reverse Bits, Missing Number, Sum of Two Integers, bitmask subsets
 - [ ] Tab 16 Math & Geometry (`plane2d` renderer): GCD/LCM, sieve, fast pow, modular note, Fisher–Yates, reservoir sampling histogram, convex hull, segment intersection, point in polygon, Pow(x,n), Multiply Strings, Detect Squares
 - [ ] Tab 17 Design: LRU (hashmap + DLL animated), LFU, min stack, iterators, time-based KV store, Bloom filter, skip list; optional rate limiter / consistent hashing / producer-consumer
-- [ ] Tab 18 Cheat sheet: searchable signal → pattern → page table + Big-O tables (`src/pages/CheatSheet.tsx` is a placeholder; tab hidden until built — un-hide by removing the `countFor > 0` filter for it in `Header.tsx`)
+- [x] Tab 18 Cheat sheet: searchable (`?q=` / `?group=`) signal → pattern → page table + Big-O tables (data structures, sorting, searching, graphs, input size). Data in `src/catalog/cheatsheet.ts`, links checked by `cheatsheet.test.ts`; add rows when new pages land
 - [ ] Compare mode (2–4 algorithms side by side, shared input, counters) for sorting / shortest paths / search
 - [ ] "Predict the next step" quiz mode (`quiz` pref already exists in `src/store/prefs.ts`; `usePlayer` already accepts a `pauseAt` callback)
 

@@ -1,21 +1,22 @@
-import type { AlgorithmMeta, AlgorithmModule, CategoryId } from "./engine/types";
+import type { AlgorithmMeta, CategoryId, PageModule } from "./engine/types";
 import { CATEGORIES } from "./catalog/categories";
 
 /**
  * Every algorithm lives in src/algorithms/<category>/<id>/.
  * meta.ts is loaded eagerly (menus, search); index.ts is lazy so each
  * algorithm's code, info and generator ship in their own chunk.
+ * Note pages (`meta.kind === "note"`) use the same layout; their index.ts exports a `NoteModule` with a React `Page`.
  */
 const metaModules = import.meta.glob<AlgorithmMeta>("./algorithms/*/*/meta.ts", {
   eager: true,
   import: "default",
 });
-const moduleLoaders = import.meta.glob<AlgorithmModule>("./algorithms/*/*/index.ts", {
+const moduleLoaders = import.meta.glob<PageModule>("./algorithms/*/*/index.ts", {
   import: "default",
 });
 
 export const ALL_META: AlgorithmMeta[] = [];
-const loaderById = new Map<string, () => Promise<AlgorithmModule>>();
+const loaderById = new Map<string, () => Promise<PageModule>>();
 
 for (const [path, meta] of Object.entries(metaModules)) {
   const loader = moduleLoaders[path.replace(/meta\.ts$/, "index.ts")];
@@ -27,7 +28,7 @@ for (const [path, meta] of Object.entries(metaModules)) {
 
 export const META_BY_ID = new Map(ALL_META.map((m) => [m.id, m]));
 
-export function loadAlgorithm(id: string): Promise<AlgorithmModule> | null {
+export function loadAlgorithm(id: string): Promise<PageModule> | null {
   return loaderById.get(id)?.() ?? null;
 }
 
@@ -55,4 +56,9 @@ export function groupsFor(category: CategoryId): SubcategoryGroup[] {
 
 export function countFor(category: CategoryId): number {
   return ALL_META.filter((m) => m.category === category).length;
+}
+
+/** The cheat sheet is a hand-written page, not a folder of algorithms, so it is live without any. */
+export function isLive(category: CategoryId): boolean {
+  return category === "cheatsheet" || countFor(category) > 0;
 }

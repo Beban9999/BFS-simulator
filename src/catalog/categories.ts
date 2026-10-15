@@ -43,7 +43,7 @@ export const CATEGORIES: Category[] = [
     title: "Sorting",
     short: "Sorting",
     blurb: "Comparison sorts, non-comparison sorts and selection.",
-    subcategories: ["Simple sorts", "Divide & conquer", "Heap-based", "Non-comparison", "Selection"],
+    subcategories: ["Simple sorts", "Divide & conquer", "Heap-based", "Non-comparison", "Selection", "In practice"],
   },
   {
     id: "linked-lists",
@@ -94,7 +94,7 @@ export const CATEGORIES: Category[] = [
     title: "Backtracking",
     short: "Backtrack",
     blurb: "Choose, explore, un-choose — with pruning.",
-    subcategories: ["Subsets & permutations", "Boards", "Strings"],
+    subcategories: ["Template", "Subsets & permutations", "Boards", "Strings"],
   },
   {
     id: "dp",

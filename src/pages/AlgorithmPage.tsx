@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import type { AlgorithmModule, GraphField, GridField, HighlightKind } from "../engine/types";
+import { isNote, type AlgorithmMeta, type AlgorithmModule, type GraphField, type GridField, type HighlightKind, type NoteModule, type PageModule } from "../engine/types";
 import { buildTrace, kindsInTrace, MAX_STEPS } from "../engine/trace";
 import { decodeInput, encodeInput, validateInput } from "../engine/input";
 import { loadAlgorithm, META_BY_ID } from "../registry";
@@ -18,7 +18,7 @@ import { NotFound } from "./NotFound";
 
 export default function AlgorithmPage() {
   const { id = "" } = useParams();
-  const [loaded, setLoaded] = useState<{ id: string; module: AlgorithmModule | null; error?: string } | null>(null);
+  const [loaded, setLoaded] = useState<{ id: string; module: PageModule | null; error?: string } | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -39,7 +39,22 @@ export default function AlgorithmPage() {
   if (!META_BY_ID.has(id)) return <NotFound />;
   if (!loaded || loaded.id !== id) return <p className="loading">Loading…</p>;
   if (!loaded.module) return <p className="input-error">Could not load this page. {loaded.error}</p>;
+  if (isNote(loaded.module)) return <NoteView key={id} module={loaded.module} />;
   return <AlgorithmView key={id} module={loaded.module} />;
+}
+
+/** A page without a simulation: its own component between the header and the info tabs. */
+function NoteView({ module }: { module: NoteModule }) {
+  const { Page } = module;
+  return (
+    <>
+      <PageHeader module={module} />
+      <div className="note-page">
+        <Page />
+      </div>
+      {(module.info.trim() || module.problems?.length) && <InfoTabs info={module.info} problems={module.problems} />}
+    </>
+  );
 }
 
 const LEGEND_ORDER: HighlightKind[] = [
@@ -129,7 +144,7 @@ function AlgorithmView({ module }: { module: AlgorithmModule }) {
   );
 }
 
-function PageHeader({ module }: { module: AlgorithmModule }) {
+function PageHeader({ module }: { module: AlgorithmMeta }) {
   const progress = usePrefs((s) => s.progress[module.id]);
   const setProgress = usePrefs((s) => s.setProgress);
   const cat = CATEGORY_BY_ID[module.category];
@@ -150,6 +165,7 @@ function PageHeader({ module }: { module: AlgorithmModule }) {
         <h1 className="algo-title">
           {module.title}
           <span className={`diff-badge ${module.difficulty}`}>{module.difficulty}</span>
+          {module.kind === "note" && <span className="note-badge">note</span>}
         </h1>
         <p className="algo-summary">{module.summary}</p>
       </div>

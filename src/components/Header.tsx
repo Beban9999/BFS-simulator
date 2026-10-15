@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { CATEGORIES } from "../catalog/categories";
-import { countFor } from "../registry";
+import { countFor, isLive } from "../registry";
 import { usePrefs } from "../store/prefs";
 import { Icon, Logo } from "./Icons";
 
@@ -36,7 +36,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
       </div>
       <nav className="tabs-row" aria-label="Categories">
         {/* Tabs without pages yet stay hidden; they reappear as soon as one algorithm folder exists. */}
-        {CATEGORIES.filter((c) => countFor(c.id) > 0).map((c) => {
+        {CATEGORIES.filter((c) => isLive(c.id)).map((c) => {
           const n = countFor(c.id);
           return (
             <NavLink
@@ -46,7 +46,7 @@ export function Header({ onSearch }: { onSearch: () => void }) {
               title={c.title}
             >
               {c.short}
-              <span className="tab-count">{n}</span>
+              {n > 0 && <span className="tab-count">{n}</span>}
             </NavLink>
           );
         })}

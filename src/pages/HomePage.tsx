@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { CATEGORIES } from "../catalog/categories";
-import { ALL_META, countFor } from "../registry";
+import { ALL_META, countFor, isLive } from "../registry";
 import { usePrefs } from "../store/prefs";
 
 export function HomePage() {
   const progress = usePrefs((s) => s.progress);
   const learned = Object.values(progress).filter((m) => m === "learned").length;
-  const live = CATEGORIES.filter((c) => countFor(c.id) > 0);
-  const soon = CATEGORIES.filter((c) => countFor(c.id) === 0);
+  const live = CATEGORIES.filter((c) => isLive(c.id));
+  const soon = CATEGORIES.filter((c) => !isLive(c.id));
 
   return (
     <main className="page-main" style={{ maxWidth: 1180, margin: "0 auto" }}>
@@ -27,9 +27,7 @@ export function HomePage() {
               <h3>{c.title}</h3>
               <p>{c.blurb}</p>
               <div className="meta">
-                <span>
-                  {n} page{n === 1 ? "" : "s"} · {done} learned
-                </span>
+                <span>{c.id === "cheatsheet" ? "Signals, patterns and Big-O tables" : `${n} page${n === 1 ? "" : "s"} · ${done} learned`}</span>
               </div>
             </Link>
           );

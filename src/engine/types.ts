@@ -49,6 +49,8 @@ export interface AlgorithmMeta {
   /** Extra search terms. */
   keywords?: string[];
   problems?: Problem[];
+  /** "note" = an explanation page with its own React component and no simulation (see `NoteModule`). */
+  kind?: "simulation" | "note";
 }
 
 /* ---------- Steps ---------- */
@@ -301,6 +303,21 @@ export interface AlgorithmModule<I = any, S = any> extends AlgorithmMeta {
   /** Kinds always shown in the legend even if no step uses them (e.g. start/end/wall drawn from the input). */
   legendExtra?: HighlightKind[];
 }
+
+/**
+ * A page without a simulation: `meta.kind === "note"`, and index.ts exports `{ ...meta, kind: "note", Page, info }`.
+ * `Page` is rendered between the page header and the info tabs; it lives in the lazy chunk like a generator.
+ */
+export interface NoteModule extends AlgorithmMeta {
+  kind: "note";
+  Page: ComponentType;
+  /** Optional markdown tabs under the page (same `## ` sections as info.md; may be ""). */
+  info: string;
+}
+
+export type PageModule = AlgorithmModule | NoteModule;
+
+export const isNote = (m: PageModule): m is NoteModule => m.kind === "note";
 
 export interface RendererProps<S = any> {
   step: Step<S>;
