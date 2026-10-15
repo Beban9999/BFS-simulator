@@ -1,0 +1,34 @@
+class SegmentTree:                              # range sums with point updates
+    def __init__(self, nums):
+        self.n = len(nums)
+        self.tree = [0] * (4 * self.n)          # node 1 is the root; children of k are 2k and 2k+1
+        self.build(nums, 1, 0, self.n - 1)
+
+    def build(self, nums, k, lo, hi):           # tree[k] = sum(nums[lo..hi])   # @mark build
+        if lo == hi:
+            self.tree[k] = nums[lo]             # a leaf holds one value   # @mark build-leaf
+            return
+        mid = (lo + hi) // 2
+        self.build(nums, 2 * k, lo, mid)
+        self.build(nums, 2 * k + 1, mid + 1, hi)
+        self.tree[k] = self.tree[2 * k] + self.tree[2 * k + 1]   # @mark build-sum
+
+    def query(self, k, lo, hi, l, r):           # sum of nums[l..r] within this node's [lo..hi]   # @mark q-call
+        if r < lo or hi < l:
+            return 0                            # no overlap   # @mark q-none
+        if l <= lo and hi <= r:
+            return self.tree[k]                 # fully inside: the stored sum is the answer   # @mark q-full
+        mid = (lo + hi) // 2                    # partial overlap: ask both halves   # @mark q-split
+        return (self.query(2 * k, lo, mid, l, r)
+                + self.query(2 * k + 1, mid + 1, hi, l, r))   # @mark q-combine
+
+    def update(self, k, lo, hi, i, val):        # nums[i] = val   # @mark u-call
+        if lo == hi:
+            self.tree[k] = val                  # @mark u-leaf
+            return
+        mid = (lo + hi) // 2
+        if i <= mid:
+            self.update(2 * k, lo, mid, i, val)
+        else:
+            self.update(2 * k + 1, mid + 1, hi, i, val)
+        self.tree[k] = self.tree[2 * k] + self.tree[2 * k + 1]   # fix sums on the way back up   # @mark u-sum

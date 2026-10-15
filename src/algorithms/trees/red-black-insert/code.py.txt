@@ -1,0 +1,25 @@
+def insert(tree, key):
+    node = Node(key, color=RED)                 # new nodes start red   # @mark new
+    bst_insert(tree, node)                      # an ordinary BST insert (sets node.parent)   # @mark bst
+    while node.parent and node.parent.color == RED:   # red under red: fix it   # @mark loop
+        parent, grand = node.parent, node.parent.parent
+        uncle = grand.right if parent is grand.left else grand.left   # @mark uncle
+        if uncle and uncle.color == RED:        # case 1: red uncle -> recolor, move the problem up   # @mark case1
+            parent.color = uncle.color = BLACK
+            grand.color = RED
+            node = grand
+        elif parent is grand.left:
+            if node is parent.right:            # case 2: triangle -> rotate it into a line   # @mark case2-left
+                node = parent
+                rotate_left(tree, node)
+            node.parent.color = BLACK           # case 3: line -> rotate the grandparent   # @mark case3-left
+            grand.color = RED
+            rotate_right(tree, grand)
+        else:                                   # mirror image
+            if node is parent.left:             # @mark case2-right
+                node = parent
+                rotate_right(tree, node)
+            node.parent.color = BLACK           # @mark case3-right
+            grand.color = RED
+            rotate_left(tree, grand)
+    tree.root.color = BLACK                     # the root is always black   # @mark root

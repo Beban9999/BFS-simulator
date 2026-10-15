@@ -8,10 +8,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **84 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Graphs (2: grid BFS/DFS).
+- **107 pages live**: Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (12), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (2: grid BFS/DFS).
 - Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`.
-- Last completed: Tab 8 Heaps + `tree` renderer, tree view on `sorting/heap-sort` (2026-10-15, closes issue #5).
-- **Next up:** issue #6 — Tab 9 Trees (uses the `tree` renderer + the existing `tree` input field). Then #7 (graph renderer + Tab 10).
+- Last completed: Tab 9 Trees, 23 pages (2026-10-15, closes issue #6). Earlier the same day: #3 lists, #4 stacks/queues, #5 heaps.
+- **Next up:** issue #7 — `graph` renderer + Tab 10 Graphs (plan in `ROADMAP.md`, Phase 2). Then #8 backtracking, #9 DP.
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -24,7 +24,7 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - `src/engine/` — types (`AlgorithmModule`, `Step`, `InputField`…), `Tracer` (deep-copied immutable steps,
   cumulative counters), `buildTrace` (10 000-step cap), `@mark` line-marker parser, input parse/validate, seeded RNG.
 - `src/algorithms/<category>/<id>/` — one folder per page (`meta.ts`, `index.ts`, `code.py.txt`, `code.js.txt`,
-  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, sorting, rotated).
+  `info.md`). `_shared/` holds state types + helpers per renderer (array, matrix, grid, hash, list, stackqueue, tree, bintree, treetrace, sorting, rotated).
 - `src/registry.ts` — auto-collects folders with `import.meta.glob` (meta eager, module lazy).
 - `src/renderers/` — pure views: `grid`, `array`/`bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`. Registered in `renderers/index.ts`.
 - `src/pages/AlgorithmPage.tsx` — wires input bar, renderer, narration, player, code panel, watch/aux, counters, legend, info tabs; syncs `?input=` / `?step=` in the URL.
@@ -60,6 +60,9 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
   have no "done" line, so put `result` on every step instead of inventing a final step.
 - `tree` renderer: node ids must be unique across all trees in one state (two-heaps uses one id counter).
   Heap pages animate `heapq` calls by turning `siftUpEvents`/`siftDownEvents` swaps into steps on the call's line.
+- Binary-tree pages: build on `BTree` (`_shared/bintree.ts`) + `TreeTrace` (`_shared/treetrace.ts`); a tree drawn twice
+  (serialize-tree) needs offset ids because node ids must be unique per state. Ops-style inputs (`sum:1-4`,
+  `insert:cat`) use a `words` field with a regex + simulation in `validate`.
 - Heredocs failed again this session on a large multi-file write; prefer the Write tool for anything long.
 - Avoid floating-point maths (`Math.log10`, `Math.log2` of large values, divisions) for indices or labels in
   generators; use integer arithmetic (see `posOf` in `sorting/radix-sort`).

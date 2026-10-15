@@ -1,0 +1,23 @@
+def serialize(root):
+    out = []
+    def walk(node):                             # preorder, writing "#" for every missing child   # @mark s-call
+        if node is None:
+            out.append("#")                     # @mark s-null
+            return
+        out.append(str(node.val))               # @mark s-val
+        walk(node.left)
+        walk(node.right)
+    walk(root)
+    return ",".join(out)                        # @mark s-done
+
+def deserialize(data):
+    tokens = iter(data.split(","))              # @mark d-init
+    def build():                                # read the tokens back in the same preorder
+        tok = next(tokens)                      # @mark d-read
+        if tok == "#":
+            return None                         # @mark d-null
+        node = TreeNode(int(tok))               # @mark d-node
+        node.left = build()                     # @mark d-left
+        node.right = build()                    # @mark d-right
+        return node
+    return build()                              # @mark d-done

@@ -1,0 +1,13 @@
+def build_tree(preorder, inorder):
+    index = {v: i for i, v in enumerate(inorder)}   # position of each value in inorder   # @mark init
+    pre = iter(preorder)                        # preorder hands out roots one by one
+    def build(lo, hi):                          # subtree made of inorder[lo..hi]   # @mark call
+        if lo > hi:                             # empty slice: no subtree   # @mark base
+            return None
+        val = next(pre)                         # the next preorder value is this subtree's root   # @mark root
+        node = TreeNode(val)
+        mid = index[val]                        # left of mid -> left subtree, right of mid -> right   # @mark split
+        node.left = build(lo, mid - 1)          # @mark left
+        node.right = build(mid + 1, hi)         # @mark right
+        return node                             # @mark return
+    return build(0, len(inorder) - 1)           # @mark done

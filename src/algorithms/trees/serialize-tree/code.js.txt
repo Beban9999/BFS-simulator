@@ -1,0 +1,27 @@
+function serialize(root) {
+  const out = [];
+  function walk(node) {                         // preorder, writing "#" for every missing child   // @mark s-call
+    if (node === null) {
+      out.push("#");                            // @mark s-null
+      return;
+    }
+    out.push(String(node.val));                 // @mark s-val
+    walk(node.left);
+    walk(node.right);
+  }
+  walk(root);
+  return out.join(",");                         // @mark s-done
+}
+
+function deserialize(data) {
+  const tokens = data.split(","); let i = 0;    // @mark d-init
+  function build() {                            // read the tokens back in the same preorder
+    const tok = tokens[i++];                    // @mark d-read
+    if (tok === "#") return null;               // @mark d-null
+    const node = new TreeNode(Number(tok));     // @mark d-node
+    node.left = build();                        // @mark d-left
+    node.right = build();                       // @mark d-right
+    return node;
+  }
+  return build();                               // @mark d-done
+}

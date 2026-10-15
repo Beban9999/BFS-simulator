@@ -94,7 +94,7 @@ Renderer: `src/renderers/StackQueueView.tsx` + `src/algorithms/_shared/stackqueu
 ## Phase 2 — Trees, heaps, graphs
 
 ### Renderers
-- [x] `tree` — `src/renderers/TreeView.tsx` + `src/algorithms/_shared/tree.ts`. Binary + n-ary via `d3-hierarchy` (null children keep left/right positions), several trees per state (`trees: TreeView[]`), optional `array` (ArrayState, drawn below with the array renderer) in sync. Highlight ids `tn(id)` → `n:<id>`, `te(p, c)` → `e:<p>-<c>`; node ids must be unique across trees. Heaps: `heapView(items)` + `siftUpEvents` / `siftDownEvents` (yield compare/swap/stop so pages choose their own lines). Input field kind `tree` (level order with nulls) already exists in `src/engine/input.ts` — not used yet (Tab 9).
+- [x] `tree` — `src/renderers/TreeView.tsx` + `src/algorithms/_shared/tree.ts`. Binary + n-ary via `d3-hierarchy` (null children keep left/right positions), several trees per state (`trees: TreeView[]`), optional `array` (ArrayState, drawn below with the array renderer) in sync. Highlight ids `tn(id)` → `n:<id>`, `te(p, c)` → `e:<p>-<c>`; node ids must be unique across trees. Heaps: `heapView(items)` + `siftUpEvents` / `siftDownEvents` (yield compare/swap/stop so pages choose their own lines). Input field kind `tree` (level order with nulls) is used by the Tab 9 pages (`treeField`). Extra dashed links (`TreeView.links`, highlight `tl(from, to)`) draw Morris threads.
 - [ ] `graph` — SVG nodes/edges, directed/undirected, weights, fixed layout + drag; graph builder input (click to add nodes/edges) + JSON edge-list field. Show distance table / heap in aux.
 
 ### Tab 8 — Heaps ✅ (5)
@@ -102,14 +102,16 @@ Renderer: `src/renderers/StackQueueView.tsx` + `src/algorithms/_shared/stackqueu
 - [x] Top-K / k-th largest *(top-k)* · [x] Two heaps — median of stream *(two-heaps-median)* · [x] K-way merge *(k-way-merge)* · [x] Scheduling: Meeting Rooms II *(heap-scheduling)*
 - [x] Tree view added to `sorting/heap-sort` (now `renderer: "tree"` with the bars as its `array`)
 
-### Tab 9 — Trees
-- [ ] Traversals: pre/in/post recursive (call stack) and iterative (explicit stack), level order, zigzag, Morris (advanced)
-- [ ] Tree recursion: max depth, diameter, balanced, max path sum · path problems (path sum, root-to-leaf, good nodes)
-- [ ] BST: search, insert, delete (3 cases), validate, kth smallest, successor · LCA (BST + binary tree)
-- [ ] Construct from preorder+inorder · serialize/deserialize
-- [ ] AVL rotations · red-black insert (advanced)
-- [ ] Trie insert/search/prefix/delete (+ Word Search II link)
-- [ ] Segment tree (build/query/update, lazy — advanced) · Fenwick / BIT
+### Tab 9 — Trees ✅ (23)
+Shared: `_shared/bintree.ts` (`BTree` with stable ids, level-order parse/serialize, `treeField`, `randomTree` / `randomBST` / `randomDistinctTree`, `isBST`) and `_shared/treetrace.ts` (`TreeTrace`: call frames, root→current path, per-node sub-labels and marks → TreeState steps). Copy `trees/max-depth` for a new recursive page.
+- [x] Traversals: pre/in/post recursive *(dfs-traversals)* · explicit stack *(iterative-traversals)* · level order + zigzag *(level-order)* · Morris with dashed thread links *(morris-inorder)*
+- [x] Tree recursion: *(max-depth)* · *(diameter)* · *(balanced-tree)* · *(max-path-sum)* · path sum II *(path-sum)* · *(good-nodes)*
+- [x] BST: search + insert *(bst-search-insert)* · delete, 3 cases *(bst-delete)* · *(validate-bst)* · *(kth-smallest-bst)* · *(inorder-successor)* · LCA, BST + binary tree *(lowest-common-ancestor)*
+- [x] Construct from preorder + inorder *(construct-pre-in)* · serialize / deserialize *(serialize-tree)*
+- [x] AVL rotations *(avl-insert)* · red-black insert *(red-black-insert)*
+- [x] Trie insert / search / prefix / delete *(trie)* (Word Search II listed in its problems)
+- [x] Segment tree build / query / update *(segment-tree)* · Fenwick / BIT *(fenwick-tree)*
+- [ ] Later: lazy propagation for the segment tree (range updates) — only described in its info tab; BST delete for AVL / red-black
 
 ### Tab 10 — Graphs (2 done)
 - [x] BFS grid *(bfs-grid)* · [x] DFS grid *(dfs-grid)*

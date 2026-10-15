@@ -1,0 +1,30 @@
+function insert(tree, key) {
+  let node = new Node(key, RED);                // new nodes start red   // @mark new
+  bstInsert(tree, node);                        // an ordinary BST insert (sets node.parent)   // @mark bst
+  while (node.parent && node.parent.color === RED) {   // red under red: fix it   // @mark loop
+    const parent = node.parent, grand = parent.parent;
+    const uncle = parent === grand.left ? grand.right : grand.left;   // @mark uncle
+    if (uncle && uncle.color === RED) {         // case 1: red uncle -> recolor, move the problem up   // @mark case1
+      parent.color = uncle.color = BLACK;
+      grand.color = RED;
+      node = grand;
+    } else if (parent === grand.left) {
+      if (node === parent.right) {              // case 2: triangle -> rotate it into a line   // @mark case2-left
+        node = parent;
+        rotateLeft(tree, node);
+      }
+      node.parent.color = BLACK;                // case 3: line -> rotate the grandparent   // @mark case3-left
+      grand.color = RED;
+      rotateRight(tree, grand);
+    } else {                                    // mirror image
+      if (node === parent.left) {               // @mark case2-right
+        node = parent;
+        rotateRight(tree, node);
+      }
+      node.parent.color = BLACK;                // @mark case3-right
+      grand.color = RED;
+      rotateLeft(tree, grand);
+    }
+  }
+  tree.root.color = BLACK;                      // the root is always black   // @mark root
+}

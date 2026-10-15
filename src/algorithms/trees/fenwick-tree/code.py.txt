@@ -1,0 +1,23 @@
+class FenwickTree:                              # binary indexed tree, 1-indexed inside
+    def __init__(self, nums):
+        self.n = len(nums)
+        self.tree = [0] * (self.n + 1)          # tree[i] = sum of nums over (i - lowbit(i), i]
+        for i, x in enumerate(nums):
+            self.add(i, x)                      # @mark build
+
+    def add(self, i, delta):                    # nums[i] += delta
+        i += 1
+        while i <= self.n:
+            self.tree[i] += delta               # every node whose range contains i   # @mark add-step
+            i += i & -i                         # jump to the next node covering i
+
+    def prefix(self, i):                        # sum of nums[0..i]
+        i += 1
+        s = 0
+        while i > 0:
+            s += self.tree[i]                   # @mark sum-step
+            i -= i & -i                         # drop the lowest set bit: next disjoint block
+        return s
+
+    def range_sum(self, l, r):
+        return self.prefix(r) - (self.prefix(l - 1) if l > 0 else 0)   # @mark range

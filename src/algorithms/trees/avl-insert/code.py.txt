@@ -1,0 +1,36 @@
+def h(n): return n.height if n else 0
+
+def rotate_right(y):                            # y's left child x becomes the subtree's root
+    x = y.left
+    y.left, x.right = x.right, y                # x's right subtree moves under y   # @mark rot-right
+    y.height = 1 + max(h(y.left), h(y.right))
+    x.height = 1 + max(h(x.left), h(x.right))
+    return x
+
+def rotate_left(x):                             # mirror image
+    y = x.right
+    x.right, y.left = y.left, x                 # @mark rot-left
+    x.height = 1 + max(h(x.left), h(x.right))
+    y.height = 1 + max(h(y.left), h(y.right))
+    return y
+
+def insert(node, key):                          # returns the new root of this subtree   # @mark call
+    if node is None:
+        return Node(key)                        # @mark new-leaf
+    if key < node.key:
+        node.left = insert(node.left, key)      # @mark go-left
+    else:
+        node.right = insert(node.right, key)    # @mark go-right
+    node.height = 1 + max(h(node.left), h(node.right))   # @mark update
+    bal = h(node.left) - h(node.right)          # balance factor   # @mark balance
+    if bal > 1 and key < node.left.key:         # left-left: one right rotation   # @mark ll
+        return rotate_right(node)
+    if bal < -1 and key > node.right.key:       # right-right: one left rotation   # @mark rr
+        return rotate_left(node)
+    if bal > 1:                                 # left-right: rotate the child, then the node   # @mark lr
+        node.left = rotate_left(node.left)
+        return rotate_right(node)
+    if bal < -1:                                # right-left   # @mark rl
+        node.right = rotate_right(node.right)
+        return rotate_left(node)
+    return node                                 # balanced: nothing to do   # @mark ok

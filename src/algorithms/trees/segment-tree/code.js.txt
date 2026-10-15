@@ -1,0 +1,37 @@
+class SegmentTree {                             // range sums with point updates
+  constructor(nums) {
+    this.n = nums.length;
+    this.tree = new Array(4 * this.n).fill(0);  // node 1 is the root; children of k are 2k and 2k+1
+    this.build(nums, 1, 0, this.n - 1);
+  }
+
+  build(nums, k, lo, hi) {                      // tree[k] = sum(nums[lo..hi])   // @mark build
+    if (lo === hi) {
+      this.tree[k] = nums[lo];                  // a leaf holds one value   // @mark build-leaf
+      return;
+    }
+    const mid = (lo + hi) >> 1;
+    this.build(nums, 2 * k, lo, mid);
+    this.build(nums, 2 * k + 1, mid + 1, hi);
+    this.tree[k] = this.tree[2 * k] + this.tree[2 * k + 1];   // @mark build-sum
+  }
+
+  query(k, lo, hi, l, r) {                      // sum of nums[l..r] within this node's [lo..hi]   // @mark q-call
+    if (r < lo || hi < l) return 0;             // no overlap   // @mark q-none
+    if (l <= lo && hi <= r) return this.tree[k];   // fully inside: the stored sum is the answer   // @mark q-full
+    const mid = (lo + hi) >> 1;                 // partial overlap: ask both halves   // @mark q-split
+    return this.query(2 * k, lo, mid, l, r)
+      + this.query(2 * k + 1, mid + 1, hi, l, r);   // @mark q-combine
+  }
+
+  update(k, lo, hi, i, val) {                   // nums[i] = val   // @mark u-call
+    if (lo === hi) {
+      this.tree[k] = val;                       // @mark u-leaf
+      return;
+    }
+    const mid = (lo + hi) >> 1;
+    if (i <= mid) this.update(2 * k, lo, mid, i, val);
+    else this.update(2 * k + 1, mid + 1, hi, i, val);
+    this.tree[k] = this.tree[2 * k] + this.tree[2 * k + 1];   // fix sums on the way back up   // @mark u-sum
+  }
+}

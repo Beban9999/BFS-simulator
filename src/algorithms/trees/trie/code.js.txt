@@ -1,0 +1,47 @@
+class Trie {
+  constructor() {
+    this.root = new Map();                      // char -> child node; "$" marks the end of a word   // @mark init
+  }
+
+  insert(word) {
+    let node = this.root;
+    for (const ch of word) {
+      if (!node.has(ch)) node.set(ch, new Map());
+      node = node.get(ch);                      // follow the edge, or create it   // @mark ins-step
+    }
+    node.set("$", true);                        // @mark ins-end
+  }
+
+  walk(s) {                                     // node reached by spelling s, or null
+    let node = this.root;
+    for (const ch of s) {
+      if (!node.has(ch)) {
+        return null;                            // @mark walk-miss
+      }
+      node = node.get(ch);                      // @mark walk-step
+    }
+    return node;
+  }
+
+  search(word) {                                // whole word stored?
+    const node = this.walk(word);
+    return node !== null && node.has("$");      // @mark search
+  }
+
+  startsWith(prefix) {                          // any word with this prefix?
+    return this.walk(prefix) !== null;          // @mark prefix
+  }
+
+  delete(word) {                                // unmark the word, then prune unused nodes
+    const path = []; let node = this.root;
+    for (const ch of word) {
+      path.push([node, ch]);
+      node = node.get(ch);                      // @mark del-walk
+    }
+    node.delete("$");                           // @mark del-unmark
+    for (const [parent, ch] of path.reverse()) {
+      if (parent.get(ch).size > 0) break;       // still a word end or has children: keep   // @mark del-check
+      parent.delete(ch);                        // @mark del-prune
+    }
+  }
+}

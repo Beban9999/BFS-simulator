@@ -1,0 +1,39 @@
+const h = (n) => (n ? n.height : 0);
+
+function rotateRight(y) {                       // y's left child x becomes the subtree's root
+  const x = y.left;
+  y.left = x.right; x.right = y;                // x's right subtree moves under y   // @mark rot-right
+  y.height = 1 + Math.max(h(y.left), h(y.right));
+  x.height = 1 + Math.max(h(x.left), h(x.right));
+  return x;
+}
+
+function rotateLeft(x) {                        // mirror image
+  const y = x.right;
+  x.right = y.left; y.left = x;                 // @mark rot-left
+  x.height = 1 + Math.max(h(x.left), h(x.right));
+  y.height = 1 + Math.max(h(y.left), h(y.right));
+  return y;
+}
+
+function insert(node, key) {                    // returns the new root of this subtree   // @mark call
+  if (node === null) return new Node(key);      // @mark new-leaf
+  if (key < node.key) {
+    node.left = insert(node.left, key);         // @mark go-left
+  } else {
+    node.right = insert(node.right, key);       // @mark go-right
+  }
+  node.height = 1 + Math.max(h(node.left), h(node.right));   // @mark update
+  const bal = h(node.left) - h(node.right);     // balance factor   // @mark balance
+  if (bal > 1 && key < node.left.key) return rotateRight(node);   // left-left   // @mark ll
+  if (bal < -1 && key > node.right.key) return rotateLeft(node);  // right-right   // @mark rr
+  if (bal > 1) {                                // left-right: rotate the child, then the node   // @mark lr
+    node.left = rotateLeft(node.left);
+    return rotateRight(node);
+  }
+  if (bal < -1) {                               // right-left   // @mark rl
+    node.right = rotateRight(node.right);
+    return rotateLeft(node);
+  }
+  return node;                                  // balanced: nothing to do   // @mark ok
+}

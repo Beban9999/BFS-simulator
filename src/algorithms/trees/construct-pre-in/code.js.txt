@@ -1,0 +1,14 @@
+function buildTree(preorder, inorder) {
+  const index = new Map(inorder.map((v, i) => [v, i]));   // position of each value in inorder   // @mark init
+  let p = 0;                                    // preorder hands out roots one by one
+  function build(lo, hi) {                      // subtree made of inorder[lo..hi]   // @mark call
+    if (lo > hi) return null;                   // empty slice: no subtree   // @mark base
+    const val = preorder[p++];                  // the next preorder value is this subtree's root   // @mark root
+    const node = new TreeNode(val);
+    const mid = index.get(val);                 // left of mid -> left subtree, right of mid -> right   // @mark split
+    node.left = build(lo, mid - 1);             // @mark left
+    node.right = build(mid + 1, hi);            // @mark right
+    return node;                                // @mark return
+  }
+  return build(0, inorder.length - 1);          // @mark done
+}

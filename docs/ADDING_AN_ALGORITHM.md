@@ -30,6 +30,8 @@ src/algorithms/<category>/<id>/
 | Heap as tree + array (bars) in sync | `heaps/binary-heap`, `sorting/heap-sort` (tree renderer with `array`) |
 | Select-field option that changes behaviour | `sorting/quick-sort-lomuto` (pivot rule), `linked-lists/copy-random-list` (approach) |
 | Stack / queue containers (+ token row) | `stacks-queues/valid-parentheses`; op sequences: `stacks-queues/min-stack`; bars + stack: `stacks-queues/largest-rectangle` |
+| Recursive binary-tree page (call stack, sub-labels) | `trees/max-depth`, `trees/diameter` (via `_shared/treetrace.ts`) |
+| Tree that changes shape (rotations, deletes) | `trees/avl-insert`, `trees/bst-delete` |
 | Linked list re-wiring | `linked-lists/reverse-list`; several rows: `linked-lists/merge-two-lists`; recursion: `linked-lists/reverse-list-recursive` |
 
 ## 1. `meta.ts`

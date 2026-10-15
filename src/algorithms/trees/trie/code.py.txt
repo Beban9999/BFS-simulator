@@ -1,0 +1,35 @@
+class Trie:
+    def __init__(self):
+        self.root = {}                          # char -> child node; "$" marks the end of a word   # @mark init
+
+    def insert(self, word):
+        node = self.root
+        for ch in word:
+            node = node.setdefault(ch, {})      # follow the edge, or create it   # @mark ins-step
+        node["$"] = True                        # @mark ins-end
+
+    def _walk(self, s):                         # node reached by spelling s, or None
+        node = self.root
+        for ch in s:
+            if ch not in node:
+                return None                     # @mark walk-miss
+            node = node[ch]                     # @mark walk-step
+        return node
+
+    def search(self, word):                     # whole word stored?
+        node = self._walk(word)
+        return node is not None and "$" in node   # @mark search
+
+    def starts_with(self, prefix):              # any word with this prefix?
+        return self._walk(prefix) is not None   # @mark prefix
+
+    def delete(self, word):                     # unmark the word, then prune unused nodes
+        path, node = [], self.root
+        for ch in word:
+            path.append((node, ch))
+            node = node[ch]                     # @mark del-walk
+        del node["$"]                           # @mark del-unmark
+        for parent, ch in reversed(path):
+            if parent[ch]:                      # still a word end or has children: keep   # @mark del-check
+                break
+            del parent[ch]                      # @mark del-prune

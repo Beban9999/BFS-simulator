@@ -191,3 +191,17 @@ export function isBST(level: Level): boolean {
   const ok = (n: PlainNode | null, lo: number, hi: number): boolean => !n || (n.val > lo && n.val < hi && ok(n.left, lo, n.val) && ok(n.right, n.val, hi));
   return ok(plainTree(level), -Infinity, Infinity);
 }
+
+/** A random shape with distinct values drawn from lo..hi. */
+export function randomDistinctTree(rng: Rng, n: number, lo = 1, hi = 30, maxNodes = 12): Level {
+  const shape = randomTree(rng, n, 0, 0, maxNodes);
+  const vals = shuffle(rng, Array.from({ length: hi - lo + 1 }, (_, i) => lo + i));
+  let k = 0;
+  return shape.map((x) => (x === null ? null : vals[k++]));
+}
+
+/** True when all node values are distinct. */
+export function distinctValues(level: Level): boolean {
+  const vals = level.filter((x): x is number => x !== null);
+  return new Set(vals).size === vals.length;
+}
