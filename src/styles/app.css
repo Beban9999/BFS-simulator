@@ -55,6 +55,15 @@
   --grp-4: #f472b6;
   --grp-5: #facc15;
 
+  /* Chart series (validated categorical palette: dataviz reference, dark steps) */
+  --viz-1: #3987e5;
+  --viz-2: #d95926;
+  --viz-3: #199e70;
+  --viz-4: #c98500;
+  --viz-5: #d55181;
+  --viz-6: #008300;
+  --viz-7: #9085e9;
+
   /* Code */
   --code-bg: #0b0e13;
   --code-text: #d6dae1;
@@ -126,6 +135,14 @@
   --grp-3: #9333ea;
   --grp-4: #db2777;
   --grp-5: #ca8a04;
+
+  --viz-1: #2a78d6;
+  --viz-2: #eb6834;
+  --viz-3: #1baf7a;
+  --viz-4: #eda100;
+  --viz-5: #e87ba4;
+  --viz-6: #008300;
+  --viz-7: #6250d6;
 
   --code-bg: #f8f9fb;
   --code-text: #24292f;
@@ -3579,4 +3596,276 @@ kbd,
 
 .note-card > .panel-head {
   flex-wrap: wrap;
+}
+
+/* ---------- Big-O chart ---------- */
+.bigo-chart {
+  position: relative;
+  margin: 4px 0 10px;
+}
+
+.bigo-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+}
+
+.bigo-grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.bigo-axis {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.bigo-tick {
+  fill: var(--muted);
+  font-size: 9px;
+  font-family: var(--mono);
+}
+
+.bigo-label {
+  fill: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.bigo-line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.bigo-cross {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.bigo-dot {
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.bigo-tip {
+  position: absolute;
+  top: 8px;
+  transform: translateX(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.bigo-tip span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bigo-tip span b {
+  margin-left: auto;
+  padding-left: 10px;
+  font-family: var(--mono);
+}
+
+.bigo-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.bigo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bigo-legend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.bigo-legend button[aria-pressed="false"] {
+  color: var(--faint);
+  text-decoration: line-through;
+}
+
+.bigo-legend button[aria-pressed="false"] .bigo-swatch {
+  opacity: 0.3;
+}
+
+.bigo-rules {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.bigo-rules li {
+  margin-bottom: 6px;
+}
+
+.bigo-tip.flip {
+  transform: translateX(calc(-100% - 12px));
+}
+
+/* ---------- Memory model note ---------- */
+.mm-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 16px 24px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .mm-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.mm-code {
+  padding: 8px 0;
+}
+
+.mm-line {
+  padding: 1px 14px;
+  border-left: 3px solid transparent;
+  white-space: pre;
+}
+
+.mm-line.current {
+  background: var(--code-line);
+  border-left-color: var(--code-line-edge);
+}
+
+.mm-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.mm-note {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  background: var(--accent-soft);
+  border-radius: 8px;
+}
+
+.mm-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mm-col {
+  fill: var(--faint);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.mm-text {
+  fill: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.mm-name {
+  fill: var(--surface-2);
+  stroke: var(--border-strong);
+}
+
+.mm-obj rect {
+  fill: var(--cell);
+  stroke: var(--border-strong);
+  transition: fill 0.3s, stroke 0.3s;
+}
+
+.mm-obj.changed rect {
+  stroke: var(--hl-current);
+  stroke-width: 2;
+}
+
+.mm-obj.garbage {
+  opacity: 0.4;
+}
+
+.mm-link {
+  fill: none;
+  stroke: var(--accent-text);
+  stroke-width: 1.6;
+}
+
+.mm-link.ref {
+  stroke: var(--muted);
+}
+
+.mm-head {
+  fill: var(--accent-text);
+}
+
+.mm-dot {
+  fill: var(--text);
+}
+
+.mm-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.mm-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+  padding: 4px 6px;
+  font-family: var(--mono);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.mm-slot.node {
+  min-width: 96px;
+}
+
+.mm-slot.hop {
+  border-color: var(--hl-compare);
+}
+
+.mm-slot.hit {
+  border-color: var(--hl-current);
+  box-shadow: 0 0 0 1px var(--hl-current);
+}
+
+.mm-addr {
+  font-size: 0.68rem;
+  color: var(--muted);
 }

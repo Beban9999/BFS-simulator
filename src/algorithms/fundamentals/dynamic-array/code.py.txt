@@ -1,0 +1,22 @@
+class DynamicArray:
+    def __init__(self):
+        self.cap, self.size = 1, 0
+        self.data = [None] * self.cap
+
+    def grow(self, cap):
+        # the page's "growth" option: cap + cap // 2, cap + 2
+        return cap * 2
+
+    def append(self, x):
+        if self.size == self.cap:                   # @mark full
+            new_cap = self.grow(self.cap)
+            new = [None] * new_cap                  # @mark alloc
+            for i in range(self.size):
+                new[i] = self.data[i]               # @mark copy
+            self.data, self.cap = new, new_cap      # @mark swap
+        self.data[self.size] = x                    # @mark write
+        self.size += 1
+
+arr = DynamicArray()
+for x in values:                                    # @mark loop
+    arr.append(x)

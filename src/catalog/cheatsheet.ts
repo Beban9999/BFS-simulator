@@ -14,6 +14,13 @@ export interface Signal {
 }
 
 export const SIGNALS: Signal[] = [
+  // Fundamentals
+  { group: "Fundamentals", signal: "Constraints say n ≤ 20 / 5,000 / 10⁵ — which complexity fits?", pattern: "Read the input size", hint: "≈ 10⁸ simple steps per second: n ≤ 20 → 2ⁿ, 5,000 → n², 10⁵–10⁶ → n log n.", pages: ["big-o"] },
+  { group: "Fundamentals", signal: "Rare expensive step, many cheap ones (\"amortized O(1)\")", pattern: "Amortized analysis", hint: "Spread the cost of a resize over the appends that filled it.", pages: ["dynamic-array"] },
+  { group: "Fundamentals", signal: "Deep recursion (long list, path-shaped tree, big grid)", pattern: "Loop or explicit stack", hint: "Python stops at 1000 frames; recursion depth counts as O(depth) space.", pages: ["call-stack"] },
+  { group: "Fundamentals", signal: "x to a huge power, often modulo a prime", pattern: "Fast power (exponentiation by squaring)", hint: "Square the half: O(log n) multiplications.", pages: ["recursion-tree"] },
+  { group: "Fundamentals", signal: "Answers change when you didn't touch them, or all rows update at once", pattern: "Aliasing — copy explicitly", hint: "= copies references; record path[:], build rows with a comprehension.", pages: ["memory-model"] },
+
   // Arrays & hashing
   { group: "Arrays & hashing", signal: "Find a pair / complement in an unsorted array", pattern: "Hash map of seen values", hint: "Look up target − x in O(1) while scanning once.", pages: ["two-sum-hash"] },
   { group: "Arrays & hashing", signal: "Anagrams, duplicates, \"how many times\"", pattern: "Frequency counting", hint: "Count with a map or a 26-slot array, then compare counts.", pages: ["frequency-count", "find-anagrams"] },
@@ -118,7 +125,7 @@ export const COMPLEXITY: ComplexityTable[] = [
     columns: ["Access", "Search", "Insert", "Delete", "Space"],
     note: "Average case; worst case in brackets where it differs. * amortized.",
     rows: [
-      { name: "Dynamic array", cells: ["O(1)", "O(n)", "O(1)* end, O(n) middle", "O(1) end, O(n) middle", "O(n)"] },
+      { name: "Dynamic array", cells: ["O(1)", "O(n)", "O(1)* end, O(n) middle", "O(1) end, O(n) middle", "O(n)"], page: "dynamic-array" },
       { name: "Linked list", cells: ["O(n)", "O(n)", "O(1) at a known node", "O(1) at a known node", "O(n)"], page: "list-basics" },
       { name: "Stack / queue / deque", cells: ["top / ends O(1)", "O(n)", "O(1)", "O(1)", "O(n)"], page: "stack-queue-ops" },
       { name: "Hash table", cells: ["—", "O(1) (O(n))", "O(1)* (O(n))", "O(1) (O(n))", "O(n)"], page: "hash-table" },
@@ -184,7 +191,7 @@ export const COMPLEXITY: ComplexityTable[] = [
       { name: "n ≤ 5 000", cells: ["O(n²)", "2D DP, all pairs"], page: "lcs" },
       { name: "n ≤ 10⁶", cells: ["O(n log n)", "sorting, heaps, binary search"], page: "merge-sort" },
       { name: "n ≤ 10⁸", cells: ["O(n)", "one pass, two pointers, hashing"], page: "two-sum-hash" },
-      { name: "n huge (10¹⁸)", cells: ["O(log n) / O(1)", "binary search, math"], page: "binary-search" },
+      { name: "n huge (10¹⁸)", cells: ["O(log n) / O(1)", "binary search, fast power, math"], page: "recursion-tree" },
     ],
   },
 ];

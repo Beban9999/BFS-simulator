@@ -36,6 +36,10 @@ src/algorithms/<category>/<id>/
 | Grid puzzle on the `grid` renderer (own alphabet + paint tools) | `graphs/number-of-islands`, `graphs/rotting-oranges` |
 | Backtracking with a decision tree (+ array or board) | `backtracking/subsets`, `backtracking/permutations`; board: `backtracking/n-queens`, `backtracking/sudoku` |
 | DP table with dependency arrows + walk-back | 1D: `dp/house-robber`, `dp/coin-change`; 2D: `dp/lcs`, `dp/edit-distance`; recursion tree: `dp/climbing-stairs` |
+| Call stack as a container (frames pushed / popped) | `fundamentals/call-stack` (stackqueue with `itemWidth`) |
+| Recursion tree with returned values (`n:value`) + per-n counts | `fundamentals/recursion-tree` (decisiontree with `treeTitle`) |
+| Note with an SVG chart (hover, legend toggles, log axis) | `fundamentals/big-o` (colours `--viz-1..7`) |
+| Note with a hand-written step-through diagram | `fundamentals/memory-model` (snapshots in `scenarios.ts` + test) |
 | Linked list re-wiring | `linked-lists/reverse-list`; several rows: `linked-lists/merge-two-lists`; recursion: `linked-lists/reverse-list-recursive` |
 
 ## 1. `meta.ts`
@@ -201,7 +205,8 @@ src/algorithms/<category>/<id>/
 - Keep the logic of interactive notes in a plain `.ts` file next to `Page.tsx` and test it with a `*.test.ts`
   (e.g. `sorting/sort-stability/sorts.ts`, `dp/greedy-vs-dp/coins.ts`). The main suite checks folder/id, meta,
   problem shape and that `Page` exists; it skips trace checks for notes.
-- Examples: `backtracking/backtracking-template`, `sorting/sort-stability`, `sorting/built-in-sorts`, `dp/greedy-vs-dp`.
+- Examples: `backtracking/backtracking-template`, `sorting/sort-stability`, `sorting/built-in-sorts`, `dp/greedy-vs-dp`,
+  `fundamentals/big-o` (chart), `fundamentals/memory-model` (stepper).
 - New page? Consider adding a row to the cheat sheet (`src/catalog/cheatsheet.ts`); its test checks every link.
 
 ## 7. Checklist before committing (Definition of Done, spec §5)

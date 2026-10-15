@@ -1,0 +1,20 @@
+// JS engines have no setting for this: the stack holds
+// roughly 10,000 frames before "Maximum call stack size exceeded".
+
+function fact(n) {
+  if (n <= 1) return 1;                         // @mark rec-base
+  return n * fact(n - 1);                       // @mark rec-call
+}
+
+function factTail(n, acc = 1) {
+  if (n <= 1) return acc;                       // @mark tail-base
+  return factTail(n - 1, acc * n);              // @mark tail-call
+}
+
+function factLoop(n) {
+  let acc = 1;                                  // @mark loop-init
+  for (let k = 2; k <= n; k++) {
+    acc *= k;                                   // @mark loop-mul
+  }
+  return acc;                                   // @mark loop-done
+}

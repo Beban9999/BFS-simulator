@@ -24,11 +24,12 @@ function Item({ item, k, style }: { item: SQItem; k?: HighlightKind; style: Reac
 function StackView({ c, ci, highlights }: { c: SQContainer; ci: number; highlights: Map<string, HighlightKind> }) {
   const slots = Math.max(MIN_SLOTS, c.items.length);
   const height = slots * (ITEM_H + GAP) + GAP;
+  const w = c.itemWidth ?? ITEM_W;
   return (
-    <div className="sq-stack" style={{ height, width: ITEM_W + 2 * GAP + 4 }}>
+    <div className="sq-stack" style={{ height, width: w + 2 * GAP + 4 }}>
       {c.items.length === 0 && <span className="sq-empty">empty</span>}
       {c.items.map((it, i) => (
-        <Item key={it.id} item={it} k={highlights.get(qid(ci, it.id))} style={{ transform: `translateY(${-(i * (ITEM_H + GAP))}px)`, width: ITEM_W }} />
+        <Item key={it.id} item={it} k={highlights.get(qid(ci, it.id))} style={{ transform: `translateY(${-(i * (ITEM_H + GAP))}px)`, width: w }} />
       ))}
       {c.items.length > 0 && (
         <span className="sq-top" style={{ transform: `translateY(${-((c.items.length - 1) * (ITEM_H + GAP))}px)` }}>

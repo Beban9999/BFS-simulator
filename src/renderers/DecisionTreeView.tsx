@@ -93,7 +93,7 @@ export function TreeSvg({ t, highlights }: { t: DTreeView; highlights: Map<strin
 }
 
 export function DecisionTreeRenderer({ step, highlights }: RendererProps<DecisionState>) {
-  const { tree, array, matrix, caption } = step.state;
+  const { tree, array, matrix, caption, treeTitle = "Decision tree" } = step.state;
   return (
     <div className="dt-wrap">
       {caption && <p className="arr-caption">{caption}</p>}
@@ -104,8 +104,8 @@ export function DecisionTreeRenderer({ step, highlights }: RendererProps<Decisio
             {array && <ArrayRenderer step={{ ...step, state: array }} highlights={highlights} />}
           </div>
         )}
-        <section className="dt-box" aria-label="Decision tree">
-          <h3 className="sub-label">Decision tree</h3>
+        <section className="dt-box" aria-label={treeTitle}>
+          <h3 className="sub-label">{treeTitle}</h3>
           <TreeSvg t={tree} highlights={highlights} />
         </section>
       </div>

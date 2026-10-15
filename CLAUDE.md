@@ -8,12 +8,13 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 `algo-visualizer-build-prompt.md`. Open GitHub issues mirror the roadmap, one per tab/feature.
 
 ## Current status (update at the end of every session)
-- **150 pages live** (146 simulations + 4 notes): Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (14), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (10), DP (11) + the Pattern Cheat Sheet tab.
+- **155 pages live** (149 simulations + 6 notes): Fundamentals (5), Arrays & Hashing (16), Two Pointers (15), Searching (9), Sorting (14), Linked Lists (13), Stacks & Queues (12), Heaps (5), Trees (23), Graphs (22), Backtracking (10), DP (11) + the Pattern Cheat Sheet tab.
 - Renderers built: `grid`, `array`, `bars`, `matrix`, `hashtable`, `linkedlist`, `stackqueue`, `tree`, `graph`, `decisiontree`, `dptable`.
-- Last completed (2026-10-15): note-page support (`kind: "note"`) + 4 notes (backtracking template, sort stability,
-  built-in sorts, greedy vs DP) + the cheat sheet tab (closes #10). Earlier the same day: `dptable` + DP core (#9),
-  `decisiontree` + Backtracking (#8), `graph` + Graphs (#7).
-- **Next up:** #11 Tab 1 Fundamentals, then #12 Greedy & Intervals. The skipped algorithms stay parked for later: #19 (graphs advanced), #20 (DP rest).
+- Last completed (2026-10-15): Tab 1 Fundamentals (closes #11) — Big-O chart note, dynamic array, call stack /
+  overflow, recursion trees, memory-model note. Before that the same day: note pages + 4 notes + cheat sheet (#10),
+  `dptable` + DP core (#9), `decisiontree` + Backtracking (#8), `graph` + Graphs (#7).
+- **Next up:** #12 Greedy & Intervals (`intervals` renderer; link the existing `dp/greedy-vs-dp` note from it), then #13 Strings.
+  The skipped algorithms stay parked for later: #19 (graphs advanced), #20 (DP rest).
 
 ## Commands
 - `npm run dev` — dev server (http://localhost:5173, hash routes like `#/searching/bounds?step=9`)
@@ -94,3 +95,10 @@ code running line by line + explanation. Vite + React 19 + TypeScript (strict), 
 - In Git Bash, arguments starting with `/` are rewritten to Windows paths (`/cheatsheet` → `C:/Program Files/Git/cheatsheet`);
   pass routes without the leading slash to Node scripts. Playwright fallback script: scratchpad `check.cjs` run with
   `NODE_PATH=$PWD/node_modules`.
+- Charts: series colours are `--viz-1..7` (dataviz reference palette, validated for both themes with the dataviz skill's
+  `validate_palette.js`); don't reuse `--grp-*` for 7 series (fails the CVD / normal-vision checks). SVG text inside a
+  `viewBox` scales with the width — keep chart fonts at 9–10 px in user units.
+- `stackqueue`: stacks accept `itemWidth` for long labels (call frames). `decisiontree`: `treeTitle` renames the panel
+  ("Recursion tree"). Both default to the old behaviour.
+- React-controlled `<select>`/`<input>` in the DevTools console: set the value through the native setter
+  (`Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value").set`) before dispatching `change`.

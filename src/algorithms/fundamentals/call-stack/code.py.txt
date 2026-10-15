@@ -1,0 +1,18 @@
+import sys
+sys.setrecursionlimit(limit)        # default is 1000 frames
+
+def fact(n):
+    if n <= 1:                                  # @mark rec-base
+        return 1
+    return n * fact(n - 1)                      # @mark rec-call
+
+def fact_tail(n, acc=1):
+    if n <= 1:                                  # @mark tail-base
+        return acc
+    return fact_tail(n - 1, acc * n)            # @mark tail-call
+
+def fact_loop(n):
+    acc = 1                                     # @mark loop-init
+    for k in range(2, n + 1):
+        acc *= k                                # @mark loop-mul
+    return acc                                  # @mark loop-done

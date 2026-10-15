@@ -1,0 +1,19 @@
+function fib(n) {
+  if (n <= 1) return n;                         // @mark fib-base
+  const a = fib(n - 1);                         // @mark fib-call
+  const b = fib(n - 2);                         // @mark fib-call2
+  return a + b;                                 // @mark fib-ret
+}
+
+function power(x, n) {
+  if (n === 0) return 1;                        // @mark pn-base
+  const rest = power(x, n - 1);                 // @mark pn-call
+  return x * rest;                              // @mark pn-ret
+}
+
+function fastPower(x, n) {
+  if (n === 0) return 1;                        // @mark pf-base
+  const half = fastPower(x, Math.floor(n / 2)); // @mark pf-call
+  if (n % 2 === 0) return half * half;          // @mark pf-even
+  return half * half * x;                       // @mark pf-odd
+}

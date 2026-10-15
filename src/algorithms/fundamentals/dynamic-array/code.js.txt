@@ -1,0 +1,29 @@
+class DynamicArray {
+  constructor() {
+    this.cap = 1;
+    this.size = 0;
+    this.data = new Array(this.cap).fill(null);
+  }
+
+  grow(cap) {
+    // the page's "growth" option: cap + (cap >> 1), cap + 2
+    return cap * 2;
+  }
+
+  append(x) {
+    if (this.size === this.cap) {                   // @mark full
+      const newCap = this.grow(this.cap);
+      const next = new Array(newCap).fill(null);    // @mark alloc
+      for (let i = 0; i < this.size; i++) {
+        next[i] = this.data[i];                     // @mark copy
+      }
+      this.data = next;                             // @mark swap
+      this.cap = newCap;
+    }
+    this.data[this.size] = x;                       // @mark write
+    this.size++;
+  }
+}
+
+const arr = new DynamicArray();
+for (const x of values) arr.append(x);              // @mark loop

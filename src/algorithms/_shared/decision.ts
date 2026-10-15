@@ -29,6 +29,8 @@ export interface DecisionState {
   /** A board beside the tree (queens, sudoku, word grid), ids `mi(r, c)`. */
   matrix?: MatrixState;
   caption?: string;
+  /** Heading above the tree (default "Decision tree"), e.g. "Recursion tree". */
+  treeTitle?: string;
   result?: unknown;
 }
 

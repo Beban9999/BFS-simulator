@@ -1,0 +1,20 @@
+def fib(n):
+    if n <= 1:                                  # @mark fib-base
+        return n
+    a = fib(n - 1)                              # @mark fib-call
+    b = fib(n - 2)                              # @mark fib-call2
+    return a + b                                # @mark fib-ret
+
+def power(x, n):
+    if n == 0:                                  # @mark pn-base
+        return 1
+    rest = power(x, n - 1)                      # @mark pn-call
+    return x * rest                             # @mark pn-ret
+
+def fast_power(x, n):
+    if n == 0:                                  # @mark pf-base
+        return 1
+    half = fast_power(x, n // 2)                # @mark pf-call
+    if n % 2 == 0:
+        return half * half                      # @mark pf-even
+    return half * half * x                      # @mark pf-odd

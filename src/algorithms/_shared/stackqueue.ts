@@ -20,6 +20,8 @@ export interface SQContainer {
   pointers?: { name: string; index: number }[];
   /** Short line under the container, e.g. "size 3 / 5". */
   note?: string;
+  /** Stack only: item width in px for long labels such as call frames (default 58). */
+  itemWidth?: number;
 }
 
 export interface SQState {
